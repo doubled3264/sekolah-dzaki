@@ -1,0 +1,17 @@
+.sidebar {
+  @apply w-72 h-screen px-4;
+  @apply bg-white;
+
+  &-logo{
+    @apply py-10;
+    @apply text-center;
+    @apply text-2xl capitalize;
+  }
+
+  &__item{
+    color: #8F9093;
+    @apply w-64 py-3 px-4;
+    @apply text-sm font-semibold capitalize;
+  }
+}
+

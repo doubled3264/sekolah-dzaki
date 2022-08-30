@@ -1,0 +1,3 @@
+<template>
+  Base siswa
+</template>

@@ -1,0 +1,11 @@
+@import './components/sidebar.scss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  @apply font-poppins;
+}
+.app-wrapper {
+  @apply h-screen bg-red-400;
+}
