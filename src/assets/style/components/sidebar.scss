@@ -2,16 +2,25 @@
   @apply w-72 h-screen px-4;
   @apply bg-white;
 
-  &-logo{
+  &-logo {
     @apply py-10;
     @apply text-center;
     @apply text-2xl capitalize;
   }
 
-  &__item{
-    color: #8F9093;
-    @apply w-64 py-3 px-4;
+  &__item {
+    color: #8f9093;
+    @apply flex items-center;
+    @apply w-64 py-3 my-1 px-4;
+    @apply rounded-lg;
     @apply text-sm font-semibold capitalize;
+
+    p {
+      @apply pl-2;
+    }
+  }
+
+  &__item:hover {
+    background-color: #DEF2F0;
   }
 }
-

@@ -1,14 +1,22 @@
-<script setup>
-import { ref } from 'vue'
+<script setup> 
+import { computed } from 'vue'
+import {  useStore } from 'vuex'
 import SidebarItem from './SidebarItem.vue'
 
-const menu = ref([{ title: 'siswa' }, { title: 'pembayaran' }])
+const store = useStore()
+const getNavigation = computed(() => {
+  return store.getters['sidebar/getNavigation']
+})
 </script>
+
 <template>
   <div class="sidebar">
     <div class="sidebar-logo">logo</div>
     <ul clas="sidebar__list">
-      <SidebarItem v-for="item in menu" :title="item.title" ></SidebarItem>
+      <SidebarItem v-for="(item, index) in getNavigation" :key="index+1"
+      :title="item.title"
+      :svgIcon="item.svgIcon"
+      ></SidebarItem>
     </ul>
   </div>
 </template>
