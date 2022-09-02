@@ -12,10 +12,12 @@ const getNavigation = computed(() => {
 <template>
   <div class="sidebar">
     <div class="sidebar-logo">logo</div>
+    <p>menu</p>
     <ul clas="sidebar__list">
       <SidebarItem v-for="(item, index) in getNavigation" :key="index+1"
       :title="item.title"
       :svgIcon="item.svgIcon"
+      :path="item.path"
       ></SidebarItem>
     </ul>
   </div>

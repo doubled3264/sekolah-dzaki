@@ -20,6 +20,10 @@ const props = defineProps({
     type: [String],
     default: 'currentColor',
   },
+  strokeWidth: {
+    type: [String],
+    default: "10",
+  },
   isRotate: {
     type: [Boolean],
     default: false,
@@ -52,9 +56,15 @@ watch(
     viewBox="0 0 24 24"
     xml:space="preserve"
     xmlns="http://www.w3.org/2000/svg"
-    :fill="color"
   >
     <path d="M0 0h24v24H0z" fill="none" />
-    <g ref="icon"><path :d="svgIcon" data-original="#000000" stroke-width="1" /></g>
+    <g ref="icon">
+      <path
+        :d="svgIcon"
+        :fill="color"
+        :stroke="color"
+        :stroke-width="strokeWidth"
+      />
+    </g>
   </svg>
 </template>

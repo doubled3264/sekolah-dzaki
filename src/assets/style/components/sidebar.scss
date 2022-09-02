@@ -10,17 +10,30 @@
 
   &__item {
     color: #8f9093;
-    @apply flex items-center;
+    // @apply flex items-center;
     @apply w-64 py-3 my-1 px-4;
     @apply rounded-lg;
     @apply text-sm font-semibold capitalize;
+  }
 
-    p {
-      @apply pl-2;
+  &__link {
+    @apply flex items-center;
+
+    span {
+      @apply pl-3;
     }
   }
 
+  & > p {
+    color: #8f9093;
+    @apply mb-2 pl-4;
+    @apply text-sm font-semibold capitalize;
+  }
+
   &__item:hover {
-    background-color: #DEF2F0;
+    background-color: #def2f0;
+  }
+  &__link--active {
+    background-color: #def2f0;
   }
 }

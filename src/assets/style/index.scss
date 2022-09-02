@@ -7,6 +7,11 @@ body{
   @apply font-poppins;
 }
 .app-wrapper {
+  @apply flex;
   @apply h-screen bg-red-400;
+}
+
+svg{
+  @apply overflow-visible;
 }
 
