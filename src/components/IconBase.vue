@@ -1,9 +1,9 @@
 <script setup>
-import { defineProps, ref, watch } from 'vue'
+import {  ref  } from 'vue'
 import gsap from 'gsap'
 
 const icon = ref(null)
-const props = defineProps({
+defineProps({
   svgIcon: {
     type: [String],
     required: true,
@@ -24,7 +24,7 @@ const props = defineProps({
     type: [String],
     default: "10",
   },
-  isRotate: {
+  isActive: {
     type: [Boolean],
     default: false,
   },
@@ -42,12 +42,12 @@ const rotateIcon = (state) => {
   })
 }
 
-watch(
-  () => props.isRotate,
-  (newVal) => {
-    rotateIcon(newVal)
-  }
-)
+/* watch( */
+/*   () => props.isActive, */
+/*   (newVal) => { */
+/*     rotateIcon(newVal) */
+/*   } */
+/* ) */
 </script>
 <template>
   <svg

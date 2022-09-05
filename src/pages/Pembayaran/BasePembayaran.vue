@@ -1,4 +1,9 @@
 <script setup>
-console.log('maman racing')
+import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
+import Header from '../../components/layouts/header/Header.vue'
 </script>
-<template>Base pembayaran</template>
+<template>
+  <Sidebar />
+  <header />
+  <div class="content">Base Pembayaran</div>
+</template>

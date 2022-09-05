@@ -11,7 +11,9 @@
   "dependencies": {
     "axios": "^0.27.2",
     "gsap": "^3.11.0",
+    "lodash": "^4.17.21",
     "vue": "^3.2.37",
+    "vue-good-table-next": "^0.2.1",
     "vue-router": "^4.1.4",
     "vue-sweetalert2": "^5.0.5",
     "vuex": "^4.0.2"

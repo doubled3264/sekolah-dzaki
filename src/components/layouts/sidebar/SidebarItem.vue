@@ -1,5 +1,8 @@
 <script setup>
-import { defineProps, ref } from 'vue'
+import { onMounted, computed ,watch} from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import _ from 'lodash'
 import IconBase from '../../IconBase.vue'
 
 const props = defineProps({
@@ -7,24 +10,35 @@ const props = defineProps({
   title: String,
   svgIcon: String,
   isActive: Boolean,
-  /* iconActive: Boolean, */
 })
-const isActive = ref(props.isActive)
-function setIsActive() {
-  isActive.value = !isActive.value
-  console.log('click active')
+const route = useRoute()
+const store = useStore()
+
+function setPageActive() {
+  store.commit('sidebar/setActivePage', props.title)
 }
+
+const getColor = computed(() => (props.isActive ? '#41c3a9' : '#8f9093'))
+
+watch(()=> route.path, (newValue)=>{
+store.commit('sidebar/setActivePage', _.replace(newValue, '/',''))
+  })
+
 </script>
 <template>
-  <li class="sidebar__item" @click="setIsActive">
-    <router-link :to="path" class="sidebar__link" active-class="sidebar__link--active">
+  <li class="sidebar__item" :class="{ 'sidebar__item--active': isActive }">
+    <router-link
+      class="sidebar__link"
+      :to="path"
+      :class="{ 'sidebar__link--active': isActive }"
+      @click="setPageActive"
+    >
       <IconBase
         width="24"
         height="24"
-        color="#8f9093"
+        :color="getColor"
         strokeWidth="0.3"
         :svgIcon="svgIcon"
-        :isRotate="isActive"
       />
       <span>{{ title }}</span>
     </router-link>

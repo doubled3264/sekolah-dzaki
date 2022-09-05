@@ -1,0 +1,9 @@
+.header {
+  @apply fixed left-72;
+  @apply w-full py-8 pl-6;
+
+  h3 {
+    color: #41c3a9;
+    @apply font-semibold text-xl capitalize;
+  }
+}

@@ -1,0 +1,8 @@
+.login {
+  @apply w-full h-screen;
+  @apply bg-violet-200;
+
+  &__content {
+    @apply max-w-fit mx-auto my-64;
+  }
+}

@@ -1,17 +1,21 @@
+@import './components/vue-good-table.scss';
+@import './components/button.scss';
 @import './components/sidebar.scss';
+@import './components/header.scss';
+@import './components/content.scss';
+@import './components/login.scss';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
   @apply font-poppins;
 }
 .app-wrapper {
   @apply flex;
-  @apply h-screen bg-red-400;
+  @apply h-screen;
 }
 
-svg{
+svg {
   @apply overflow-visible;
 }
-

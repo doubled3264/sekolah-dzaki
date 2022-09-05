@@ -4,9 +4,8 @@ import {  useStore } from 'vuex'
 import SidebarItem from './SidebarItem.vue'
 
 const store = useStore()
-const getNavigation = computed(() => {
-  return store.getters['sidebar/getNavigation']
-})
+const getNavigation = computed(() => store.getters['sidebar/getNavigation'])
+
 </script>
 
 <template>
@@ -18,6 +17,7 @@ const getNavigation = computed(() => {
       :title="item.title"
       :svgIcon="item.svgIcon"
       :path="item.path"
+      :isActive = item.isActive
       ></SidebarItem>
     </ul>
   </div>
