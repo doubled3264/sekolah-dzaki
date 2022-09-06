@@ -1,5 +1,7 @@
 <script setup>
 import { computed } from 'vue'
+import IconBase from './IconBase.vue'
+
 const props = defineProps({
   title: {
     type: String,
@@ -7,29 +9,65 @@ const props = defineProps({
   },
   size: {
     type: String,
-    default: 'btn--md',
+    default: 'md',
+    validator(value) {
+      return ['xs', 'sm', 'md', 'lg'].includes(value)
+    },
+  },
+  variant: {
+    type: String,
+    default: 'solid',
+    validator(value) {
+      return ['solid', 'outline', 'link'].includes(value)
+    },
+  },
+  color: {
+    type: String,
+    default: 'secondary',
+  },
+  startIcon: {
+    type: String,
+  },
+  endIcon: {
+    type: String,
   },
 })
 
-const getButtonSize = computed(() => {
-  let buttonSize
-  switch (props.size) {
-    case 'xs':
-      buttonSize = 'btn--xs'
-      break
-    case 'sm':
-      buttonSize = 'btn--sm'
-      return
-    case 'md':
-      buttonSize = 'btn--md'
-      break
-    case 'lg':
-      buttonSize = 'btn--lg'
-      break
+const getSize = computed(() => {
+  return `btn btn--${props.size}`
+})
+const getVariantAndColor = computed(() => {
+  if (props.variant === 'solid') {
+    return `btn--${props.color}`
+  } else if (props.variant === 'outline') {
+    return `btn__outline--${props.color}`
+  } else if (props.variant === 'link') {
+    return ``
   }
-  return buttonSize
+})
+const getIconSize = computed(() => {
+  return '24'
 })
 </script>
 <template>
-  <button type="button" :class="[getButtonSize]">{{ title }}</button>
+  <button type="button" :class="[getSize, getVariantAndColor]">
+    <span v-if="startIcon">
+      <IconBase :width="getIconSize" :svgIcon="startIcon" />
+    </span>
+    {{ title }}
+    <span v-if="endIcon">
+      <IconBase :width="getIconSize" :svgIcon="endIcon" />
+    </span>
+  </button>
 </template>
+
+<style lang="scss" scoped>
+.btn {
+  span:first-child {
+    @apply mr-2;
+  }
+  span:last-child {
+    @apply ml-2;
+  }
+}
+</style>

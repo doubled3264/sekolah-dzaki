@@ -39,6 +39,12 @@ module.exports = {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
+      // primary: '#007bff',
+      // secondary: '#6c757d',
+      // success: '#28a745',
+      // info: '#17a2b8',
+      // danger: '#dc3545',
+      // warning: '#ffc107',
     }),
     columns: {
       auto: 'auto',
@@ -944,6 +950,38 @@ module.exports = {
       50: '50',
     },
     extend: {
+      colors: {
+        primary: {
+          normal: '#007bff',
+          hover: '#0069d9',
+          active: '#0062cc'
+        },
+        secondary: {
+          normal: '#6c757d',
+          hover: '#5a6268',
+          active: '#545b62'
+        },
+        success: {
+          normal: '#28a745',
+          hover: '#218838',
+          active: '#1e7e34'
+        },
+        info: {
+          normal: '#17a2b8',
+          hover: '#138496',
+          active: '#117a8b'
+        },
+        danger: {
+          normal: '#dc3545',
+          hover: '#c82333',
+          active: '#bd2130'
+        },
+        warning: {
+          normal: '#ffc107',
+          hover: '#e0a800',
+          active: '#d39e00'
+        },
+      },
       fontFamily: {
         poppins: ['Poppins'],
       },

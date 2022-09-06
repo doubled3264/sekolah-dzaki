@@ -1,58 +1,36 @@
 <script setup>
 import {  ref  } from 'vue'
 import gsap from 'gsap'
+import tailwindConfig from '../tailwind-config'
 
 const icon = ref(null)
 defineProps({
   svgIcon: {
-    type: [String],
+    type: String,
     required: true,
   },
   width: {
-    type: [Number, String],
-    default: 24,
-  },
-  height: {
-    type: [Number, String],
+    type: Number, String,
     default: 24,
   },
   color: {
-    type: [String],
+    type: String,
     default: 'currentColor',
   },
   strokeWidth: {
-    type: [String],
-    default: "10",
+    type: String,
+    default: "0.09",
   },
   isActive: {
-    type: [Boolean],
+    type: Boolean,
     default: false,
   },
 })
-
-const rotateIcon = (state) => {
-  let rotation = 0
-  if (state) {
-    rotation = 90
-  }
-  gsap.to(icon.value, 1, {
-    rotation: rotation,
-    transformOrigin: 'center',
-    ease: 'expo.out',
-  })
-}
-
-/* watch( */
-/*   () => props.isActive, */
-/*   (newVal) => { */
-/*     rotateIcon(newVal) */
-/*   } */
-/* ) */
 </script>
 <template>
   <svg
     :width="width"
-    :height="height"
+    :height="width"
     viewBox="0 0 24 24"
     xml:space="preserve"
     xmlns="http://www.w3.org/2000/svg"

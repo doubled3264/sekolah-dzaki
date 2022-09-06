@@ -3,6 +3,7 @@
   @apply bg-violet-200;
 
   &__content {
-    @apply max-w-fit mx-auto my-64;
+    @apply w-1/4 mx-auto my-64 py-4 px-4;
+    @apply border border-primary-normal;
   }
 }
