@@ -1,0 +1,23 @@
+
+.custom-input {
+  &__label {
+    @apply block;
+    @apply pb-2;
+    @apply capitalize;
+    @apply cursor-pointer;
+  }
+  &__wrapper {
+    input {
+      @apply w-full p-3;
+      @apply border border-gray-400 rounded-lg;
+
+      &:focus {
+        @apply outline-none ring-1 ring-primary-normal;
+      }
+    }
+  }
+  &__helper {
+    @apply pt-1;
+    @apply font-normal text-xs text-red-500;
+  }
+}

@@ -1,6 +1,5 @@
 .btn {
-  @apply flex items-center;
-  @apply border rounded-md;
+  @apply border rounded-md clear-both;
   @apply font-medium text-white;
   &--xs {
     @apply h-6 px-2;
@@ -17,6 +16,9 @@
   &--lg {
     @apply h-12 px-6;
     @apply text-lg;
+  }
+  &__block {
+    @apply w-full;
   }
   &--primary {
     @apply border-primary-normal bg-primary-normal #{!important};
@@ -119,5 +121,13 @@
       @apply text-white;
       @apply bg-warning-normal;
     }
+  }
+  &__start-icon {
+    @apply float-left;
+    @apply ml-0 mr-1 #{!important};
+  }
+  &__end-icon {
+    @apply float-right;
+    @apply mx-0 #{!important};
   }
 }

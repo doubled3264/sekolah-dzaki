@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import IconBase from './IconBase.vue'
+import CustomIcon from './CustomIcon.vue'
 
 const props = defineProps({
   title: {
@@ -21,6 +21,9 @@ const props = defineProps({
       return ['solid', 'outline', 'link'].includes(value)
     },
   },
+  block: {
+    type: Boolean,
+  },
   color: {
     type: String,
     default: 'secondary',
@@ -32,6 +35,8 @@ const props = defineProps({
     type: String,
   },
 })
+
+const emit = defineEmits(['submitData'])
 
 const getSize = computed(() => {
   return `btn btn--${props.size}`
@@ -48,15 +53,23 @@ const getVariantAndColor = computed(() => {
 const getIconSize = computed(() => {
   return '24'
 })
+
+function buttonClick() {
+  emit('submitData', 'maman payload')
+}
 </script>
 <template>
-  <button type="button" :class="[getSize, getVariantAndColor]">
-    <span v-if="startIcon">
-      <IconBase :width="getIconSize" :svgIcon="startIcon" />
+  <button
+    type="button"
+    @click="buttonClick"
+    :class="[getSize, getVariantAndColor, { btn__block: block }]"
+  >
+    <span v-if="startIcon" class="btn__start-icon">
+      <CustomIcon :width="getIconSize" :svgIcon="startIcon" />
     </span>
     {{ title }}
-    <span v-if="endIcon">
-      <IconBase :width="getIconSize" :svgIcon="endIcon" />
+    <span v-if="endIcon" class="btn__end-icon">
+      <CustomIcon :width="getIconSize" :svgIcon="endIcon" />
     </span>
   </button>
 </template>
@@ -66,6 +79,7 @@ const getIconSize = computed(() => {
   span:first-child {
     @apply mr-2;
   }
+
   span:last-child {
     @apply ml-2;
   }

@@ -10,7 +10,7 @@ defineProps({
     required: true,
   },
   width: {
-    type: Number, String,
+    type:  String,
     default: 24,
   },
   color: {

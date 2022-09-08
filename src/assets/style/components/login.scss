@@ -1,9 +1,80 @@
 .login {
   @apply w-full h-screen;
-  @apply bg-violet-200;
+  background-color: #41c3a9;
 
   &__content {
-    @apply w-1/4 mx-auto my-64 py-4 px-4;
-    @apply border border-primary-normal;
+    @apply mx-auto mt-28 pt-10;
+    @apply rounded-lg;
+    @apply shadow-xl;
+    background-color: #def2f0;
+
+    h2 {
+      @apply text-xl font-semibold capitalize;
+    }
+
+    form {
+      @apply w-full my-6;
+    }
+
+    &-notif {
+      @apply flex;
+      @apply mb-4 p-3;
+      @apply rounded-lg bg-red-500;
+      @apply font-semibold text-white;
+
+      svg {
+        @apply w-6 h-full mr-2;
+        padding: 5px;
+        @apply border-2 border-white rounded-full;
+      }
+
+      &--show {
+        animation: fadeIn;
+        animation-duration: 1s;
+      }
+      &--hide {
+        animation: fadeOut;
+        animation-duration: 1s;
+        @apply hidden;
+      }
+    }
+  }
+}
+
+.form-nav {
+  @apply mt-4;
+
+  p {
+    @apply mt-6;
+    @apply text-center text-xs;
+
+    span {
+      @apply font-normal underline;
+      color: #41c3a9;
+    }
+  }
+}
+
+@screen md {
+  .login {
+    &__content {
+      @apply w-3/5;
+    }
+  }
+}
+
+@screen lg {
+  .login {
+    &__content {
+      @apply w-2/4;
+    }
+  }
+}
+
+@screen xl {
+  .login {
+    &__content {
+      @apply w-2/5;
+    }
   }
 }

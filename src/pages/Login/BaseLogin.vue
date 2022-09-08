@@ -13,8 +13,8 @@ const changePage = (page) => {
 <template>
   <div class="login">
     <div class="login__content">
-      <SignIn v-if="pageActive === 'signin'" @event="changePage"/>
-      <SignUp v-if="pageActive === 'signup'" @event="changePage"/>
+      <SignIn v-if="pageActive === 'signin'" @event="changePage" />
+      <SignUp v-if="pageActive === 'signup'" @event="changePage" />
     </div>
   </div>
 </template>
