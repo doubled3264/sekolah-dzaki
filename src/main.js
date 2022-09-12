@@ -1,12 +1,23 @@
 import { createApp } from 'vue'
+import axios from 'axios'
 import App from './App.vue'
 import router from './routes'
 import { store } from './store'
+import './store/module/subscribe'
 import './assets/style/index.scss'
 import 'animate.css'
 
-const app = createApp(App)
+//axios
+const mode = 'dev'
+if (mode === 'dev') {
+  axios.defaults.baseURL = 'http://localhost:3000/'
+} else if (mode === 'prod') {
+  axios.defaults.baseURL = ''
+}
 
-app.use(store)
-app.use(router)
-app.mount('#app')
+store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
+  const app = createApp(App)
+  app.use(store)
+  app.use(router)
+  app.mount('#app')
+})

@@ -20,12 +20,9 @@ function setPageActive() {
 
 const getColor = computed(() => (props.isActive ? '#41c3a9' : '#8f9093'))
 
-watch(
-  () => route.path,
-  (newValue) => {
-    store.commit('sidebar/setActivePage', _.replace(newValue, '/', ''))
-  }
-)
+onMounted(() => {
+  store.commit('sidebar/setActivePage', _.replace(route.path, '/', ''))
+})
 </script>
 <template>
   <li class="sidebar__item" :class="{ 'sidebar__item--active': isActive }">

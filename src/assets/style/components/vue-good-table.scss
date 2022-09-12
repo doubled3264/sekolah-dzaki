@@ -1,3 +1,7 @@
+.table-data {
+  // @apply mt-10;
+}
+
 .vgt-table.striped tbody tr:nth-of-type(odd) {
   background-color: rgba(51, 68, 109, 0.03);
 }
@@ -184,8 +188,7 @@ table.vgt-table tr.clickable:hover {
     @apply rounded-tr-xl;
   }
 }
-.vg
-.vgt-table thead th.vgt-checkbox-col {
+.vg .vgt-table thead th.vgt-checkbox-col {
   vertical-align: middle;
 }
 .vgt-table thead th.sorting-asc button:after {

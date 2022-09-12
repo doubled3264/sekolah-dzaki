@@ -3,7 +3,8 @@ import { ref } from 'vue'
 
 import { VueGoodTable } from 'vue-good-table-next'
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
-import Header from '../../components/layouts/header/Header.vue'
+import CustomHeaderVue from '../../components/layouts/header/CustomHeader.vue'
+import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
 
 const tableData = ref({
   columns: [
@@ -94,9 +95,11 @@ const tableData = ref({
 </script>
 <template>
   <Sidebar />
-  <Header />
   <div class="content">
     <div class="wrapper">
+      <div class="row my-10">
+        <h4 class="capitalize font-semibold text-xl">data siswa</h4>
+      </div>
       <div class="table-data">
         <vue-good-table :columns="tableData.columns" :rows="tableData.rows" />
       </div>

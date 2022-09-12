@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRef, onMounted, reactive, watch } from 'vue'
+import { ref, toRef, onMounted, reactive, computed } from 'vue'
 import { useField, useFieldError, useIsFieldValid } from 'vee-validate'
 import _ from 'lodash'
 
@@ -41,8 +41,16 @@ const errorState = reactive({
   errorMessage: '',
 })
 const { handleChange } = useField(toRef(props, 'name'))
+
 errorState.isError = useIsFieldValid(toRef(props, 'name'))
 errorState.errorMessage = useFieldError(toRef(props, 'name'))
+
+const getErrorClass = computed(() => {
+  return errorState.errorMessage ? true : false
+})
+
+console.log(errorState.errorMessage)
+
 onMounted(() => {
   randomNumber.value = _.random(1111, 9999)
 })
@@ -50,7 +58,12 @@ onMounted(() => {
 <template>
   <div class="custom-input">
     <label :for="randomNumber" class="custom-input__label">{{ label }}</label>
-    <div class="custom-input__wrapper">
+    <div
+      :class="[
+        'custom-input__wrapper',
+        { 'custom-input__wrapper--error': getErrorClass },
+      ]"
+    >
       <div class="custom-input__start-icon"></div>
       <input
         :id="randomNumber"
@@ -65,7 +78,6 @@ onMounted(() => {
     </div>
     <p class="custom-input__helper">
       {{ errorState.errorMessage }}
-      {{ errorState.isError }}
     </p>
   </div>
 </template>

@@ -7,14 +7,14 @@ export default {
       {
         title: 'siswa',
         svgIcon: student2,
-        name: 'Siswa',
+        name: 'siswa',
         path: '/siswa',
         isActive: false,
       },
       {
         title: 'pembayaran',
         svgIcon: pembayaran,
-        name: 'Pembayaran',
+        name: 'pembayaran',
         path: '/pembayaran',
         isActive: false,
       },
@@ -25,14 +25,14 @@ export default {
       return state.navigation
     },
     getActivePage(state) {
-      return _.find(state.navigation, function (data) {
+      return _.find(state.navigation, function(data) {
         return data.isActive
       })
     },
   },
   mutations: {
     setActivePage(state, payload) {
-      _.forEach(state.navigation, function (data) {
+      _.forEach(state.navigation, function(data) {
         data.title === payload
           ? (data.isActive = true)
           : (data.isActive = false)

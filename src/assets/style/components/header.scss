@@ -1,6 +1,7 @@
 .header {
   @apply fixed left-72;
-  @apply w-full py-8 pl-6;
+  @apply w-full py-4 pl-6;
+  @apply border-b-2 border-b-gray-400;
 
   h3 {
     color: #41c3a9;

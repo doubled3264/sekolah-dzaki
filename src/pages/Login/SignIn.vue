@@ -1,5 +1,6 @@
 <script setup>
-import { ref, toRef, computed, reactive } from 'vue'
+import { ref, toRef, computed, reactive, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { cross } from '../../utils/svg-var'
@@ -7,10 +8,11 @@ import CustomInput from '../../components/CustomInput.vue'
 import CustomButton from '../../components/CustomButton.vue'
 import CustomIcon from '../../components/CustomIcon.vue'
 
+const store = useStore()
 const emits = defineEmits(['event'])
-const isErrorLogin = ref(true)
+const isErrorLogin = ref(false)
 const user = ref({
-  username: '',
+  email: '',
   password: '',
 })
 
@@ -23,31 +25,17 @@ const getErrorNotifStatus = computed(() => {
     : 'login__content-notif--hide'
 })
 
-/* const simpleSchema = { */
-/*   username(value) { */
-/*     if (value && value.trim()) { */
-/*       return true */
-/*     } */
-
-/*     return 'This is required' */
-/*   }, */
-/*   password(value) { */
-/*     if (value && value.trim()) { */
-/*       return true */
-/*     } */
-
-/*     return 'This is required' */
-/*   }, */
-/* } */
 const schema = yup.object({
   email: yup.string().required().email(),
-  password: yup.string().required().min(8),
+  password: yup.string().required().min(3),
 })
 useForm({
   validationSchema: schema,
 })
 
-/* validation */
+async function submitAction() {
+  store.dispatch('auth/signIn', user.value)
+}
 </script>
 
 <template>
@@ -61,34 +49,17 @@ useForm({
       <form>
         <div class="row">
           <div class="input-field w-full mb-4">
-            <CustomInput
-              type="email"
-              label="email"
-              name="email"
-              v-model:input-value="user.username"
-            />
+            <CustomInput type="email" label="email" name="email" v-model:input-value="user.email" />
           </div>
         </div>
         <div class="row">
           <div class="input-field w-full mb-4">
-            <CustomInput
-              type="password"
-              label="password"
-              name="password"
-              v-model:input-value="user.password"
-            />
+            <CustomInput type="password" label="password" name="password" v-model:input-value="user.password" />
           </div>
         </div>
         <div class="form-nav">
-          <CustomButton
-            title="Masuk"
-            variant="solid"
-            color="primary"
-            block
-            @submit-data="closeNotif"
-          />
+          <CustomButton title="Masuk" variant="solid" color="primary" block @submit-data="submitAction" />
           <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
-          <p class="text-red-500">{{ user.username }} {{ user.password }}</p>
         </div>
       </form>
     </div>
