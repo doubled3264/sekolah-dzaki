@@ -1,55 +1,54 @@
 .sidebar {
-  @apply fixed;
-  @apply w-72 h-screen px-4;
-  @apply bg-white;
+   @apply absolute top-0;
+   @apply w-72 h-screen px-4;
+   @apply bg-midnight-green;
 
-  &-logo {
-    @apply py-10;
-    @apply text-center;
-    @apply text-2xl capitalize;
-  }
+   &-logo {
+      @apply py-10;
+      @apply text-center;
+      @apply text-2xl font-semibold capitalize text-white;
+   }
 
-  &__list {
-    @apply relative;
-    @apply h-screen;
-  }
+   &__list {
+      @apply relative;
+      @apply h-screen;
+   }
 
-  &__item {
-    color: #8f9093;
-    // @apply flex items-center;
-    @apply w-64 py-3 my-1 px-4;
-    @apply rounded-lg;
-    @apply text-sm font-semibold capitalize;
-  }
+   &__item {
+      // @apply flex items-center;
+      @apply w-64 py-3 my-1 px-4;
+      @apply rounded-lg;
+      @apply text-sm font-semibold capitalize text-white;
+   }
 
-  &__item:last-child {
-    @apply absolute bottom-10;
-  }
+   &__item:last-child {
+      @apply absolute bottom-10;
+   }
 
-  &__link {
-    @apply flex items-center;
+   &__link {
+      @apply flex items-center;
 
-    span {
-      @apply pl-3;
-    }
-
-    &--active {
       span {
-        color: #41c3a9;
+         @apply pl-3;
       }
-    }
-  }
 
-  & > p {
-    color: #8f9093;
-    @apply mb-4 pl-4;
-    @apply text-sm font-semibold capitalize;
-  }
+      &--active {
+         span {
+            @apply text-white;
+         }
+      }
+   }
 
-  &__item:hover {
-    background-color: #def2f0;
-  }
-  &__item--active {
-    background-color: #def2f0;
-  }
+   & > p {
+      @apply mb-4 pl-4;
+      @apply text-sm font-semibold capitalize text-white;
+   }
+
+   &__item:hover {
+      @apply bg-illuminating-emerald;
+      @apply text-white;
+   }
+   &__item--active {
+      @apply bg-verdigris;
+   }
 }

@@ -36,7 +36,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['submitData'])
+const emit = defineEmits(['buttonAction'])
 
 const getSize = computed(() => {
   return `btn btn--${props.size}`
@@ -55,15 +55,11 @@ const getIconSize = computed(() => {
 })
 
 function buttonClick() {
-  emit('submitData', 'maman payload')
+  emit('buttonAction')
 }
 </script>
 <template>
-  <button
-    type="button"
-    @click="buttonClick"
-    :class="[getSize, getVariantAndColor, { btn__block: block }]"
-  >
+  <button type="button" @click="buttonClick" :class="[getSize, getVariantAndColor, { btn__block: block }]">
     <span v-if="startIcon" class="btn__start-icon">
       <CustomIcon :width="getIconSize" :svgIcon="startIcon" />
     </span>

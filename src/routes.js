@@ -8,34 +8,36 @@ import BasePembayaran from './pages/Pembayaran/BasePembayaran.vue'
 
 const routes = [
   {
+    path: '/',
+    meta: {
+      hideForAuth: true,
+    },
+  },
+  {
     path: '/login',
     name: 'login',
     component: BaseLogin,
-    meta: { requiresAuth: false },
+    meta: {
+      hideForAuth: true,
+    },
   },
   {
     path: '/pegawai',
-    name: 'Pegawai',
+    name: 'pegawai',
     component: BasePegawai,
     meta: { requiresAuth: true },
   },
   {
     path: '/siswa',
-    name: 'Siswa',
+    name: 'siswa',
     component: BaseSiswa,
     meta: { requiresAuth: true },
   },
   {
     path: '/pembayaran',
-    name: 'Pembayaran',
+    name: 'pembayaran',
     component: BasePembayaran,
     meta: { requiresAuth: true },
-  },
-  {
-    path: '/',
-    redirect: (to) => {
-      return 'login'
-    },
   },
 ]
 
@@ -44,19 +46,29 @@ const router = createRouter({
   routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     // requiresAuth = true ?
-//     console.log(store.getters['auth/authenticated'])
-//     if (!store.getters['auth/authenticated']) {
-//       next({
-//         name: 'login',
-//       })
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.getters['auth/authenticated']) {
+      next({
+        name: 'login',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+  if (to.matched.some((record) => record.meta.hideForAuth)) {
+    if (store.getters['auth/authenticated']) {
+      router.push({
+        name: 'siswa',
+      })
+    } else {
+      router.push({
+        name: 'login',
+      })
+    }
+  }
+  // next()
+})
 export default router

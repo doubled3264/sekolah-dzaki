@@ -1,23 +1,27 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 
-const headerData = ref({})
 const route = useRoute()
 const store = useStore()
+const title = ref('')
 
-const getTitle = computed(() => {
-  return store.getters['sidebar/getActivePage']
-})
-
-onMounted(() => {
-  console.log(getTitle)
+store.subscribe((mutation) => {
+   switch (mutation.type) {
+      case 'sidebar/setActivePage':
+         if (mutation.payload) {
+            title.value = mutation.payload
+         }
+         break
+   }
 })
 </script>
 
 <template>
-  <div class="header">
-    <h3>{{ getTitle.title }}</h3>
-  </div>
+   <div class="header">
+      <div class="header__wrapper">
+         <h4>{{ title }}</h4>
+      </div>
+   </div>
 </template>

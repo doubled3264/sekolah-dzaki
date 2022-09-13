@@ -5,23 +5,24 @@
 @import './components/header.scss';
 @import './components/content.scss';
 @import './components/login.scss';
+@import './components/overlay.scss';
+@import './components/modal.scss';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply font-poppins;
+   @apply font-poppins;
 }
 .app-wrapper {
-  @apply flex;
-  @apply h-screen;
+   @apply relative;
+   @apply h-screen;
 }
 
 svg {
-  @apply overflow-visible;
+   @apply overflow-visible;
 }
 
 .row {
-  @apply flex;
+   @apply flex;
 }
-

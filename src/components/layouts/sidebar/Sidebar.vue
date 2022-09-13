@@ -11,30 +11,30 @@ function signOut() {}
 </script>
 
 <template>
-  <div class="sidebar">
-    <div class="sidebar-logo">logo</div>
-    <p>menu</p>
-    <ul clas="sidebar__list">
-      <SidebarItem
-        v-for="(item, index) in getNavigation"
-        :key="index + 1"
-        :title="item.title"
-        :svgIcon="item.svgIcon"
-        :path="item.path"
-        :isActive="item.isActive"
-      ></SidebarItem>
-      <li class="sidebar__item" @click="signOut">
-        <a href="#" class="sidebar__link">
-          <CustomIcon
-            width="24"
-            height="24"
-            color="#8f9093"
-            strokeWidth="0.3"
-            :svgIcon="logout"
-          />
-          <span>logout</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+   <div class="sidebar">
+      <div class="sidebar-logo">logo</div>
+      <p>menu</p>
+      <ul clas="sidebar__list">
+         <SidebarItem
+            v-for="(item, index) in getNavigation"
+            :key="index + 1"
+            :title="item.title"
+            :svgIcon="item.svgIcon"
+            :path="item.path"
+            :isActive="item.isActive"
+         ></SidebarItem>
+         <li class="sidebar__item" @click="signOut">
+            <a href="#" class="sidebar__link">
+               <CustomIcon
+                  width="24"
+                  height="24"
+                  color="#8f9093"
+                  strokeWidth="0.3"
+                  :svgIcon="logout"
+               />
+               <span>logout</span>
+            </a>
+         </li>
+      </ul>
+   </div>
 </template>

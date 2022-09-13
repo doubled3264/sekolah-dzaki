@@ -1,10 +1,12 @@
 .header {
-  @apply fixed left-72;
-  @apply w-full py-4 pl-6;
-  @apply border-b-2 border-b-gray-400;
+   @apply w-full  pt-6 pb-10;
 
-  h3 {
-    color: #41c3a9;
-    @apply font-semibold text-xl capitalize;
-  }
+   &__wrapper {
+      @apply p-4;
+      @apply rounded-lg bg-verdigris;
+      @apply shadow-md;
+   }
+   h4 {
+      @apply font-semibold text-xl capitalize text-white;
+   }
 }

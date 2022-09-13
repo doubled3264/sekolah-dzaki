@@ -17,7 +17,7 @@ if (mode === 'dev') {
 
 store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
   const app = createApp(App)
-  app.use(store)
   app.use(router)
+  app.use(store)
   app.mount('#app')
 })

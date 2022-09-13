@@ -1,8 +1,9 @@
 .content {
-  // @apply w-full mt-24 ml-72;
-  @apply w-full ml-72;
+   @apply relative;
+   @apply w-full h-screen pl-72;
+   @apply bg-jet-stream;
 
-  .wrapper {
-    @apply px-6;
-  }
+   .wrapper {
+      @apply px-10;
+   }
 }

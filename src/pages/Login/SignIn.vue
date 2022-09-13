@@ -45,20 +45,36 @@ async function submitAction() {
         <CustomIcon :svgIcon="cross" width="20" @click="closeNotif" />
         <p>Gagal. Periksa kembali email dan password anda.</p>
       </div>
-      <h2>silahkan masuk</h2>
+      <h2>Silahkan login terlebih dahulu</h2>
       <form>
         <div class="row">
           <div class="input-field w-full mb-4">
-            <CustomInput type="email" label="email" name="email" v-model:input-value="user.email" />
+            <CustomInput
+              type="email"
+              label="email"
+              name="email"
+              v-model:input-value="user.email"
+            />
           </div>
         </div>
         <div class="row">
           <div class="input-field w-full mb-4">
-            <CustomInput type="password" label="password" name="password" v-model:input-value="user.password" />
+            <CustomInput
+              type="password"
+              label="password"
+              name="password"
+              v-model:input-value="user.password"
+            />
           </div>
         </div>
         <div class="form-nav">
-          <CustomButton title="Masuk" variant="solid" color="primary" block @submit-data="submitAction" />
+          <CustomButton
+            title="Masuk"
+            variant="solid"
+            color="primary"
+            block
+            @submit-data="submitAction"
+          />
           <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
         </div>
       </form>

@@ -38,5 +38,6 @@ export default {
           : (data.isActive = false)
       })
     },
+    setToLogout(state) { },
   },
 }
