@@ -38,3 +38,9 @@
       }
    }
 }
+
+@screen lg {
+   .modal__wrapper {
+      @apply w-6/12;
+   }
+}

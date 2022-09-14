@@ -15,6 +15,21 @@
    // @apply bg-pastel-gray;
 }
 
+@screen lg {
+   .table-data {
+      &__title {
+         @apply text-base;
+      }
+   }
+   .vgt-table thead th {
+      @apply text-xs;
+   }
+
+   table.vgt-table td {
+      @apply text-xs #{!important};
+   }
+}
+
 /* Utility styles
 ************************************************/
 .vgt-right-align {
@@ -193,11 +208,11 @@ table.vgt-table tr.clickable:hover {
    @apply bg-verdigris;
 
    &:first-child {
-      @apply rounded-tl-xl;
+      @apply rounded-tl-md;
    }
 
    &:last-child {
-      @apply rounded-tr-xl;
+      @apply rounded-tr-md;
    }
 }
 .vg .vgt-table thead th.vgt-checkbox-col {

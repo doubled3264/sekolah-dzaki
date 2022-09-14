@@ -1,8 +1,10 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { VueGoodTable } from 'vue-good-table-next'
 import _ from 'lodash'
+import { useForm } from 'vee-validate'
+import * as yup from 'yup'
+import { VueGoodTable } from 'vue-good-table-next'
 
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
@@ -10,24 +12,11 @@ import CustomButton from '../../components/CustomButton.vue'
 import CustomModal from '../../components/CustomModal.vue'
 import CustomOverlay from '../../components/CustomOverlay.vue'
 import CustomInput from '../../components/CustomInput.vue'
+import CustomDatePicker from '../../components/CustomDatePicker.vue'
+import CustomTreeSelect from '../../components/CustomTreeSelect.vue'
 
 const store = useStore()
-const overlayIsActive = ref(false)
-const formToggle = ref([
-   {
-      form: 'siswa',
-      isActive: false,
-   },
-
-   {
-      form: 'orang tua',
-      isActive: false,
-   },
-   {
-      form: 'lainnya',
-      isActive: false,
-   },
-])
+const overlayIsActive = ref(true)
 const siswa = ref({
    nama: '',
    tanggal_lahir: '',
@@ -124,20 +113,35 @@ const tableData = ref({
    ],
 })
 
+const schema = yup.object({
+   nama: yup.string().required().min(3),
+   tanggalLahir: yup.string().required(),
+})
+
+useForm({ validationSchema: schema })
+
+// -------------- function --------------
 function activeModal() {
-   console.log('active modal run')
    overlayIsActive.value = !overlayIsActive.value
+   siswa.value.tanggal_lahir = ''
 }
 
-function activeFormToggle(toActive) {
-   _.forEach(formToggle.value, (item, index) => {
-      item.form === toActive
-         ? (formToggle.value[index].isActive = true)
-         : (formToggle.value[index].isActive = false)
-      console.log(formToggle.value[index].isActive)
-   })
-}
+// -------------- computed --------------
+const getWindowSize = computed(() => {
+   if (store.getters['windowProp/getWidth'] >= 1024) {
+      return 'sm'
+   }
+   return 'lg'
+})
 
+watch(
+   () => siswa.value.tanggal_lahir,
+   (tanggal_lahir) => {
+      console.log(tanggal_lahir)
+   }
+)
+
+// -------------- cyclehook --------------
 onMounted(() => {
    overlayIsActive.value = false
    store.commit('sidebar/setActivePage', 'siswa')
@@ -154,6 +158,7 @@ onMounted(() => {
                   title="tambah data"
                   color="primary"
                   @button-action="activeModal"
+                  :size="getWindowSize"
                />
             </div>
             <vue-good-table
@@ -168,30 +173,28 @@ onMounted(() => {
             <template v-slot:title>
                <h4>tambah data siswa</h4>
             </template>
-            <template v-slot:toggle-form>
-               <div class="card__toggle-form">
-                  <div
-                     v-for="item in formToggle"
-                     :class="[
-                        'toggle-form__item',
-                        { 'toggle-form__item--active': item.isActive },
-                     ]"
-                     @click="activeFormToggle(item.form)"
-                  >
-                     <p>{{ item.form }}</p>
-                     <div></div>
-                  </div>
-               </div>
-            </template>
-            <template v-slot:body v-if="formToggle[0].isActive">
-               <div class="row">
-                  <div class="input-field w-full mb-4">
+            <template v-slot:body>
+               <div class="row mb-4">
+                  <div class="input-field w-full">
                      <CustomInput
                         type="text"
                         label="nama siswa"
                         name="nama"
                         v-model:input-value="siswa.nama"
                      />
+                  </div>
+               </div>
+               <div class="row gap-8 mb-4">
+                  <div class="input-field w-6/12">
+                     <CustomDatePicker
+                        label="tanggal lahir"
+                        placeholder="pilih tanggal"
+                        name="tanggalLahir"
+                        v-model:input-value="siswa.tanggal_lahir"
+                     />
+                  </div>
+                  <div class="input-field w-6/12">
+                     <CustomTreeSelect label="jenis kelamin" />
                   </div>
                </div>
             </template>

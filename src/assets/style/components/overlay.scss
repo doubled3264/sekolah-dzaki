@@ -4,3 +4,9 @@
    background-color: rgba(0, 0, 0, 0.6);
    margin-left: -18rem;
 }
+
+@screen lg {
+   .custom-overlay {
+      margin-left: -14rem;
+   }
+}

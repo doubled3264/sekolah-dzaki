@@ -12,71 +12,55 @@ const store = useStore()
 const emits = defineEmits(['event'])
 const isErrorLogin = ref(false)
 const user = ref({
-   email: '',
-   password: '',
+  email: '',
+  password: '',
 })
-
+// -------------- function --------------
 function closeNotif(payload) {
-   isErrorLogin.value = !isErrorLogin.value
+  isErrorLogin.value = !isErrorLogin.value
 }
+
+async function submitAction() {
+  store.dispatch('auth/signIn', user.value)
+}
+// -------------- computed --------------
 const getErrorNotifStatus = computed(() => {
-   return isErrorLogin.value
-      ? 'login__content-notif--show'
-      : 'login__content-notif--hide'
+  return isErrorLogin.value
+    ? 'login__content-notif--show'
+    : 'login__content-notif--hide'
 })
 
 const schema = yup.object({
-   email: yup.string().required().email(),
-   password: yup.string().required().min(3),
+  email: yup.string().required().email(),
+  password: yup.string().required().min(3),
 })
 useForm({
-   validationSchema: schema,
+  validationSchema: schema,
 })
-
-async function submitAction() {
-   store.dispatch('auth/signIn', user.value)
-}
 </script>
 
 <template>
-   <div class="row flex-col items-center px-8">
-      <div :class="['login__content-notif', getErrorNotifStatus]">
-         <CustomIcon :svgIcon="cross" width="20" @click="closeNotif" />
-         <p>Gagal. Periksa kembali email dan password anda.</p>
+  <div class="row flex-col items-center px-8">
+    <div :class="['login__content-notif', getErrorNotifStatus]">
+      <CustomIcon :svgIcon="cross" width="20" @click="closeNotif" />
+      <p>Gagal. Periksa kembali email dan password anda.</p>
+    </div>
+    <h2>Silahkan login terlebih dahulu</h2>
+    <form>
+      <div class="row">
+        <div class="input-field w-full mb-4">
+          <CustomInput type="email" label="email" name="email" v-model:input-value="user.email" />
+        </div>
       </div>
-      <h2>Silahkan login terlebih dahulu</h2>
-      <form>
-         <div class="row">
-            <div class="input-field w-full mb-4">
-               <CustomInput
-                  type="email"
-                  label="email"
-                  name="email"
-                  v-model:input-value="user.email"
-               />
-            </div>
-         </div>
-         <div class="row">
-            <div class="input-field w-full mb-4">
-               <CustomInput
-                  type="password"
-                  label="password"
-                  name="password"
-                  v-model:input-value="user.password"
-               />
-            </div>
-         </div>
-         <div class="form-nav">
-            <CustomButton
-               title="Masuk"
-               variant="solid"
-               color="primary"
-               size="sm"
-               block
-               @submit-data="submitAction"
-            />
-            <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
-         </div>
-      </form>
-   </div>
+      <div class="row">
+        <div class="input-field w-full mb-4">
+          <CustomInput type="password" label="password" name="password" v-model:input-value="user.password" />
+        </div>
+      </div>
+      <div class="form-nav">
+        <CustomButton title="Masuk" variant="solid" color="primary" size="sm" block @submit-data="submitAction" />
+        <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
+      </div>
+    </form>
+  </div>
 </template>

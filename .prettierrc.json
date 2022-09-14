@@ -2,6 +2,5 @@
    "tabWidth": 3,
    "semi": false,
    "singleQuote": true,
-   "bracketSpace": true,
-   "printWidth": 80
+   "bracketSpace": true
 }

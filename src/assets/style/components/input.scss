@@ -4,6 +4,10 @@
       @apply pb-2;
       @apply capitalize;
       @apply cursor-pointer;
+
+      &--error {
+         @apply text-red-400;
+      }
    }
    &__wrapper {
       input {
