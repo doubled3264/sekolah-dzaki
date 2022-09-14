@@ -46,29 +46,28 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.getters['auth/authenticated']) {
-      next({
-        name: 'login',
-      })
-    } else {
-      next()
-    }
-  } else {
-    next()
-  }
-  if (to.matched.some((record) => record.meta.hideForAuth)) {
-    if (store.getters['auth/authenticated']) {
-      router.push({
-        name: 'siswa',
-      })
-    } else {
-      router.push({
-        name: 'login',
-      })
-    }
-  }
-  // next()
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (!store.getters['auth/authenticated']) {
+//       next({
+//         name: 'login',
+//       })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+//   if (to.matched.some((record) => record.meta.hideForAuth)) {
+//     if (store.getters['auth/authenticated']) {
+//       router.push({
+//         name: 'siswa',
+//       })
+//     } else {
+//       router.push({
+//         name: 'login',
+//       })
+//     }
+//   }
+// })
 export default router

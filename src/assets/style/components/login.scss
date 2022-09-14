@@ -1,5 +1,5 @@
 .login {
-   @apply w-full h-screen pt-36;
+   @apply w-full h-screen pt-20;
    @apply bg-verdigris;
 
    &__content {
@@ -65,16 +65,32 @@
 
 @screen lg {
    .login {
+     @apply pt-10;
       &__content {
-         @apply w-2/4;
+        @apply w-4/12;
+
+        h2{
+@apply text-base;
+        }
       }
    }
 }
 
 @screen xl {
    .login {
+     @apply pt-10;
       &__content {
-         @apply w-2/5;
+         @apply w-3/12;
+
+         h2 {
+           @apply text-base;
+         }
       }
+   }
+
+   .form-nav {
+     p {
+
+     }
    }
 }

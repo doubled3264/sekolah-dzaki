@@ -7,3 +7,9 @@
       @apply px-10;
    }
 }
+
+@screen lg {
+  .content {
+    @apply pl-56;
+  }
+}
