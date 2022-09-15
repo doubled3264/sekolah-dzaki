@@ -1,0 +1,18 @@
+@screen lg {
+   .custom-radio-button {
+      &__label {
+         @apply block;
+         // @apply pb-2;
+         @apply capitalize;
+      }
+
+      &__wrapper {
+         @apply flex items-center gap-4;
+         @apply py-3;
+         label {
+            @apply ml-1;
+            @apply cursor-pointer;
+         }
+      }
+   }
+}
