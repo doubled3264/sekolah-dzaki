@@ -1,8 +1,9 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import _ from 'lodash'
+import _, { forEach } from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
+import Swal from 'sweetalert2'
 
 import { siswaScheme } from '../../utils/validation/siswa.schema'
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
@@ -14,243 +15,226 @@ import CustomInput from '../../components/CustomInput.vue'
 import CustomDatePicker from '../../components/CustomDatePicker.vue'
 import CustomRadioButton from '../../components/CustomRadioButton.vue'
 import CustomTextarea from '../../components/CustomTextarea.vue'
+import CustomIcon from '../../components/CustomIcon.vue'
+import { cross } from '../../utils/svg-var'
 
 const store = useStore()
 const overlayIsActive = ref(true)
 const dataSiswa = ref({
-   nama: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   tanggal_lahir: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   jenis_kelamin: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   nama_orang_tua: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   no_telepon: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   alamat: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   inklusi: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
+  nama: {
+    value: '',
+    isValid: false,
+    errorMessage: '',
+  },
+  tanggal_lahir: {
+    value: '',
+    isValid: false,
+    errorMessage: '',
+  },
+  jenis_kelamin: {
+    value: '1',
+    isValid: true,
+    errorMessage: '',
+  },
+  nama_orang_tua: {
+    value: '',
+    isValid: false,
+    errorMessage: '',
+  },
+  no_telepon: {
+    value: '',
+    isValid: false,
+    errorMessage: '',
+  },
+  alamat: {
+    value: '',
+    isValid: false,
+    errorMessage: '',
+  },
+  inklusi: {
+    value: '1',
+    isValid: true,
+    errorMessage: '',
+  },
 })
-
+let dataSiswaKey = null
+let el = null
 const tableData = ref({
-   columns: [
-      {
-         label: 'No',
-         field: 'nomor',
-         type: 'number',
-         thClass: 'text-left !w-16',
-         tdClass: 'text-left !pl-5',
-      },
-      {
-         label: 'Nama',
-         field: 'nama',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Tanggal Lahir',
-         field: 'tanggal_lahir',
-         type: 'date',
-         dateInputFormat: 'yyyy-MM-dd',
-         dateOutputFormat: 'MMM do yy',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Jenis Kelamin',
-         field: 'jenis_kelamin',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Nama Orang Tua',
-         field: 'nama_orang_tua',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Alamat',
-         field: 'alamat',
-         thClass: 'text-left',
-      },
-   ],
-   rows: [
-      /* { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 }, */
-      /* { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 }, */
-      /* { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 }, */
-      /* { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 }, */
-      /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
-   ],
+  columns: [
+    {
+      label: 'No',
+      field: 'nomor',
+      type: 'number',
+      thClass: 'text-left !w-16',
+      tdClass: 'text-left !pl-5',
+    },
+    {
+      label: 'Nama',
+      field: 'nama',
+      thClass: 'text-left',
+    },
+    {
+      label: 'Tanggal Lahir',
+      field: 'tanggal_lahir',
+      type: 'date',
+      dateInputFormat: 'yyyy-MM-dd',
+      dateOutputFormat: 'MMM do yy',
+      thClass: 'text-left',
+    },
+    {
+      label: 'Jenis Kelamin',
+      field: 'jenis_kelamin',
+      thClass: 'text-left',
+    },
+    {
+      label: 'Nama Orang Tua',
+      field: 'nama_orang_tua',
+      thClass: 'text-left',
+    },
+    {
+      label: 'Alamat',
+      field: 'alamat',
+      thClass: 'text-left',
+    },
+  ],
+  rows: [
+    /* { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 }, */
+    /* { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 }, */
+    /* { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 }, */
+    /* { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 }, */
+    /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
+  ],
 })
 // -------------- function --------------
 function activeModal() {
-   overlayIsActive.value = !overlayIsActive.value
+  overlayIsActive.value = !overlayIsActive.value
+  clearForm()
 }
 
-/* async function submitAction(field) {} */
+function clearForm() {
+  _.forEach(dataSiswaKey, (key) => {
+    if (key != 'jenis_kelamin' && key != 'inklusi') {
+      dataSiswa.value[key].value = ''
+      console.log(key)
+    }
+  })
+}
 async function validateInput(field) {
-   siswaScheme
-      .validateAt(field + '.value', dataSiswa.value)
-      .then((result) => {
-         dataSiswa.value[field].isValid = true
-         console.log(dataSiswa.value[field].value)
-      })
-      .catch((err) => {
-         dataSiswa.value[field].errorMessage = err.message
-         dataSiswa.value[field].isValid = false
-      })
+  siswaScheme
+    .validateAt(field + '.value', dataSiswa.value)
+    .then((result) => {
+      dataSiswa.value[field].isValid = true
+    })
+    .catch((err) => {
+      dataSiswa.value[field].errorMessage = err.message
+      dataSiswa.value[field].isValid = false
+    })
+}
+function validateBeforeSubmit() {
+  _.forEach(dataSiswaKey, (key) => {
+    if (dataSiswa.value[key].isValid) {
+      console.log(dataSiswa.value[key].value)
+    } else {
+      console.log('data tidak valid')
+    }
+  })
+  Swal.fire({
+    html: el.innerHTML,
+    /* icon: 'warning' */
+  })
 }
 // -------------- computed --------------
 const getWindowSize = computed(() => {
-   if (store.getters['windowProp/getWidth'] >= 1024) {
-      return 'sm'
-   }
-   return 'lg'
+  if (store.getters['windowProp/getWidth'] >= 1024) {
+    return 'sm'
+  }
+  return 'lg'
 })
 
 // -------------- cyclehook --------------
 onMounted(() => {
-   overlayIsActive.value = false
-   store.commit('sidebar/setActivePage', 'siswa')
+  store.commit('sidebar/setActivePage', 'siswa')
+  overlayIsActive.value = false
+  dataSiswaKey = _.keys(dataSiswa.value)
+  el = document.getElementById('maman')
 })
 </script>
 <template>
-   <div class="content">
-      <div class="wrapper">
-         <CustomHeader />
-         <div class="table-data">
-            <div class="table-data__title">
-               <h4>data siswa</h4>
-               <CustomButton
-                  title="tambah data"
-                  color="primary"
-                  @button-action="activeModal"
-                  :size="getWindowSize"
-               />
-            </div>
-            <vue-good-table
-               :columns="tableData.columns"
-               :rows="tableData.rows"
-               styleClass="vgt-table striped"
-            />
-         </div>
+  <div id="maman" style="display: none">
+    <CustomIcon :svg-icon="cross" width="100" />
+  </div>
+  <div class="content">
+    <div class="wrapper">
+      <CustomHeader />
+      <div class="table-data">
+        <div class="table-data__title">
+          <h4>data siswa</h4>
+          <CustomButton title="tambah data" color="primary" @button-action="activeModal" :size="getWindowSize" />
+        </div>
+        <vue-good-table :columns="tableData.columns" :rows="tableData.rows" styleClass="vgt-table striped" />
       </div>
-      <CustomOverlay v-show="overlayIsActive" @click="activeModal">
-         <CustomModal>
-            <template v-slot:title>
-               <h4>tambah data siswa</h4>
-            </template>
-            <template v-slot:body>
-               <div class="row mb-4">
-                  <div class="input-field w-full">
-                     <CustomInput
-                        type="text"
-                        label="nama siswa"
-                        :error-state="{
-                           isError: !dataSiswa.nama.isValid,
-                           message: dataSiswa.nama.errorMessage,
-                        }"
-                        v-model:input-value="dataSiswa.nama.value"
-                        @validate-input="validateInput('nama')"
-                     />
-                  </div>
-               </div>
-               <div class="row gap-8 mb-4">
-                  <div class="input-field w-6/12">
-                     <CustomDatePicker
-                        label="tanggal lahir"
-                        placeholder="pilih tanggal"
-                        v-model:input-value="dataSiswa.tanggal_lahir.lahir"
-                     />
-                  </div>
-                  <div class="input-field w-6/12">
-                     <CustomRadioButton
-                        label="jenis kelamin"
-                        :item="['laki-laki', 'perempuan']"
-                        v-model:input-value="dataSiswa.jenis_kelamin.value"
-                        @validate-input="validateInput('jenis_kelamin')"
-                     />
-                  </div>
-               </div>
-               <div class="row mb-4">
-                  <div class="input-field w-full">
-                     <CustomInput
-                        label="nama orang tua"
-                        :error-state="{
-                           isError: !dataSiswa.nama_orang_tua.isValid,
-                           message: dataSiswa.nama_orang_tua.errorMessage,
-                        }"
-                        v-model:input-value="dataSiswa.nama_orang_tua.value"
-                        @validate-input="validateInput('nama_orang_tua')"
-                     />
-                  </div>
-               </div>
-               <div class="row gap-8 mb-4">
-                  <div class="input-field w-1/2">
-                     <CustomInput
-                        label="nomor telepon"
-                        :error-state="{
-                           isError: !dataSiswa.no_telepon.isValid,
-                           message: dataSiswa.no_telepon.errorMessage,
-                        }"
-                        v-model:input-value="dataSiswa.no_telepon.value"
-                        @validate-input="validateInput('no_telepon')"
-                     />
-                  </div>
-                  <div class="input-field w-1/2">
-                     <CustomRadioButton
-                        label="Inklusi"
-                        :item="['ya', 'tidak']"
-                        v-model:input-value="dataSiswa.inklusi.value"
-                        @validate-input="validateInput('inklusi')"
-                     />
-                  </div>
-               </div>
-               <div class="row mb-4">
-                  <div class="input-field w-full">
-                     <CustomTextarea
-                        label="alamat"
-                        :error-state="{
-                           isError: !dataSiswa.alamat.isValid,
-                           message: dataSiswa.alamat.errorMessage,
-                        }"
-                        v-model:input-value="dataSiswa.alamat.value"
-                        @validate-input="validateInput('alamat')"
-                     />
-                  </div>
-               </div>
-            </template>
-            <template v-slot:footer>
-               <CustomButton
-                  title="simpan data"
-                  variant="solid"
-                  color="primary"
-                  size="md"
-                  block
-                  @button-action="submitAction('nama')"
-               />
-            </template>
-         </CustomModal>
-      </CustomOverlay>
-   </div>
-   <Sidebar />
+    </div>
+    <CustomOverlay v-show="overlayIsActive" @click="activeModal">
+      <CustomModal>
+        <template v-slot:title>
+          <h4>tambah data siswa</h4>
+        </template>
+        <template v-slot:body>
+          <div class="row mb-4">
+            <div class="input-field w-full">
+              <CustomInput type="text" label="nama siswa" :error-state="{
+                 isError: !dataSiswa.nama.isValid,
+                 message: dataSiswa.nama.errorMessage,
+              }" v-model:input-value="dataSiswa.nama.value" @validate-input="validateInput('nama')" />
+            </div>
+          </div>
+          <div class="row gap-8 mb-4">
+            <div class="input-field w-6/12">
+              <CustomDatePicker label="tanggal lahir" placeholder="pilih tanggal"
+                v-model:input-value="dataSiswa.tanggal_lahir.value" @validate-input="validateInput('tanggal_lahir')" />
+            </div>
+            <div class="input-field w-6/12">
+              <CustomRadioButton label="jenis kelamin" :item="['laki-laki', 'perempuan']"
+                v-model:input-value="dataSiswa.jenis_kelamin.value" @validate-input="validateInput('jenis_kelamin')" />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="input-field w-full">
+              <CustomInput label="nama orang tua" :error-state="{
+                 isError: !dataSiswa.nama_orang_tua.isValid,
+                 message: dataSiswa.nama_orang_tua.errorMessage,
+              }" v-model:input-value="dataSiswa.nama_orang_tua.value"
+                @validate-input="validateInput('nama_orang_tua')" />
+            </div>
+          </div>
+          <div class="row gap-8 mb-4">
+            <div class="input-field w-1/2">
+              <CustomInput label="nomor telepon" :error-state="{
+                 isError: !dataSiswa.no_telepon.isValid,
+                 message: dataSiswa.no_telepon.errorMessage,
+              }" v-model:input-value="dataSiswa.no_telepon.value"
+                @validate-input="validateInput('no_telepon')" />
+            </div>
+            <div class="input-field w-1/2">
+              <CustomRadioButton label="Inklusi" :item="['tidak', 'ya']" v-model:input-value="dataSiswa.inklusi.value"
+                @validate-input="validateInput('inklusi')" />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="input-field w-full">
+              <CustomTextarea label="alamat" :error-state="{
+                 isError: !dataSiswa.alamat.isValid,
+                 message: dataSiswa.alamat.errorMessage,
+              }" v-model:input-value="dataSiswa.alamat.value" @validate-input="validateInput('alamat')" />
+            </div>
+          </div>
+        </template>
+        <template v-slot:footer>
+          <CustomButton title="simpan data" variant="solid" color="primary" size="md" block
+            @button-action="validateBeforeSubmit" />
+        </template>
+      </CustomModal>
+    </CustomOverlay>
+  </div>
+  <Sidebar />
 </template>
