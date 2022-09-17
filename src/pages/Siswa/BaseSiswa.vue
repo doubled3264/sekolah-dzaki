@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import _, { forEach } from 'lodash'
+import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
 import Swal from 'sweetalert2'
 
@@ -15,7 +15,6 @@ import CustomInput from '../../components/CustomInput.vue'
 import CustomDatePicker from '../../components/CustomDatePicker.vue'
 import CustomRadioButton from '../../components/CustomRadioButton.vue'
 import CustomTextarea from '../../components/CustomTextarea.vue'
-import CustomIcon from '../../components/CustomIcon.vue'
 import { cross } from '../../utils/svg-var'
 
 const store = useStore()
@@ -59,6 +58,10 @@ const dataSiswa = ref({
 })
 let dataSiswaKey = null
 let el = null
+const errorState = ref({
+  status: '',
+  message: ''
+})
 const tableData = ref({
   columns: [
     {
@@ -115,12 +118,13 @@ function clearForm() {
   _.forEach(dataSiswaKey, (key) => {
     if (key != 'jenis_kelamin' && key != 'inklusi') {
       dataSiswa.value[key].value = ''
-      console.log(key)
+      dataSiswa.value[key].isValid = false
+      console.log("clear form run")
     }
   })
 }
 async function validateInput(field) {
-  siswaScheme
+  await siswaScheme
     .validateAt(field + '.value', dataSiswa.value)
     .then((result) => {
       dataSiswa.value[field].isValid = true
@@ -131,18 +135,28 @@ async function validateInput(field) {
     })
 }
 function validateBeforeSubmit() {
+  let validCount = 0
   _.forEach(dataSiswaKey, (key) => {
     if (dataSiswa.value[key].isValid) {
-      console.log(dataSiswa.value[key].value)
-    } else {
-      console.log('data tidak valid')
+      validCount++
+      /* Swal.fire({ */
+      /*   icon: 'warning', */
+      /*   text: "data belum terisi semua." */
+      /* }) */
     }
   })
-  Swal.fire({
-    html: el.innerHTML,
-    /* icon: 'warning' */
-  })
+  /* Swal.fire({ */
+  /*   icon: 'question', */
+  /*   text: "simpan data, anda yakin ?" */
+  /* }) */
+
+  if (validCount == dataSiswaKey.length) {
+    console.log("ready to save")
+  }
+  console.log(validCount)
 }
+
+
 // -------------- computed --------------
 const getWindowSize = computed(() => {
   if (store.getters['windowProp/getWidth'] >= 1024) {
@@ -156,13 +170,10 @@ onMounted(() => {
   store.commit('sidebar/setActivePage', 'siswa')
   overlayIsActive.value = false
   dataSiswaKey = _.keys(dataSiswa.value)
-  el = document.getElementById('maman')
+  el = document.getElementById('custom-alert')
 })
 </script>
 <template>
-  <div id="maman" style="display: none">
-    <CustomIcon :svg-icon="cross" width="100" />
-  </div>
   <div class="content">
     <div class="wrapper">
       <CustomHeader />
@@ -174,13 +185,13 @@ onMounted(() => {
         <vue-good-table :columns="tableData.columns" :rows="tableData.rows" styleClass="vgt-table striped" />
       </div>
     </div>
-    <CustomOverlay v-show="overlayIsActive" @click="activeModal">
+    <CustomOverlay v-if="overlayIsActive" @click="activeModal">
       <CustomModal>
         <template v-slot:title>
           <h4>tambah data siswa</h4>
         </template>
         <template v-slot:body>
-          <div class="row mb-4">
+          <div class="row mb-2">
             <div class="input-field w-full">
               <CustomInput type="text" label="nama siswa" :error-state="{
                  isError: !dataSiswa.nama.isValid,
@@ -188,7 +199,7 @@ onMounted(() => {
               }" v-model:input-value="dataSiswa.nama.value" @validate-input="validateInput('nama')" />
             </div>
           </div>
-          <div class="row gap-8 mb-4">
+          <div class="row gap-8 mb-2">
             <div class="input-field w-6/12">
               <CustomDatePicker label="tanggal lahir" placeholder="pilih tanggal"
                 v-model:input-value="dataSiswa.tanggal_lahir.value" @validate-input="validateInput('tanggal_lahir')" />
@@ -198,7 +209,7 @@ onMounted(() => {
                 v-model:input-value="dataSiswa.jenis_kelamin.value" @validate-input="validateInput('jenis_kelamin')" />
             </div>
           </div>
-          <div class="row mb-4">
+          <div class="row mb-2">
             <div class="input-field w-full">
               <CustomInput label="nama orang tua" :error-state="{
                  isError: !dataSiswa.nama_orang_tua.isValid,
@@ -207,20 +218,19 @@ onMounted(() => {
                 @validate-input="validateInput('nama_orang_tua')" />
             </div>
           </div>
-          <div class="row gap-8 mb-4">
+          <div class="row gap-8 mb-2">
             <div class="input-field w-1/2">
               <CustomInput label="nomor telepon" :error-state="{
                  isError: !dataSiswa.no_telepon.isValid,
                  message: dataSiswa.no_telepon.errorMessage,
-              }" v-model:input-value="dataSiswa.no_telepon.value"
-                @validate-input="validateInput('no_telepon')" />
+              }" v-model:input-value="dataSiswa.no_telepon.value" @validate-input="validateInput('no_telepon')" />
             </div>
             <div class="input-field w-1/2">
               <CustomRadioButton label="Inklusi" :item="['tidak', 'ya']" v-model:input-value="dataSiswa.inklusi.value"
                 @validate-input="validateInput('inklusi')" />
             </div>
           </div>
-          <div class="row mb-4">
+          <div class="row mb-2">
             <div class="input-field w-full">
               <CustomTextarea label="alamat" :error-state="{
                  isError: !dataSiswa.alamat.isValid,

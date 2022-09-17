@@ -3,7 +3,7 @@
       &__label {
          @apply block;
          // @apply pb-2;
-         @apply capitalize;
+         @apply text-xs capitalize;
       }
 
       &__wrapper {

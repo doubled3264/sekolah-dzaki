@@ -3,7 +3,7 @@
       &__label {
          @apply block;
          @apply mb-2;
-         @apply capitalize;
+         @apply text-xs capitalize;
          @apply cursor-pointer;
          &--error {
             @apply text-red-400;

@@ -1,16 +1,17 @@
 <script setup>
-import {  ref  } from 'vue'
+import { ref } from 'vue'
 import gsap from 'gsap'
 import tailwindConfig from '../tailwind-config'
+import { home } from '../utils/svg-var'
 
 const icon = ref(null)
 defineProps({
   svgIcon: {
     type: String,
-    required: true,
+    default: home
   },
   width: {
-    type:  String,
+    type: String,
     default: 24,
   },
   color: {
@@ -28,21 +29,10 @@ defineProps({
 })
 </script>
 <template>
-  <svg
-    :width="width"
-    :height="width"
-    viewBox="0 0 24 24"
-    xml:space="preserve"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg :width="width" :height="width" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0h24v24H0z" fill="none" />
     <g ref="icon">
-      <path
-        :d="svgIcon"
-        :fill="color"
-        :stroke="color"
-        :stroke-width="strokeWidth"
-      />
+      <path :d="svgIcon" :fill="color" :stroke="color" :stroke-width="strokeWidth" />
     </g>
   </svg>
 </template>

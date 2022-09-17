@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import _ from 'lodash'
 
 const props = defineProps({
@@ -19,12 +19,14 @@ const emit = defineEmits(['update:inputValue', 'validateInput'])
 const randomNumber = ref(0)
 const isTouched = ref(false)
 // -------------- function --------------
-function validateInput() {
+function validateInput(event) {
   isTouched.value = true
+  emit('update:inputValue', event.target.value)
   emit('validateInput')
 }
 
 // -------------- cyclehook --------------
+
 onMounted(() => {
   randomNumber.value = _.random(1111, 9999)
 })
@@ -40,11 +42,10 @@ onMounted(() => {
        { 'custom-input__wrapper--error': errorState.isError && isTouched },
     ]">
       <div class="custom-input__start-icon"></div>
-      <input :id="randomNumber" type="text" :placeholder="placeholder" @blur="validateInput"
-        @input="$emit('update:inputValue', $event.target.value)" :value="inputValue" />
+      <input :id="randomNumber" type="text" :placeholder="placeholder" @input="validateInput" :value="inputValue" />
       <div class="custom-input__end-icon"></div>
     </div>
-    <p class="custom-input__helper" v-show="errorState.isError">
+    <p class="custom-input__helper" v-show="errorState.isError && isTouched">
       {{ errorState.message }}
     </p>
   </div>

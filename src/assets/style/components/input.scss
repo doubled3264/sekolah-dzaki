@@ -37,14 +37,14 @@
 @screen lg {
    .custom-input {
       &__label {
-         @apply text-sm;
+         @apply text-xs;
       }
 
       &__wrapper {
          input {
             @apply py-2 px-3;
             &::placeholder {
-               @apply text-sm #{!important};
+               @apply text-sm;
             }
          }
       }
