@@ -1,66 +1,114 @@
 <script setup>
-import { ref, toRef, computed, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { useForm } from 'vee-validate'
-import * as yup from 'yup'
-import { cross } from '../../utils/svg-var'
+import Swal from 'sweetalert2'
+import { loginScheme } from '../../utils/validation/login.schema'
 import CustomInput from '../../components/CustomInput.vue'
 import CustomButton from '../../components/CustomButton.vue'
-import CustomIcon from '../../components/CustomIcon.vue'
+import _ from 'lodash'
 
 const store = useStore()
-const emits = defineEmits(['event'])
-const isErrorLogin = ref(false)
-const user = ref({
-  email: '',
-  password: '',
+const pegawai = ref({
+   email: {
+      value: '',
+      isValid: false,
+      errorMessage: '',
+   },
+   password: {
+      value: '',
+      isValid: false,
+      errorMessage: '',
+   },
 })
+let pegawaiKey = null
 // -------------- function --------------
-function closeNotif(payload) {
-  isErrorLogin.value = !isErrorLogin.value
+function clearForm() {
+   _.forEach(pegawaiKey, (key) => {
+      pegawai.value[key].value = ''
+      pegawai.value[key].isValid = false
+   })
 }
+async function validateInput(field) {
+   await loginScheme
+      .validateAt(field + '.value', pegawai.value)
+      .then((result) => {
+         pegawai.value[field].isValid = true
+      })
+      .catch((err) => {
+         pegawai.value[field].errorMessage = err.message
+         pegawai.value[field].isValid = false
+      })
+}
+function validateBeforeSubmit() {
+   let validCount = 0
+   _.forEach(pegawaiKey, (key) => {
+      if (pegawai.value[key].isValid) {
+         validCount++
+      }
+   })
 
+   if (validCount == pegawaiKey.length) {
+      submitAction()
+   } else {
+      Swal.fire({
+         icon: 'warning',
+         text: 'terdapat form yang belum terisi',
+         confirmButtonText: 'tutup',
+      })
+   }
+}
 async function submitAction() {
-  store.dispatch('auth/signIn', user.value)
+   store.dispatch('auth/signIn', user.value)
 }
-// -------------- computed --------------
-const getErrorNotifStatus = computed(() => {
-  return isErrorLogin.value
-    ? 'login__content-notif--show'
-    : 'login__content-notif--hide'
-})
-
-const schema = yup.object({
-  email: yup.string().required().email(),
-  password: yup.string().required().min(3),
-})
-useForm({
-  validationSchema: schema,
+// -------------- cyclehook --------------
+onMounted(() => {
+   pegawaiKey = _.keys(pegawai.value)
 })
 </script>
 
 <template>
-  <div class="row flex-col items-center px-8">
-    <div :class="['login__content-notif', getErrorNotifStatus]">
-      <CustomIcon :svgIcon="cross" width="20" @click="closeNotif" />
-      <p>Gagal. Periksa kembali email dan password anda.</p>
-    </div>
-    <h2>Silahkan login terlebih dahulu</h2>
-    <form>
-      <div class="row">
-        <div class="input-field w-full mb-4">
-          <CustomInput type="email" label="email" name="email" v-model:input-value="user.email" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field w-full mb-4">
-          <CustomInput type="password" label="password" name="password" v-model:input-value="user.password" />
-        </div>
-      </div>
-      <div class="form-nav">
-        <CustomButton title="Masuk" variant="solid" color="primary" size="sm" block @submit-data="submitAction" />
-        <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
-      </div>
-    </form>
-  </div>
+   <div class="row flex-col items-center px-8">
+      <h2>Silahkan login terlebih dahulu</h2>
+      <form>
+         <div class="row">
+            <div class="input-field w-full mb-4">
+               <CustomInput
+                  type="email"
+                  label="email"
+                  :error-state="{
+                     isError: !pegawai.email.isValid,
+                     message: pegawai.email.errorMessage,
+                  }"
+                  v-model:input-value="pegawai.email.value"
+                  @validate-input="validateInput('email')"
+               />
+            </div>
+         </div>
+         <div class="row">
+            <div class="input-field w-full mb-4">
+               <CustomInput
+                  type="password"
+                  label="password"
+                  :error-state="{
+                     isError: !pegawai.password.value,
+                     message: pegawai.password.errorMessage,
+                  }"
+                  v-model:input-value="pegawai.password.value"
+                  @validate-input="validateInput('password')"
+               />
+            </div>
+         </div>
+         <div class="form-nav">
+            <CustomButton
+               title="Masuk"
+               variant="solid"
+               color="primary"
+               size="sm"
+               block
+               @button-action="validateBeforeSubmit"
+            />
+            <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
+         </div>
+      </form>
+   </div>
 </template>

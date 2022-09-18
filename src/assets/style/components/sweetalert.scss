@@ -1,0 +1,18 @@
+.swal2-popup {
+   @apply rounded-xl #{!important};
+}
+
+.swal2-html-container {
+   @apply font-semibold capitalize #{!important};
+}
+
+.swal2-styled.swal2-confirm {
+   @apply font-semibold capitalize;
+   @apply bg-primary-normal #{!important};
+}
+
+@screen lg {
+   .swal2-popup {
+      @apply w-5/12 #{!important};
+   }
+}
