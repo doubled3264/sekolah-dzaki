@@ -15,16 +15,18 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 //axios
 const mode = 'dev'
 if (mode === 'dev') {
-  axios.defaults.baseURL = 'http://localhost:3000/'
+   axios.defaults.baseURL = 'http://localhost:3000/'
+   axios.defaults.headers.post['Content-Type'] =
+      'application/x-www-form-urlencoded'
 } else if (mode === 'prod') {
-  axios.defaults.baseURL = ''
+   axios.defaults.baseURL = ''
 }
 
 store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
-  const app = createApp(App)
-  app.use(router)
-  app.use(store)
-  app.use(SetupCalendar, {})
-  app.use(VueSweetalert2)
-  app.mount('#app')
+   const app = createApp(App)
+   app.use(router)
+   app.use(store)
+   app.use(SetupCalendar, {})
+   app.use(VueSweetalert2)
+   app.mount('#app')
 })

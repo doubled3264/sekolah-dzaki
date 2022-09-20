@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import Swal from 'sweetalert2'
-import { loginScheme } from '../../utils/validation/login.schema'
+import { loginScheme } from '../../utils/validation/login.scheme'
 import CustomInput from '../../components/CustomInput.vue'
 import CustomButton from '../../components/CustomButton.vue'
 import _ from 'lodash'
@@ -58,7 +58,10 @@ function validateBeforeSubmit() {
    }
 }
 async function submitAction() {
-   store.dispatch('auth/signIn', user.value)
+   store.dispatch('auth/signIn', {
+      email: pegawai.value.email.value,
+      password: pegawai.value.password.value,
+   })
 }
 // -------------- cyclehook --------------
 onMounted(() => {

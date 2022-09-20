@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
 import Swal from 'sweetalert2'
 
-import { siswaScheme } from '../../utils/validation/siswa.schema'
+import { siswaScheme } from '../../utils/validation/siswa.scheme'
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
 import CustomButton from '../../components/CustomButton.vue'
@@ -19,6 +19,7 @@ import { cross } from '../../utils/svg-var'
 
 const store = useStore()
 const overlayIsActive = ref(true)
+let dataSiswaKey = null
 const dataSiswa = ref({
    nama: {
       value: '',
@@ -56,7 +57,6 @@ const dataSiswa = ref({
       errorMessage: '',
    },
 })
-let dataSiswaKey = null
 const tableData = ref({
    columns: [
       {
@@ -164,7 +164,6 @@ onMounted(() => {
    store.commit('sidebar/setActivePage', 'siswa')
    overlayIsActive.value = false
    dataSiswaKey = _.keys(dataSiswa.value)
-   el = document.getElementById('custom-alert')
 })
 </script>
 <template>
