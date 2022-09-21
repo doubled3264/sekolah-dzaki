@@ -2,6 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import _ from 'lodash'
+import { VueGoodTable } from 'vue-good-table-next'
+import Swal from 'sweetalert2'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
 import CustomOverlay from '../../components/CustomOverlay.vue'
 import CustomModal from '../../components/CustomModal.vue'
@@ -27,23 +29,64 @@ const iuran = ref({
    },
    nominal: {
       value: '',
-      isValid: false,
+      isValid: true,
       errorMessage: '',
    },
    interval: {
-      value: '',
-      isValid: false,
+      value: '1',
+      isValid: true,
       errorMessage: '',
    },
 })
 // -------------- function --------------
 
+const tableData = ref({
+   columns: [
+      {
+         label: 'No',
+         field: 'nomor',
+         type: 'number',
+         thClass: 'text-left !w-16',
+         tdClass: 'text-left !pl-5',
+      },
+      {
+         label: 'Nama',
+         field: 'nama',
+         thClass: 'text-left',
+      },
+      {
+         label: 'Nominal',
+         field: 'nominal',
+         thClass: 'text-left',
+      },
+      {
+         label: 'Interval',
+         field: 'interval',
+         thClass: 'text-left',
+      },
+   ],
+   rows: [
+      /* { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 }, */
+      /* { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 }, */
+      /* { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 }, */
+      /* { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 }, */
+      /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
+   ],
+})
 function activeModal() {
    overlayIsActive.value = !overlayIsActive.value
    clearForm()
 }
 
-function clearForm() {}
+function clearForm() {
+   _.forEach(iuranKey, (key) => {
+      if (key != 'interval') {
+         iuran.value[key].value = ''
+         iuran.value[key].isValid = false
+         console.log('clear form run')
+      }
+   })
+}
 
 async function validateInput(field) {
    await iuranScheme
@@ -65,7 +108,7 @@ function validateBeforeSubmit() {
    })
 
    if (validCount == iuranKey.length) {
-      /* submitAction() */
+      submitAction()
    } else {
       Swal.fire({
          icon: 'warning',
@@ -73,6 +116,27 @@ function validateBeforeSubmit() {
          confirmButtonText: 'tutup',
       })
    }
+}
+async function submitAction() {
+   console.log('cubmit action run')
+   const iuranData = {}
+   _.forEach(iuranKey, (key) => {
+      iuranData[key] = iuran.value[key].value
+   })
+   if (iuran.value.interval.value == '0') {
+      iuranData.interval = 'yearly'
+   } else {
+      iuranData.interval = 'monthly'
+   }
+
+   await store.dispatch('iuran/add', iuranData).then(() => {
+      activeModal()
+      Swal.fire({
+         icon: 'success',
+         text: 'data berhasil disimpan',
+         confirmButtonText: 'tutup',
+      })
+   })
 }
 // -------------- computed --------------
 const getWindowSize = computed(() => {
@@ -102,9 +166,14 @@ onMounted(() => {
                   :size="getWindowSize"
                />
             </div>
+            <vue-good-table
+               :columns="tableData.columns"
+               :rows="tableData.rows"
+               styleClass="vgt-table striped"
+            />
          </div>
       </div>
-      <CustomOverlay v-show="overlayIsActive">
+      <CustomOverlay v-show="overlayIsActive" @click="activeModal">
          <CustomModal>
             <template v-slot:title>
                <h4>tambah data iuran</h4>

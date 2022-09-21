@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import _ from 'lodash'
+import _, { functions } from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
 import Swal from 'sweetalert2'
 
@@ -54,6 +54,11 @@ const dataSiswa = ref({
    inklusi: {
       value: '1',
       isValid: true,
+      errorMessage: '',
+   },
+   kelas: {
+      value: '',
+      isValid: false,
       errorMessage: '',
    },
 })
@@ -134,21 +139,34 @@ function validateBeforeSubmit() {
    _.forEach(dataSiswaKey, (key) => {
       if (dataSiswa.value[key].isValid) {
          validCount++
-         /* Swal.fire({ */
-         /*   icon: 'warning', */
-         /*   text: "data belum terisi semua." */
-         /* }) */
       }
    })
-   /* Swal.fire({ */
-   /*   icon: 'question', */
-   /*   text: "simpan data, anda yakin ?" */
-   /* }) */
 
    if (validCount == dataSiswaKey.length) {
-      console.log('ready to save')
+      submitAction()
+   } else {
+      Swal.fire({
+         icon: 'warning',
+         text: 'terdapat form yang belum terisi',
+         confirmButtonText: 'tutup',
+      })
    }
-   console.log(validCount)
+}
+
+async function submitAction() {
+   const siswa = {}
+   _.forEach(dataSiswaKey, (key) => {
+      siswa[key] = dataSiswa.value[key].value
+   })
+
+   await store.dispatch('siswa/add', siswa).then(() => {
+      activeModal()
+      Swal.fire({
+         icon: 'success',
+         text: 'data berhasil disimpan',
+         confirmButtonText: 'tutup',
+      })
+   })
 }
 
 // -------------- computed --------------
@@ -269,6 +287,20 @@ onMounted(() => {
                         }"
                         v-model:input-value="dataSiswa.alamat.value"
                         @validate-input="validateInput('alamat')"
+                     />
+                  </div>
+               </div>
+               <div class="row mb-2">
+                  <div class="input-field w-full">
+                     <CustomInput
+                        type="number"
+                        label="diterima di kelas"
+                        :error-state="{
+                           isError: !dataSiswa.kelas.isValid,
+                           message: dataSiswa.kelas.errorMessage,
+                        }"
+                        v-model:input-value="dataSiswa.kelas.value"
+                        @validate-input="validateInput('kelas')"
                      />
                   </div>
                </div>
