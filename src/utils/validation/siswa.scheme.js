@@ -4,13 +4,19 @@ export const siswaScheme = object({
    nama: object({
       value: string().trim().required('Nama tidak boleh kosong'),
    }),
-   tanggal_lahir: object({
-      value: string().trim().required('tanggal lahir tidak boleh kosong'),
-   }),
    jenis_kelamin: object({
       value: string().trim().required('jenis kelamin tidak boleh kosong'),
    }),
-   nama_orang_tua: object({
+   tempat_lahir: object({
+      value: string().trim().required('tempat lahir tidak boleh kosong'),
+   }),
+   tanggal_lahir: object({
+      value: string().trim().required('tanggal lahir tidak boleh kosong'),
+   }),
+   nama_ayah: object({
+      value: string().trim().required('nama orang tua tidak boleh kosong'),
+   }),
+   nama_ibu: object({
       value: string().trim().required('nama orang tua tidak boleh kosong'),
    }),
    no_telepon: object({
@@ -24,7 +30,7 @@ export const siswaScheme = object({
    }),
    kelas: object({
       value: number('tidak boleh mengandung huruf').required(
-         'nominal tidak boleh kosong'
+         'kelas tidak boleh kosong'
       ),
    }),
 })

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import Swal from 'sweetalert2'
@@ -68,6 +68,10 @@ async function submitAction() {
       router.push({ name: 'siswa' })
     })
 }
+// -------------- computed --------------
+const getWindowWidth = computed(() => {
+  return store.getters['windowProp/getWidth']
+})
 // -------------- cyclehook --------------
 onMounted(() => {
   pegawaiKey = _.keys(pegawai.value)
@@ -98,6 +102,7 @@ onMounted(() => {
         <CustomButton title="Masuk" variant="solid" color="primary" size="sm" block
           @button-action="validateBeforeSubmit" />
         <p>Gagal masuk karena lupa passowrd ? <span>Klik di sini</span></p>
+        <p>{{ getWindowWidth }}</p>
       </div>
     </form>
   </div>

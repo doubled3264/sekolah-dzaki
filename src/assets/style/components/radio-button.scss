@@ -1,4 +1,4 @@
-@screen lg {
+@screen 2xl {
    .custom-radio-button {
       &__label {
          @apply block;
@@ -11,6 +11,7 @@
          @apply py-3;
          label {
             @apply ml-1;
+            @apply text-xs capitalize;
             @apply cursor-pointer;
          }
       }

@@ -23,7 +23,7 @@
    }
 }
 
-@screen lg {
+@screen 2xl {
    .custom-datepicker {
       &__label {
          @apply text-xs;
@@ -31,8 +31,9 @@
       &__wrapper {
          input {
             @apply py-2 px-3;
+            @apply text-sm;
             &::placeholder {
-               @apply text-sm;
+               @apply text-base;
             }
          }
       }
