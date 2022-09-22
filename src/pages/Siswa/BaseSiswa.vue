@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import _, { functions } from 'lodash'
+import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
 import Swal from 'sweetalert2'
 
@@ -15,7 +15,6 @@ import CustomInput from '../../components/CustomInput.vue'
 import CustomDatePicker from '../../components/CustomDatePicker.vue'
 import CustomRadioButton from '../../components/CustomRadioButton.vue'
 import CustomTextarea from '../../components/CustomTextarea.vue'
-import { cross } from '../../utils/svg-var'
 
 const store = useStore()
 const overlayIsActive = ref(true)
@@ -80,6 +79,48 @@ const siswa = ref({
     value: '',
     isValid: false,
     errorMessage: '',
+  },
+})
+const errorState = = ref({
+  nama: {
+    isError: true,
+    message: ''
+  },
+  jenis_kelamin: {
+    isError: false,
+    message: ''
+  },
+  tempat_lahir: {
+    isError: true,
+    message: ''
+  },
+  tanggal_lahir: {
+    isError: true,
+    message: ''
+  },
+  nama_ayah: {
+    isError: true,
+    message: ''
+  },
+  nama_ibu: {
+    isError: true,
+    message: ''
+  },
+  no_telepon: {
+    isError: true,
+    message: ''
+  },
+  alamat: {
+    isError: true,
+    message: ''
+  },
+  inklusi: {
+    isError: false,
+    message: ''
+  },
+  kelas: {
+    isError: true,
+    message: ''
   },
 })
 const tableData = ref({
@@ -147,6 +188,10 @@ function clearForm() {
     }
   })
 }
+
+function setFormSectionActive(sectionName) {
+  formSectionActive.value = sectionName
+}
 async function validateInput(field) {
   await siswaScheme
     .validateAt(field + '.value', siswa.value)
@@ -158,6 +203,7 @@ async function validateInput(field) {
       siswa.value[field].isValid = false
     })
 }
+
 function validateBeforeSubmit() {
   let validCount = 0
   _.forEach(siswaKey, (key) => {
@@ -201,13 +247,6 @@ const getWindowSize = computed(() => {
   return 'lg'
 })
 
-const getformSectionActive = computed(() => {
-  return sectionName => {
-    formSectionActive.value = sectionName
-    return formSectionActive.value;
-  }
-})
-
 // -------------- cyclehook --------------
 onMounted(() => {
   store.commit('sidebar/setActivePage', 'siswa')
@@ -233,109 +272,115 @@ onMounted(() => {
           <h4>tambah data siswa</h4>
         </template>
         <template v-slot:body>
-          <div class="row gap-8 w-full py-2 border-b-2 border-verdigris">
-            <CustomButton title="siswa" variant="solid" color="success" size="xs" />
-            <CustomButton title="orang tua" variant="outline" color="success" size="xs" />
+          <div class="card__form-section">
+            <h4 :class="[
+               'card__form-section__item',
+               {
+                  'card__form-section__item--active':
+                     formSectionActive == 'siswa',
+               },
+            ]" @click="setFormSectionActive('siswa')">
+              siswa
+            </h4>
+            <h4 :class="[
+               'card__form-section__item',
+               {
+                  'card__form-section__item--active':
+                     formSectionActive == 'orang tua',
+               },
+            ]" @click="setFormSectionActive('orang tua')">
+              orang tua
+            </h4>
           </div>
-          <div v-show="getformSectionActive(siswa) === 'siswa'">
+          <div v-show="formSectionActive == 'siswa'">
             <div class="row gap-4 mb-2">
               <div class="input-field w-4/12">
-                <CustomInput type="text" label="NISN 'optional'" v-model:input-value="siswa.nisn.value" />
+                <CustomInput type="text" label="NISN" v-model:input-value="siswa.nisn.value" />
               </div>
               <div class="input-field w-4/12">
-                <CustomInput type="text" label="NIK 'optional'" v-model:input-value="siswa.nik.value" />
+                <CustomInput type="text" label="NIK" v-model:input-value="siswa.nik.value" />
               </div>
               <div class="input-field w-4/12">
-                <CustomInput type="text" label="nomor KK 'optional'" v-model:input-value="siswa.no_kk.value" />
+                <CustomInput type="text" label="nomor KK" v-model:input-value="siswa.no_kk.value" />
               </div>
             </div>
-            <div class="row gap-4 mb-2">
+            <div class="row gap-4 mb-4">
               <div class="input-field w-full">
-                <CustomInput type="text" label="nama siswa" :error-state="{
+                <CustomInput type="text" label="nama siswa *" :error-state="{
                    isError: !siswa.nama.isValid,
                    message: siswa.nama.errorMessage,
                 }" v-model:input-value="siswa.nama.value" @validate-input="validateInput('nama')" />
               </div>
             </div>
-            <div class="row gap-4 mb-2">
+            <div class="row gap-4 mb-4">
               <div class="input-field w-4/12">
-                <CustomRadioButton label="jenis kelamin" :item="['laki-laki', 'perempuan']"
+                <CustomRadioButton label="jenis kelamin *" :item="['laki-laki', 'perempuan']"
                   v-model:input-value="siswa.jenis_kelamin.value" @validate-input="validateInput('jenis_kelamin')" />
               </div>
               <div class="input-field w-4/12">
-                <CustomInput type="text" label="tempat lahir" :error-state="{
+                <CustomInput type="text" label="tempat lahir *" :error-state="{
                    isError: !siswa.tempat_lahir.isValid,
                    message: siswa.tempat_lahir.errorMessage,
                 }" v-model:input-value="siswa.tempat_lahir.value" @validate-input="validateInput('tempat_lahir')" />
               </div>
               <div class="input-field w-4/12">
-                <CustomDatePicker label="tanggal lahir" placeholder="pilih tanggal"
+                <CustomDatePicker label="tanggal lahir *" placeholder="pilih tanggal"
                   v-model:input-value="siswa.tanggal_lahir.value" @validate-input="validateInput('tanggal_lahir')" />
               </div>
             </div>
-            <div class="row gap-2 mb-2">
-
+            <div class="row gap-2 mb-4">
               <div class="input-field w-1/2">
-                <CustomInput type="number" label="diterima di kelas" :error-state="{
+                <CustomInput type="number" label="diterima di kelas *" :error-state="{
                    isError: !siswa.kelas.isValid,
                    message: siswa.kelas.errorMessage,
                 }" v-model:input-value="siswa.kelas.value" @validate-input="validateInput('kelas')" />
               </div>
               <div class="input-field w-1/2">
-                <CustomRadioButton label="Inklusi" :item="['tidak', 'ya']" v-model:input-value="siswa.inklusi.value"
+                <CustomRadioButton label="Inklusi *" :item="['tidak', 'ya']" v-model:input-value="siswa.inklusi.value"
                   @validate-input="validateInput('inklusi')" />
               </div>
             </div>
           </div>
 
-          <div class="row">
-
-          </div>
-          <div class="row mb-2">
-            <div class="w-1/2">
-              <div class="row gap-2 mb-2">
+          <div v-show="formSectionActive == 'orang tua'">
+            <div class="row gap-4 mb-2">
+              <div class="input-field w-6/12">
+                <CustomInput label="nama ayah" :error-state="{
+                   isError: !siswa.nama_ayah.isValid,
+                   message: siswa.nama_ayah.errorMessage,
+                }" v-model:input-value="siswa.nama_ayah.value" @validate-input="validateInput('nama_ayah')" />
+              </div>
+              <div class="input-field w-6/12">
+                <CustomInput label="nama ibu" :error-state="{
+                   isError: !siswa.nama_ayah.isValid,
+                   message: siswa.nama_ayah.errorMessage,
+                }" v-model:input-value="siswa.nama_ayah.value" @validate-input="validateInput('nama_ayah')" />
               </div>
             </div>
-            <div class="w-1/2">
-
+            <div class="row gap-8 mb-2">
+              <div class="input-field w-1/2">
+                <CustomInput label="nomor telepon" :error-state="{
+                   isError: !siswa.no_telepon.isValid,
+                   message: siswa.no_telepon.errorMessage,
+                }" v-model:input-value="siswa.no_telepon.value" @validate-input="validateInput('no_telepon')" />
+              </div>
             </div>
-          </div>
-          <div class="row gap-4 mb-2">
-            <div class="input-field w-6/12">
-              <CustomInput label="nama ayah" :error-state="{
-                 isError: !siswa.nama_ayah.isValid,
-                 message: siswa.nama_ayah.errorMessage,
-              }" v-model:input-value="siswa.nama_ayah.value" @validate-input="validateInput('nama_ayah')" />
+            <div class="row mb-2">
+              <div class="input-field w-full">
+                <CustomTextarea label="alamat" :error-state="{
+                   isError: !siswa.alamat.isValid,
+                   message: siswa.alamat.errorMessage,
+                }" v-model:input-value="siswa.alamat.value" @validate-input="validateInput('alamat')" />
+              </div>
             </div>
-            <div class="input-field w-6/12">
-              <CustomInput label="nama ibu" :error-state="{
-                 isError: !siswa.nama_ayah.isValid,
-                 message: siswa.nama_ayah.errorMessage,
-              }" v-model:input-value="siswa.nama_ayah.value" @validate-input="validateInput('nama_ayah')" />
-            </div>
-          </div>
-          <div class="row gap-8 mb-2">
-            <div class="input-field w-1/2">
-              <CustomInput label="nomor telepon" :error-state="{
-                 isError: !siswa.no_telepon.isValid,
-                 message: siswa.no_telepon.errorMessage,
-              }" v-model:input-value="siswa.no_telepon.value" @validate-input="validateInput('no_telepon')" />
-            </div>
-          </div>
-          <div class="row mb-2">
-            <div class="input-field w-full">
-              <CustomTextarea label="alamat" :error-state="{
-                 isError: !siswa.alamat.isValid,
-                 message: siswa.alamat.errorMessage,
-              }" v-model:input-value="siswa.alamat.value" @validate-input="validateInput('alamat')" />
-            </div>
-          </div>
-          <div class="row mb-2">
           </div>
         </template>
         <template v-slot:footer>
-          <CustomButton title="simpan data" variant="solid" color="primary" size="md" block
-            @button-action="validateBeforeSubmit" />
+          <p class="text-sm font-semibold text-gray-400">* wajib diisi</p>
+          <div class="mt-6">
+            <CustomButton title="simpan data" variant="solid" color="primary" size="md" block
+              @button-action="validateBeforeSubmit" />
+          </div>
         </template>
       </CustomModal>
     </CustomOverlay>

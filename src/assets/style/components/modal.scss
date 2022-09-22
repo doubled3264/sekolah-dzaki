@@ -20,28 +20,39 @@
       &__footer {
          @apply mt-4;
       }
-   }
-
-   .card__toggle-form {
-      @apply flex justify-around items-center;
-      @apply mb-6 px-16;
-      @apply cursor-pointer;
-   }
-
-   .toggle-form__item {
-      p {
-         @apply text-base font-medium capitalize;
-      }
-
-      &--active {
-         p {
-            @apply text-lg font-semibold text-verdigris;
-         }
-         div {
-            @apply h-1 bg-verdigris rounded-full;
+      &__form-section {
+         @apply flex justify-center gap-4;
+         @apply w-full pb-4;
+         &__item {
+            @apply text-lg font-semibold capitalize text-gray-500;
+            @apply cursor-pointer;
+            &--active {
+               @apply font-bold text-verdigris;
+            }
          }
       }
    }
+
+   // .card__toggle-form {
+   //    @apply flex justify-around items-center;
+   //    @apply mb-6 px-16;
+   //    @apply cursor-pointer;
+   // }
+
+   // .toggle-form__item {
+   //    p {
+   //       @apply text-base font-medium capitalize;
+   //    }
+
+   //    &--active {
+   //       p {
+   //          @apply text-lg font-semibold text-verdigris;
+   //       }
+   //       div {
+   //          @apply h-1 bg-verdigris rounded-full;
+   //       }
+   //    }
+   // }
 }
 
 // @screen lg {
