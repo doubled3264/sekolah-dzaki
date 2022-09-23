@@ -12,7 +12,7 @@ export const siswaScheme = object({
    inklusi: string().trim().required('status inklusi tidak boleh kosong'),
    kelas: number()
       .required('kelas tidak boleh kosong')
-      .typeError('Kelas harus berupa angka')
+      .typeError('kelas tidak valid')
       .min(1, 'kelas tidak valid')
       .max(9, 'kelas tidak valid'),
 })

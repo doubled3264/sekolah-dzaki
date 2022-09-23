@@ -14,28 +14,36 @@ import CustomInput from '../../components/CustomInput.vue'
 import CustomRadioButton from '../../components/CustomRadioButton.vue'
 
 const store = useStore()
-const overlayIsActive = ref(true)
+/** @type {boolean}  */
+const overlayIsActive = ref(false)
+/** @type {Array?} iuran object key */
 let iuranKey = null
+/** @type {Array} optional form key */
+const optionalFormKey = ['keterangan']
+/** @type {Object}  */
 const iuran = ref({
+   nama: '',
+   keterangan: '',
+   nominal: '',
+   interval: '0',
+   inklusi: '0',
+})
+const errorState = ref({
    nama: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
-   },
-   keterangan: {
-      value: '',
-      isValid: false,
-      errorMessage: '',
+      isError: true,
+      message: '',
    },
    nominal: {
-      value: '',
-      isValid: true,
-      errorMessage: '',
+      isError: true,
+      message: '',
    },
    interval: {
-      value: '1',
-      isValid: true,
-      errorMessage: '',
+      isError: false,
+      message: '',
+   },
+   inklusi: {
+      isError: false,
+      message: '',
    },
 })
 // -------------- function --------------
@@ -73,40 +81,61 @@ const tableData = ref({
       /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
    ],
 })
-function activeModal() {
-   overlayIsActive.value = !overlayIsActive.value
-   clearForm()
+
+/**
+ * toggle overlay and modal
+ * @param {boolean}
+ */
+function activeModal(active) {
+   if (active) {
+      overlayIsActive.value = true
+   } else if (!active) {
+      overlayIsActive.value = false
+      clearForm()
+   }
 }
 
+/**
+ * clear all input form
+ */
 function clearForm() {
    _.forEach(iuranKey, (key) => {
-      if (key != 'interval') {
-         iuran.value[key].value = ''
-         iuran.value[key].isValid = false
-         console.log('clear form run')
+      if (key != 'interval' && key != 'inklusi') {
+         iuran.value[key] = ''
+         // if input !=  optionalForm, clear their input
+         if (_.findIndex(optionalFormKey, (data) => data == key) === -1) {
+            errrState.value[key].isError = true
+         }
       }
    })
 }
 
+/**
+ * validate input when some event triggered
+ * @param {string} siswa object key
+ */
 async function validateInput(field) {
    await iuranScheme
-      .validateAt(field + '.value', iuran.value)
-      .then((result) => {
-         iuran.value[field].isValid = true
+      .validateAt(field, iuran.value)
+      .then(() => {
+         errorState.value[field].isError = false
       })
       .catch((err) => {
-         iuran.value[field].errorMessage = err.message
-         iuran.value[field].isValid = false
+         errorState.value[field].isError = true
+         errorState.value[field].message = err.message
       })
 }
-function validateBeforeSubmit() {
+/**
+ * validate each input before submit
+ */
+function validateForm() {
    let validCount = 0
    _.forEach(iuranKey, (key) => {
-      if (iuran.value[key].isValid) {
+      if (!errorState.value[key].isError) {
          validCount++
       }
    })
-
+   console.log(validCount)
    if (validCount == iuranKey.length) {
       submitAction()
    } else {
@@ -117,19 +146,13 @@ function validateBeforeSubmit() {
       })
    }
 }
-async function submitAction() {
-   console.log('cubmit action run')
-   const iuranData = {}
-   _.forEach(iuranKey, (key) => {
-      iuranData[key] = iuran.value[key].value
-   })
-   if (iuran.value.interval.value == '0') {
-      iuranData.interval = 'yearly'
-   } else {
-      iuranData.interval = 'monthly'
-   }
 
-   await store.dispatch('iuran/add', iuranData).then(() => {
+/**
+ * process data for save action
+ * @success {promise} show success dialog
+ */
+async function submitAction() {
+   await store.dispatch('iuran/add', iuran.value).then(() => {
       activeModal()
       Swal.fire({
          icon: 'success',
@@ -138,7 +161,11 @@ async function submitAction() {
       })
    })
 }
-// -------------- computed --------------
+
+/**
+ * get width of window size from store
+ * @param {}
+ */
 const getWindowSize = computed(() => {
    if (store.getters['windowProp/getWidth'] >= 1024) {
       return 'sm'
@@ -148,7 +175,7 @@ const getWindowSize = computed(() => {
 // -------------- cyclehook --------------
 onMounted(() => {
    store.commit('sidebar/setActivePage', 'iuran')
-   overlayIsActive.value = false
+   // generate iura object key
    iuranKey = _.keys(iuran.value)
 })
 </script>
@@ -162,7 +189,7 @@ onMounted(() => {
                <CustomButton
                   title="tambah data"
                   color="primary"
-                  @button-action="activeModal"
+                  @button-action="activeModal(true)"
                   :size="getWindowSize"
                />
             </div>
@@ -173,7 +200,7 @@ onMounted(() => {
             />
          </div>
       </div>
-      <CustomOverlay v-show="overlayIsActive" @click="activeModal">
+      <CustomOverlay v-if="overlayIsActive" @click="activeModal(false)">
          <CustomModal>
             <template v-slot:title>
                <h4>tambah data iuran</h4>
@@ -183,62 +210,65 @@ onMounted(() => {
                   <div class="input-field w-full">
                      <CustomInput
                         type="text"
-                        label="nama iuran"
+                        label="nama iuran *"
                         placeholder="masukan nama iuran"
-                        :error-state="{
-                           isError: !iuran.nama.isValid,
-                           message: iuran.nama.errorMessage,
-                        }"
-                        v-model:input-value="iuran.nama.value"
+                        :error-state="errorState.nama"
+                        v-model:input-value="iuran.nama"
                         @validate-input="validateInput('nama')"
                      />
                   </div>
                </div>
-               <div class="row mb-2">
-                  <div class="input-field w-full">
+               <div class="row gap-4 mb-2">
+                  <div class="input-field w-1/2">
                      <CustomInput
                         type="text"
-                        label="keterangan 'optional'"
+                        label="keterangan"
                         placeholder="masukan keterangan"
-                        v-model:input-value="iuran.keterangan.value"
+                        :error-state="errorState.keterangan"
+                        v-model:input-value="iuran.keterangan"
                         @validate-input="validateInput('keterangan')"
+                     />
+                  </div>
+                  <div class="input-field w-1/2">
+                     <CustomInput
+                        type="number"
+                        label="nominal *"
+                        placeholder="masukan nominal"
+                        :error-state="errorState.nominal"
+                        v-model:input-value="iuran.nominal"
+                        @validate-input="validateInput('nominal')"
                      />
                   </div>
                </div>
                <div class="row gap-8 mb-2">
-                  <div class="input-field w-6/12">
-                     <CustomInput
-                        type="number"
-                        label="nominal"
-                        placeholder="masukan nominal"
-                        :error-state="{
-                           isError: !iuran.nominal.isValid,
-                           message: iuran.nominal.errorMessage,
-                        }"
-                        v-model:input-value="iuran.nominal.value"
-                        @validate-input="validateInput('nominal')"
+                  <div class="input-field w-4/12">
+                     <CustomRadioButton
+                        label="Interval *"
+                        :items="['bulanan', 'tahunan', 'hanya sekali']"
+                        v-model:input-value="iuran.interval"
                      />
                   </div>
-
-                  <div class="input-field w-6/12">
+                  <div class="input-field w-4/12">
                      <CustomRadioButton
-                        label="Interval"
-                        :item="['monthly', 'yearly']"
-                        v-model:input-value="iuran.interval.value"
-                        @validate-input="validateInput('interval')"
+                        label="iuran inklusi ? *"
+                        :items="['tidak', 'ya']"
+                        v-model:input-value="iuran.inklusi"
                      />
                   </div>
                </div>
             </template>
             <template v-slot:footer>
-               <CustomButton
-                  title="simpan data"
-                  variant="solid"
-                  color="primary"
-                  size="md"
-                  block
-                  @button-action="validateBeforeSubmit"
-               />
+               <p class="text-sm font-semibold text-gray-400">* wajib diisi</p>
+               <div class="mt-6">
+                  <CustomButton
+                     title="simpan data"
+                     variant="solid"
+                     color="primary"
+                     size="md"
+                     block
+                     @button-action="validateForm"
+                  />
+               </div>
             </template>
          </CustomModal>
       </CustomOverlay>

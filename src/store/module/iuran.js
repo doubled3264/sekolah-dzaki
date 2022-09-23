@@ -6,13 +6,16 @@ export default {
    getters: {},
    mutations: {},
    actions: {
+      /**
+       * save iuran data
+       * @param {object} iuran data
+       */
       async add({}, credentials) {
          return new Promise((resolve, reject) => {
-            console.log(credentials)
             axios
                .post('iuran', credentials)
                .then((response) => {
-                  console.log(response)
+                  console.log(response.data)
                   resolve()
                })
                .catch((err) => {

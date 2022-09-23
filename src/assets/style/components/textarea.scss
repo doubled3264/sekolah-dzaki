@@ -22,6 +22,10 @@
          &--error {
             textarea {
                @apply border-red-500;
+
+               &:focus {
+                  @apply ring-red-500;
+               }
             }
          }
       }

@@ -5,7 +5,7 @@ import _ from 'lodash'
 const props = defineProps({
    inputValue: { type: String, required: true },
    label: { type: String, required: true },
-   item: { type: Array, required: true },
+   items: { type: Array, required: true },
 })
 const emit = defineEmits(['update:inputValue', 'validateInput'])
 const randomNumber = ref({
@@ -13,6 +13,7 @@ const randomNumber = ref({
    labelItem2: '',
    group: '',
 })
+const newRandomNumber = ref({})
 // -------------- function --------------
 function inputEvent(event) {
    emit('update:inputValue', event.target.value)
@@ -21,7 +22,7 @@ function inputEvent(event) {
 // -------------- computed --------------
 const getRadioLabel = computed(() => {
    return (index) => {
-      return props.item[index]
+      return props.items[index]
    }
 })
 // -------------- cyclehook --------------
@@ -29,6 +30,9 @@ onMounted(() => {
    randomNumber.value.labelItem1 = _.random(1111, 9999)
    randomNumber.value.labelItem2 = _.random(1111, 9999)
    randomNumber.value.group = _.random(1111, 9999)
+   _.forEach(props.items, (item, index) => {
+      console.log(item + ' ' + index)
+   })
 })
 </script>
 

@@ -32,10 +32,12 @@ export default {
             axios
                .post('auth/login/pegawai', credentials)
                .then((response) => {
+                  console.log(response.data)
                   resolve(dispatch('attempt', response.data.token))
                })
                .catch((error) => {
-                  console.log(error.data)
+                  console.log(error)
+                  reject(error.data)
                })
          })
       },

@@ -6,17 +6,19 @@ export default {
    getters: {},
    mutations: {},
    actions: {
+      /**
+       * save siswa data
+       * @param {object} siswa data
+       */
       async add({}, credentials) {
          return new Promise((resolve, reject) => {
             axios
                .post('siswa', credentials)
                .then((response) => {
-                  console.log(response)
-                  resolve()
+                  resolve(response.data)
                })
                .catch((err) => {
-                  console.log(err)
-                  reject()
+                  reject(err.data)
                })
          })
       },
