@@ -152,7 +152,7 @@ function setFormSectionActive(sectionName) {
 async function validateInput(field) {
   await siswaScheme
     .validateAt(field, siswa.value)
-    .then((result) => {
+    .then(() => {
       errorState.value[field].isError = false
     })
     .catch((err) => {
