@@ -1,8 +1,9 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
+import VueMultiselect from 'vue-multiselect'
 import Swal from 'sweetalert2'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
 import CustomOverlay from '../../components/CustomOverlay.vue'
@@ -16,18 +17,22 @@ import CustomRadioButton from '../../components/CustomRadioButton.vue'
 const store = useStore()
 /** @type {boolean}  */
 const overlayIsActive = ref(false)
+/** @type {Array} iuran item from DB  */
+const iuranItem = reactive([])
 /** @type {Array?} iuran object key */
 let iuranKey = null
 /** @type {Array} optional form key */
-const optionalFormKey = ['keterangan']
+const optionalFormKey = ['keterangan', 'interval_detail']
 /** @type {Object}  */
 const iuran = ref({
    nama: '',
    keterangan: '',
    nominal: '',
    interval: '0',
+   interval_detail: '',
    inklusi: '0',
 })
+/** @type {Object}  */
 const errorState = ref({
    nama: {
       isError: true,
@@ -46,40 +51,17 @@ const errorState = ref({
       message: '',
    },
 })
+/** @type {Object}  */
+const state = reactive({
+   multiSelect: {
+      options: ['hanya sekali', 'kelas 6'],
+   },
+})
 // -------------- function --------------
 
 const tableData = ref({
-   columns: [
-      {
-         label: 'No',
-         field: 'nomor',
-         type: 'number',
-         thClass: 'text-left !w-16',
-         tdClass: 'text-left !pl-5',
-      },
-      {
-         label: 'Nama',
-         field: 'nama',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Nominal',
-         field: 'nominal',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Interval',
-         field: 'interval',
-         thClass: 'text-left',
-      },
-   ],
-   rows: [
-      /* { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 }, */
-      /* { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 }, */
-      /* { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 }, */
-      /* { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 }, */
-      /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
-   ],
+   columns: [],
+   rows: [],
 })
 
 /**
@@ -104,10 +86,16 @@ function clearForm() {
          iuran.value[key] = ''
          // if input !=  optionalForm, clear their input
          if (_.findIndex(optionalFormKey, (data) => data == key) === -1) {
-            errrState.value[key].isError = true
+            errorState.value[key].isError = true
          }
+      } else {
+         iuran.value[key] = '0'
       }
    })
+}
+
+function rowStyleClassFn(row) {
+   return row.inklusi == '1' ? 'bg-red-200 selected' : ''
 }
 
 /**
@@ -131,12 +119,13 @@ async function validateInput(field) {
 function validateForm() {
    let validCount = 0
    _.forEach(iuranKey, (key) => {
-      if (!errorState.value[key].isError) {
-         validCount++
+      if (_.findIndex(optionalFormKey, (data) => data == key) === -1) {
+         if (!errorState.value[key].isError) {
+            validCount++
+         }
       }
    })
-   console.log(validCount)
-   if (validCount == iuranKey.length) {
+   if (validCount == iuranKey.length - optionalFormKey.length) {
       submitAction()
    } else {
       Swal.fire({
@@ -172,9 +161,24 @@ const getWindowSize = computed(() => {
    }
    return 'lg'
 })
+
+watch(
+   () => iuran.value.interval,
+   (value) => {
+      if (value === '2') {
+         iuran.value.interval_detail = state.multiSelect.options[0]
+      } else if (value !== '2') {
+         iuran.value.interval_detail = ''
+      }
+   }
+)
 // -------------- cyclehook --------------
-onMounted(() => {
+onMounted(async () => {
    store.commit('sidebar/setActivePage', 'iuran')
+   await store.dispatch('iuran/getAll')
+   tableData.value.columns = store.getters['vueTable/getColumn']('iuran')
+   tableData.value.rows = store.getters['iuran/getIuran']
+   console.log(tableData.value.rows)
    // generate iura object key
    iuranKey = _.keys(iuran.value)
 })
@@ -194,9 +198,13 @@ onMounted(() => {
                />
             </div>
             <vue-good-table
+               v-if="
+                  !tableData.columns.length == 0 && !tableData.rows.length == 0
+               "
                :columns="tableData.columns"
                :rows="tableData.rows"
                styleClass="vgt-table striped"
+               :row-style-class="rowStyleClassFn"
             />
          </div>
       </div>
@@ -226,7 +234,6 @@ onMounted(() => {
                         placeholder="masukan keterangan"
                         :error-state="errorState.keterangan"
                         v-model:input-value="iuran.keterangan"
-                        @validate-input="validateInput('keterangan')"
                      />
                   </div>
                   <div class="input-field w-1/2">
@@ -240,11 +247,11 @@ onMounted(() => {
                      />
                   </div>
                </div>
-               <div class="row gap-8 mb-2">
-                  <div class="input-field w-4/12">
+               <div class="row gap-4 mb-2">
+                  <div class="input-field w-6/12">
                      <CustomRadioButton
                         label="Interval *"
-                        :items="['bulanan', 'tahunan', 'hanya sekali']"
+                        :items="['bulanan', 'tahunan', 'lain-lain']"
                         v-model:input-value="iuran.interval"
                      />
                   </div>
@@ -254,6 +261,16 @@ onMounted(() => {
                         :items="['tidak', 'ya']"
                         v-model:input-value="iuran.inklusi"
                      />
+                  </div>
+               </div>
+               <div v-if="iuran.interval == '2'" class="row gap-8 mb-2">
+                  <div class="input-field w-6/12">
+                     <VueMultiselect
+                        v-model="iuran.interval_detail"
+                        :options="state.multiSelect.options"
+                        placeholder="pilih salah satu"
+                     >
+                     </VueMultiselect>
                   </div>
                </div>
             </template>

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import _ from 'lodash'
 
 const props = defineProps({
@@ -7,61 +7,48 @@ const props = defineProps({
    label: { type: String, required: true },
    items: { type: Array, required: true },
 })
-const emit = defineEmits(['update:inputValue', 'validateInput'])
-const randomNumber = ref({
-   labelItem1: '',
-   labelItem2: '',
-   group: '',
+/** @type {Array} radioItems  */
+const state = reactive({
+   radioItems: [],
 })
-const newRandomNumber = ref({})
+const emit = defineEmits(['update:inputValue', 'validateInput'])
 // -------------- function --------------
 function inputEvent(event) {
    emit('update:inputValue', event.target.value)
    emit('validateInput')
 }
-// -------------- computed --------------
-const getRadioLabel = computed(() => {
-   return (index) => {
-      return props.items[index]
-   }
-})
 // -------------- cyclehook --------------
 onMounted(() => {
-   randomNumber.value.labelItem1 = _.random(1111, 9999)
-   randomNumber.value.labelItem2 = _.random(1111, 9999)
-   randomNumber.value.group = _.random(1111, 9999)
-   _.forEach(props.items, (item, index) => {
-      console.log(item + ' ' + index)
+   const groupId = _.random(1111, 9999)
+   _.forEach(props.items, (item) => {
+      state.radioItems.push({
+         radioId: _.random(1111, 9999),
+         radioLabel: item,
+         groupId: groupId,
+      })
    })
 })
 </script>
 
 <template>
    <div class="custom-radio-button">
-      <label :for="randomNumber" class="custom-radio-button__label">
+      <label class="custom-radio-button__label">
          {{ label }}
       </label>
       <div class="custom-radio-button__wrapper">
-         <div class="custom-radio-button__item">
+         <div
+            v-for="(item, index) in state.radioItems"
+            class="custom-radio-button__item"
+         >
             <input
-               :id="randomNumber.labelItem1"
                type="radio"
-               :name="randomNumber.group"
-               value="1"
+               :id="item.radioId"
+               :name="item.groupId"
+               :value="index"
                @change="inputEvent"
-               checked
+               :checked="index == 0"
             />
-            <label :for="randomNumber.labelItem1">{{ getRadioLabel(0) }}</label>
-         </div>
-         <div class="custom-radio-button__item">
-            <input
-               :id="randomNumber.labelItem2"
-               type="radio"
-               :name="randomNumber.group"
-               @change="inputEvent"
-               value="0"
-            />
-            <label :for="randomNumber.labelItem2">{{ getRadioLabel(1) }}</label>
+            <label :for="item.radioId">{{ item.radioLabel }}</label>
          </div>
       </div>
    </div>

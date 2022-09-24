@@ -1,0 +1,20 @@
+@screen 2xl {
+   .multiselect {
+      &__tags {
+         @apply py-2 pl-3;
+         @apply rounded-lg border-gray-400;
+      }
+      &__placeholder {
+         @apply mb-0 pt-0;
+         @apply text-sm;
+      }
+      &__input {
+         @apply mb-0 pl-0;
+         @apply text-sm;
+      }
+      // selected
+      &__single {
+         @apply mb-0 pl-0;
+      }
+   }
+}

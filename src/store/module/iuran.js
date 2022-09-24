@@ -2,9 +2,19 @@ import axios from 'axios'
 
 export default {
    namespaced: true,
-   state: {},
-   getters: {},
-   mutations: {},
+   state: {
+      iuran: [],
+   },
+   getters: {
+      getIuran(state) {
+         return state.iuran
+      },
+   },
+   mutations: {
+      setIuran(state, data) {
+         state.iuran = data.iuran
+      },
+   },
    actions: {
       /**
        * save iuran data
@@ -22,6 +32,13 @@ export default {
                   console.log(err)
                   reject()
                })
+         })
+      },
+      async getAll({ commit }) {
+         return new Promise((resolve, reject) => {
+            axios.get('iuran').then((response) => {
+               resolve(commit('setIuran', response.data))
+            })
          })
       },
    },

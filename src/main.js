@@ -9,8 +9,9 @@ import './store/module/subscribe'
 import 'animate.css'
 import 'v-calendar/dist/style.css'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
-import './assets/style/index.scss'
 import 'sweetalert2/dist/sweetalert2.min.css'
+import 'vue-multiselect/dist/vue-multiselect.css'
+import './assets/style/index.scss'
 
 //axios
 const mode = 'dev'
