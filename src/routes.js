@@ -6,6 +6,7 @@ import BasePegawai from './pages/Pegawai/BasePegawai.vue'
 import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BasePembayaran from './pages/Pembayaran/BasePembayaran.vue'
 import BaseIuran from './pages/Iuran/BaseIuran.vue'
+import BaseIuranInklusi from './pages/Iuran/BaseIuranInklusi.vue'
 
 const routes = [
    {
@@ -47,6 +48,12 @@ const routes = [
       path: '/iuran',
       name: 'iuran',
       component: BaseIuran,
+      meta: { requiresAuth: true },
+   },
+   {
+      path: '/iuran-inklusi',
+      name: 'iuran-inklusi',
+      component: BaseIuranInklusi,
       meta: { requiresAuth: true },
    },
 ]

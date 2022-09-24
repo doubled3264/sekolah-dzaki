@@ -50,11 +50,11 @@ export default {
                field: 'interval_detail',
                thClass: 'text-left',
             },
-            {
-               label: 'Inklusi',
-               field: 'inklusi',
-               thClass: 'text-left',
-            },
+            // {
+            //    label: 'Inklusi',
+            //    field: 'inklusi',
+            //    thClass: 'text-left',
+            // },
          ],
       },
    },
