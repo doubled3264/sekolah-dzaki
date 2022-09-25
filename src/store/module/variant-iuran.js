@@ -16,13 +16,6 @@ export default {
       },
    },
    actions: {
-      async getAllUmum({ commit }) {
-         return new Promise((resolve, reject) => {
-            axios.get('iuran/umum').then((response) => {
-               resolve(commit('setIuran', response.data))
-            })
-         })
-      },
       /**
        * save iuran data
        * @param {object} iuran data
@@ -30,7 +23,7 @@ export default {
       async add({}, credentials) {
          return new Promise((resolve, reject) => {
             axios
-               .post('iuran', credentials)
+               .post('variant-iuran', credentials)
                .then((response) => {
                   console.log(response.data)
                   resolve()

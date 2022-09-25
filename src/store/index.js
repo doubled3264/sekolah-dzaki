@@ -7,7 +7,8 @@ import vueTable from './module/vue.table'
 
 import siswa from './module/siswa'
 import iuran from './module/iuran'
+import variantIuran from './module/variant-iuran'
 
 export const store = createStore({
-   modules: { auth, sidebar, windowProp, vueTable, siswa, iuran },
+   modules: { auth, sidebar, windowProp, vueTable, siswa, iuran, variantIuran },
 })
