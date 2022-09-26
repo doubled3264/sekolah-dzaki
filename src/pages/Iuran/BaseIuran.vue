@@ -64,7 +64,7 @@ const tableData = ref({
  * toggle overlay and modal
  * @param {boolean}
  */
-function activeModal(active) {
+function toggleModal(active) {
    if (active) {
       overlayIsActive.value = true
    } else if (!active) {
@@ -148,7 +148,7 @@ async function submitAction() {
    }).then(async (result) => {
       if (result.isConfirmed) {
          await store.dispatch('iuran/add', iuran.value).then(async () => {
-            activeModal(false)
+            toggleModal(false)
             Swal.fire({
                icon: 'success',
                text: 'data berhasil disimpan',
@@ -205,7 +205,7 @@ onMounted(async () => {
                <CustomButton
                   title="tambah data"
                   color="primary"
-                  @button-action="activeModal(true)"
+                  @button-action="toggleModal(true)"
                   :size="getWindowSize"
                />
             </div>
@@ -219,7 +219,7 @@ onMounted(async () => {
             />
          </div>
       </div>
-      <CustomOverlay v-if="overlayIsActive" @click="activeModal(false)">
+      <CustomOverlay v-if="overlayIsActive" @click="toggleModal(false)">
          <CustomModal>
             <template v-slot:title>
                <h4>tambah data iuran</h4>
