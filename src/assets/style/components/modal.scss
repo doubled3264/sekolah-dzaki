@@ -33,6 +33,27 @@
       }
    }
 
+   .modal__siswa-menu {
+      @apply w-4/12 mt-40;
+
+      &__wrapper {
+         @apply flex gap-12 justify-center;
+         @apply py-6;
+      }
+
+      &__item {
+         @apply cursor-pointer;
+         @apply text-gray-400;
+         p {
+            @apply mt-2;
+            @apply font-semibold text-center capitalize;
+         }
+      }
+
+      &__item:hover {
+         @apply text-verdigris;
+      }
+   }
    // .card__toggle-form {
    //    @apply flex justify-around items-center;
    //    @apply mb-6 px-16;

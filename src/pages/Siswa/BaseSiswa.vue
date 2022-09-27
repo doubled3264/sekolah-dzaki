@@ -4,8 +4,10 @@ import { useStore } from 'vuex'
 import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table-next'
 import Swal from 'sweetalert2'
-
 import { siswaScheme } from '../../utils/validation/siswa.scheme'
+import { setGender } from '../../utils/etc.helper.js'
+
+import { detail, edit, remove } from '../../utils/svg-var'
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
 import CustomButton from '../../components/CustomButton.vue'
@@ -15,10 +17,17 @@ import CustomInput from '../../components/CustomInput.vue'
 import CustomDatePicker from '../../components/CustomDatePicker.vue'
 import CustomRadioButton from '../../components/CustomRadioButton.vue'
 import CustomTextarea from '../../components/CustomTextarea.vue'
+import CustomIcon from '../../components/CustomIcon.vue'
 
 const store = useStore()
 /** @type {boolean} overlay value */
-const overlayIsActive = ref(true)
+const overlayIsActive = ref(false)
+/** @type {Object} modal  */
+const modal = ref({
+  menu: false,
+  add: false,
+  detail: false,
+})
 /** @type {Array ?} siswa object key  */
 let siswaKey = null
 /** @type {Array} optional form key */
@@ -31,14 +40,14 @@ const siswa = ref({
   nik: '',
   no_kk: '',
   nama: '',
-  jenis_kelamin: '1',
+  jenis_kelamin: '0',
   tempat_lahir: '',
   tanggal_lahir: '',
   nama_ayah: '',
   nama_ibu: '',
   no_telepon: '',
   alamat: '',
-  inklusi: '1',
+  inklusi: '0',
   kelas: '',
 })
 /** @type {Object} error state for each input */
@@ -84,62 +93,25 @@ const errorState = ref({
     message: '',
   },
 })
-const tableData = ref({
-  columns: [
-    {
-      label: 'No',
-      field: 'nomor',
-      type: 'number',
-      thClass: 'text-left !w-16',
-      tdClass: 'text-left !pl-5',
-    },
-    {
-      label: 'Nama',
-      field: 'nama',
-      thClass: 'text-left',
-    },
-    {
-      label: 'Tanggal Lahir',
-      field: 'tanggal_lahir',
-      type: 'date',
-      dateInputFormat: 'yyyy-MM-dd',
-      dateOutputFormat: 'MMM do yy',
-      thClass: 'text-left',
-    },
-    {
-      label: 'Jenis Kelamin',
-      field: 'jenis_kelamin',
-      thClass: 'text-left',
-    },
-    {
-      label: 'Nama Orang Tua',
-      field: 'nama_orang_tua',
-      thClass: 'text-left',
-    },
-    {
-      label: 'Alamat',
-      field: 'alamat',
-      thClass: 'text-left',
-    },
-  ],
-  rows: [
-    /* { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 }, */
-    /* { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 }, */
-    /* { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 }, */
-    /* { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 }, */
-    /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
-  ],
-})
 
+const tableData = ref({
+  columns: [],
+  rows: [],
+})
 /**
  * toggle overlay and modal
- * @param {boolean}
+ * @param {boolean} active
+ * @param {string} modalName menu | add | detail
  */
-function activeModal(active) {
+function toggleModal(active, modalName) {
   if (active) {
     overlayIsActive.value = true
+    modal.value[modalName] = true
   } else if (!active) {
     overlayIsActive.value = false
+    _.forEach(modal.value, (item, key) => {
+      modal.value[key] = false
+    })
     clearForm()
     setFormSectionActive('siswa')
   }
@@ -170,7 +142,7 @@ function setFormSectionActive(sectionName) {
   formSectionActive.value = sectionName
 }
 
-/**
+/**202209271
  * validate input when event triggered
  * @param {string} siswa object key
  */
@@ -216,16 +188,28 @@ function validateForm() {
  * @success {promise} show success dialog
  */
 async function submitAction() {
-  await store.dispatch('siswa/add', siswa).then(() => {
-    activeModal()
-    Swal.fire({
-      icon: 'success',
-      text: 'data berhasil disimpan',
-      confirmButtonText: 'tutup',
-    })
+  Swal.fire({
+    title: 'Anda yakin ?',
+    text: 'Data akan disimpan',
+    icon: 'question',
+    showCancelButton: true,
+    cancelButtonColor: '#c82333',
+    confirmButtonText: 'Ya, simpan !',
+    confirmButtonColor: '#41c3a9',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await store.dispatch('siswa/add', siswa.value).then(() => {
+        toggleModal(false)
+        Swal.fire({
+          icon: 'success',
+          text: 'data berhasil disimpan',
+          confirmButtonText: 'tutup',
+        })
+      })
+    }
   })
 }
-
+toggleM
 /**
  * get width of window size from tsore
  */
@@ -236,28 +220,59 @@ const getWindowSize = computed(() => {
   return 'lg'
 })
 
+function generateVueTable() {
+  tableData.value.columns = store.getters['vueTable/getColumn']('siswa')
+  setColumnFn()
+}
+function setColumnFn() {
+  const index = _.findIndex(tableData.value.columns, {
+    field: 'jenis_kelamin',
+  })
+  tableData.value.columns[index].formatFn = setGender
+}
+function generateSiswaKey() {
+  siswaKey = _.keys(siswa.value)
+}
+
+function setActivePage() {
+  store.commit('sidebar/setActivePage', 'siswa')
+}
+
+async function fetchSiswa() {
+  await store.dispatch('siswa/getAll')
+  tableData.value.rows = store.getters['siswa/getSiswa']
+}
+
+function toggleSiswaMenu(params) {
+  toggleModal(true, 'menu')
+}
 // -------------- cyclehook --------------
 onMounted(() => {
-  store.commit('sidebar/setActivePage', 'siswa')
-  overlayIsActive.value = false
-  //generate siswa object key
-  siswaKey = _.keys(siswa.value)
+  setActivePage()
+  generateVueTable()
+  generateSiswaKey()
+  fetchSiswa()
 })
 </script>
 <template>
   <div class="content">
     <div class="wrapper">
       <CustomHeader />
-      <div class="table-data">
+      <div class="table-data uppercase">
         <div class="table-data__title">
           <h4>data siswa</h4>
-          <CustomButton title="tambah data" color="primary" @button-action="activeModal(true)" :size="getWindowSize" />
+          <CustomButton title="tambah data" color="primary" @button-action="toggleModal(true, 'add')"
+            :size="getWindowSize" />
         </div>
-        <vue-good-table :columns="tableData.columns" :rows="tableData.rows" styleClass="vgt-table striped" />
+
+        <vue-good-table v-if="
+           !tableData.columns.length == 0 && !tableData.rows.length == 0
+        " :columns="tableData.columns" :rows="tableData.rows" styleClass="vgt-table striped"
+          v-on:row-dblclick="toggleSiswaMenu" />
       </div>
     </div>
-    <CustomOverlay v-if="overlayIsActive" @click="activeModal(false)">
-      <CustomModal>
+    <CustomOverlay v-show="overlayIsActive" @click="toggleModal(false, 'all')">
+      <CustomModal v-if="modal.add">
         <template v-slot:title>
           <h4>tambah data siswa</h4>
         </template>
@@ -355,6 +370,32 @@ onMounted(() => {
           <div class="mt-6">
             <CustomButton title="simpan data" variant="solid" color="primary" size="md" block
               @button-action="validateForm" />
+          </div>
+        </template>
+      </CustomModal>
+      <CustomModal v-if="modal.detail">
+        <template v-slot:title>
+          <h4>detail data siswa</h4>
+        </template>
+      </CustomModal>
+      <CustomModal v-if="modal.menu" modal-name="siswa/menu">
+        <template v-slot:title>
+          <h4>menu siswa</h4>
+        </template>
+        <template v-slot:body>
+          <div class="modal__siswa-menu__wrapper">
+            <div class="modal__siswa-menu__item" @click="toggleModal(false, ''); toggleModal(true, 'detail')">
+              <CustomIcon :svg-icon="detail" width="52" />
+              <p>detail</p>
+            </div>
+            <div class="modal__siswa-menu__item">
+              <CustomIcon :svg-icon="edit" width="52" />
+              <p>ubah</p>
+            </div>
+            <div class="modal__siswa-menu__item">
+              <CustomIcon :svg-icon="remove" width="52" />
+              <p>hapus</p>
+            </div>
           </div>
         </template>
       </CustomModal>

@@ -53,7 +53,6 @@ const state = reactive({
       options: ['hanya sekali', 'kelas 6'],
    },
 })
-// -------------- function --------------
 
 const tableData = ref({
    columns: [],

@@ -18,13 +18,13 @@ export default {
             path: '/iuran',
             isActive: false,
          },
-         {
-            title: 'iuran inklusi',
-            svgIcon: pembayaran,
-            name: 'iuran-inklusi',
-            path: '/iuran-inklusi',
-            isActive: false,
-         },
+         // {
+         //    title: 'iuran inklusi',
+         //    svgIcon: pembayaran,
+         //    name: 'iuran-inklusi',
+         //    path: '/iuran-inklusi',
+         //    isActive: false,
+         // },
          {
             title: 'pembayaran',
             svgIcon: pembayaran,

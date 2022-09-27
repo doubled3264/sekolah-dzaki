@@ -1,5 +1,19 @@
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+   modalName: { type: String, default: '' },
+})
+
+const getModalName = computed(() => {
+   console.log(props.modalName)
+   if (props.modalName == 'siswa/menu') {
+      return 'modal__siswa-menu'
+   }
+})
+</script>
 <template>
-   <div class="modal__wrapper" @click.stop>
+   <div :class="['modal__wrapper', getModalName]" @click.stop>
       <div class="card">
          <div class="card__header">
             <div class="card__title">
