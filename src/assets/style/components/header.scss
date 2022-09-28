@@ -1,21 +1,32 @@
-.header {
-   @apply w-full  pt-6 pb-10;
+// .header {
+// @apply w-full  pt-6 pb-10;
 
-   &__wrapper {
-      @apply p-4;
-      @apply rounded-lg bg-verdigris;
-      @apply shadow-md;
+// &__wrapper {
+//    @apply p-4;
+//    @apply rounded-lg bg-verdigris;
+//    @apply shadow-md;
+// }
+// h4 {
+//    @apply font-semibold text-xl capitalize text-white;
+// }
+// }
+
+// @screen lg {
+// .header {
+//    h4 {
+//       @apply text-base;
+//    }
+// }
+// }
+
+@screen 2xl {
+   .header {
+      &__wrapper {
+         @apply px-6 py-4;
+         @apply rounded-lg bg-verdigris;
+      }
+      h4 {
+         @apply font-semibold text-base capitalize text-white;
+      }
    }
-   h4 {
-      @apply font-semibold text-xl capitalize text-white;
-   }
-}
-
-
-@screen lg{
-  .header {
-    h4 {
-      @apply text-base;
-    }
-  }
 }

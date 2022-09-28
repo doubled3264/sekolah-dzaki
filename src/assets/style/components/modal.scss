@@ -15,7 +15,7 @@
          }
       }
       &__body {
-         @apply mt-2;
+         @apply mt-2.5;
       }
       &__footer {
          @apply mt-4;
@@ -33,25 +33,60 @@
       }
    }
 
-   .modal__siswa-menu {
-      @apply w-4/12 mt-40;
+   .modal__siswa-detail {
+   }
 
-      &__wrapper {
-         @apply flex gap-12 justify-center;
-         @apply py-6;
+   .modal-informasi {
+      @apply w-6/12;
+
+      &__icon {
+         @apply p-4;
+         @apply text-verdigris;
+         @apply border-2 rounded-full border-verdigris;
       }
+      &__nama {
+         @apply px-4;
 
-      &__item {
-         @apply cursor-pointer;
-         @apply text-gray-400;
          p {
-            @apply mt-2;
-            @apply font-semibold text-center capitalize;
+            @apply text-lg font-semibold capitalize text-verdigris;
+         }
+         & > p:last-child {
+            @apply text-sm font-semibold text-gray-400;
          }
       }
+      &__detail-chooser {
+         @apply flex gap-6;
+         @apply mt-4;
+         @apply border-b-2 border-gray-400;
 
-      &__item:hover {
-         @apply text-verdigris;
+         div {
+            @apply cursor-pointer;
+         }
+         p {
+            @apply pb-1 -mb-0.5;
+            @apply text-sm font-semibold capitalize text-gray-400;
+         }
+         & .active {
+            p {
+               @apply text-verdigris;
+               @apply border-b-2 border-verdigris;
+            }
+         }
+      }
+      &__item {
+         @apply relative;
+         @apply mt-6 py-4 px-3;
+         @apply border-2 rounded-lg border-verdigris;
+      }
+      &__siswa-item {
+         @apply w-4/12;
+         @apply font-semibold;
+         p {
+            @apply text-sm text-gray-400;
+         }
+         p:last-child {
+            @apply text-base text-verdigris;
+         }
       }
    }
    // .card__toggle-form {

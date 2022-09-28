@@ -1,68 +1,69 @@
-.sidebar {
-   @apply absolute top-0;
-   @apply w-72 h-screen px-4;
-   @apply bg-midnight-green;
+@screen 2xl {
+   .sidebar {
+      @apply flex flex-col;
+      @apply w-2/12  px-4;
+      @apply bg-midnight-green;
 
-   &-logo {
-      @apply py-10;
-      @apply text-center;
-      @apply text-2xl font-semibold capitalize text-white;
-   }
-
-   &__list {
-      @apply relative;
-      @apply h-screen;
-   }
-
-   &__item {
-      // @apply flex items-center;
-      @apply w-64 py-3 my-1 px-4;
-      @apply rounded-lg;
-      @apply text-sm font-semibold capitalize text-white;
-   }
-
-   &__item:last-child {
-      @apply absolute bottom-10;
-   }
-
-   &__link {
-      @apply flex items-center;
-
-      span {
-         @apply pl-3;
+      &-logo {
+         @apply py-10;
+         @apply text-center;
+         @apply text-2xl font-semibold capitalize text-white;
       }
 
-      &--active {
+      &__list {
+         @apply flex flex-col flex-1 self-stretch;
+      }
+
+      &__item {
+         // @apply flex items-center;
+         @apply py-3 my-1 px-4;
+         @apply rounded-lg;
+         @apply text-sm font-semibold capitalize text-white;
+      }
+
+      &__item:last-child {
+         @apply mt-auto mb-10;
+      }
+
+      &__link {
+         @apply flex items-center;
+
          span {
-            @apply text-white;
+            @apply pl-3;
+         }
+
+         &--active {
+            span {
+               @apply text-white;
+            }
          }
       }
-   }
-
-   & > p {
-      @apply mb-4 pl-4;
-      @apply text-sm font-semibold capitalize text-white;
-   }
-
-   &__item:hover {
-      @apply bg-illuminating-emerald;
-      @apply text-white;
-   }
-   &__item--active {
-      @apply bg-verdigris;
-   }
-}
-
-@screen lg {
-   .sidebar {
-      @apply w-56;
 
       & > p {
-        @apply text-xs;
+         @apply mb-4;
+         @apply text-sm font-semibold capitalize text-white;
       }
-      &__item {
-        @apply w-auto;
-        @apply text-xs;
+
+      &__item:hover {
+         @apply bg-illuminating-emerald;
+         @apply text-white;
+      }
+      &__item--active {
+         @apply bg-verdigris;
       }
    }
 }
+
+// @screen lg {
+//    .sidebar {
+//       @apply w-56;
+
+//       & > p {
+//          @apply text-xs;
+//       }
+//       &__item {
+//          @apply w-auto;
+//          @apply text-xs;
+//       }
+//    }
+// }

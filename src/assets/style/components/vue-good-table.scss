@@ -1,12 +1,17 @@
-.table-data {
-   @apply h-full px-6 pb-6;
-   @apply rounded-lg bg-white;
-   @apply shadow-md;
+@screen 2xl {
+   .table-data {
+      @apply h-full mt-10 p-6;
+      @apply rounded-lg bg-white;
+      @apply shadow-md;
 
-   &__title {
-      @apply flex justify-between items-center;
-      @apply py-6;
-      @apply text-lg font-semibold capitalize text-verdigris;
+      &__title {
+         @apply flex justify-between items-center;
+         @apply text-lg font-semibold capitalize text-verdigris;
+      }
+   }
+
+   .vgt-wrap {
+      @apply mt-6;
    }
 }
 

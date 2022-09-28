@@ -2,31 +2,31 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-   modalName: { type: String, default: '' },
+  modalName: { type: String, default: '' },
 })
 
 const getModalName = computed(() => {
-   console.log(props.modalName)
-   if (props.modalName == 'siswa/menu') {
-      return 'modal__siswa-menu'
-   }
+  console.log(props.modalName)
+  if (props.modalName == 'siswa/detail') {
+    return 'modal__siswa-detail'
+  }
 })
 </script>
 <template>
-   <div :class="['modal__wrapper', getModalName]" @click.stop>
-      <div class="card">
-         <div class="card__header">
-            <div class="card__title">
-               <slot name="title"></slot>
-            </div>
-         </div>
-         <div class="card__body">
-            <slot name="toggle-form"></slot>
-            <slot name="body"></slot>
-         </div>
-         <div class="card__footer">
-            <slot name="footer"></slot>
-         </div>
+  <div :class="['modal__wrapper', getModalName]" @click.stop>
+    <div class="card">
+      <div class="card__header">
+        <div class="card__title">
+          <slot name="title"></slot>
+        </div>
       </div>
-   </div>
+      <div class="card__body">
+        <slot name="toggle-form"></slot>
+        <slot name="body"></slot>
+      </div>
+      <div class="card__footer">
+        <slot name="footer"></slot>
+      </div>
+    </div>
+  </div>
 </template>

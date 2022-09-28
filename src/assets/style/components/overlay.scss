@@ -1,12 +1,7 @@
-.custom-overlay {
-   @apply absolute top-0;
-   @apply w-full h-screen;
-   background-color: rgba(0, 0, 0, 0.6);
-   margin-left: -18rem;
-}
-
-@screen lg {
+@screen 2xl {
    .custom-overlay {
-      margin-left: -14rem;
+      @apply absolute top-0;
+      @apply w-full h-screen;
+      background-color: rgba(0, 0, 0, 0.6);
    }
 }

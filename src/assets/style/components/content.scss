@@ -1,17 +1,23 @@
-.content {
-   @apply relative;
-   @apply w-full h-screen pl-72;
-   @apply bg-jet-stream;
-   .wrapper {
-      @apply px-10;
-   }
-}
+// .content {
+//    @apply relative;
+//    @apply w-full h-screen pl-72;
+//    @apply bg-jet-stream;
+//    .wrapper {
+//       @apply px-10;
+//    }
+// }
 
-@screen lg {
+// @screen lg {
+//    .content {
+//       @apply pl-56;
+//       .wrapper {
+//          @apply px-6;
+//       }
+//    }
+// }
+@screen 2xl {
    .content {
-      @apply pl-56;
-      .wrapper {
-         @apply px-6;
-      }
+      @apply w-10/12 py-6 px-6;
+      @apply bg-jet-stream;
    }
 }

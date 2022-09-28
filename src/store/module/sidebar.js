@@ -1,19 +1,19 @@
 import _ from 'lodash'
-import { pembayaran, student2 } from '../../utils/svg-var'
+import { detail, power, user } from '../../utils/svg-var'
 export default {
    namespaced: true,
    state: {
       navigation: [
          {
             title: 'siswa',
-            svgIcon: student2,
+            svgIcon: user,
             name: 'siswa',
             path: '/siswa',
             isActive: false,
          },
          {
             title: 'iuran',
-            svgIcon: pembayaran,
+            svgIcon: detail,
             name: 'iuran',
             path: '/iuran',
             isActive: false,
@@ -27,9 +27,16 @@ export default {
          // },
          {
             title: 'pembayaran',
-            svgIcon: pembayaran,
+            svgIcon: detail,
             name: 'pembayaran',
             path: '/pembayaran',
+            isActive: false,
+         },
+         {
+            title: 'logout',
+            svgIcon: power,
+            name: 'logout',
+            path: '/',
             isActive: false,
          },
       ],
