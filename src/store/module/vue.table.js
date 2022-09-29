@@ -9,14 +9,16 @@ export default {
                label: 'No',
                field: 'no',
                type: 'number',
-               thClass: 'text-left !w-16',
-               tdClass: 'text-left !pl-5 cursor-pointer',
+               thClass: 'text-left',
+               tdClass: 'text-left',
+               width: '70px',
             },
             {
                label: 'No Induk',
                field: 'no_induk',
-               thClass: 'text-left',
-               tdClass: 'cursor-pointer',
+               thClass: 'text-left ',
+               tdClass: 'cursor-pointer ',
+               width: '120px',
             },
             {
                label: 'NISN',
@@ -41,6 +43,7 @@ export default {
                field: 'jenis_kelamin',
                thClass: 'text-left',
                tdClass: 'cursor-pointer',
+               width: '170px',
             },
             {
                label: 'Tempat Lahir',
@@ -74,6 +77,7 @@ export default {
                field: 'no_telepon',
                thClass: 'text-left',
                tdClass: 'cursor-pointer',
+               width: '170px',
             },
             {
                label: 'Alamat',

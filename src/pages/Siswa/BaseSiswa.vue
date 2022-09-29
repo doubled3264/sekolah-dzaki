@@ -269,7 +269,7 @@ onMounted(() => {
                <h4>data siswa</h4>
                <CustomButton
                   title="tambah data"
-                  color="primary"
+                  color="verdigris"
                   @button-action="toggleModal(true, 'add')"
                   :size="getWindowSize"
                />
@@ -450,7 +450,7 @@ onMounted(() => {
                <CustomButton
                   title="simpan data"
                   variant="solid"
-                  color="primary"
+                  color="verdigris"
                   size="md"
                   block
                   @button-action="validateForm"

@@ -31,8 +31,7 @@ const getColor = computed(() => {
          @click="setPageActive"
       >
          <CustomIcon
-            width="24"
-            height="24"
+            width="28"
             :color="getColor"
             strokeWidth="0.1"
             :svgIcon="svgIcon"

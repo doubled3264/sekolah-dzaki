@@ -18,7 +18,7 @@
          // @apply flex items-center;
          @apply py-3 my-1 px-4;
          @apply rounded-lg;
-         @apply text-sm font-semibold capitalize text-white;
+         @apply text-lg font-semibold capitalize text-white;
       }
 
       &__item:last-child {
@@ -41,11 +41,12 @@
 
       & > p {
          @apply mb-4;
-         @apply text-sm font-semibold capitalize text-white;
+         @apply text-lg font-semibold capitalize text-white;
       }
 
       &__item:hover {
-         @apply bg-illuminating-emerald;
+         // @apply bg-illuminating-emerald;
+         @apply bg-verdi-hover;
          @apply text-white;
       }
       &__item--active {

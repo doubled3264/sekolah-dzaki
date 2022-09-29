@@ -74,6 +74,15 @@
          @apply bg-warning-active #{!important};
       }
    }
+   &--verdigris {
+      @apply bg-verdi-normal border-verdi-normal #{!important};
+      &:hover {
+         @apply bg-verdi-hover border-verdi-hover #{!important};
+      }
+      &:active {
+         @apply bg-verdi-active border-verdi-active #{!important};
+      }
+   }
    &__outline--primary {
       @apply text-primary-normal;
       @apply border-primary-normal;

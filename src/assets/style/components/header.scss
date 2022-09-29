@@ -1,32 +1,12 @@
-// .header {
-// @apply w-full  pt-6 pb-10;
-
-// &__wrapper {
-//    @apply p-4;
-//    @apply rounded-lg bg-verdigris;
-//    @apply shadow-md;
-// }
-// h4 {
-//    @apply font-semibold text-xl capitalize text-white;
-// }
-// }
-
-// @screen lg {
-// .header {
-//    h4 {
-//       @apply text-base;
-//    }
-// }
-// }
-
 @screen 2xl {
    .header {
       &__wrapper {
-         @apply px-6 py-4;
-         @apply rounded-lg bg-verdigris;
+         @apply flex justify-between items-center;
+         @apply px-4 py-4;
+         @apply shadow-md rounded-lg bg-midnight-green;
       }
       h4 {
-         @apply font-semibold text-base capitalize text-white;
+         @apply text-lg font-semibold  capitalize text-white;
       }
    }
 }

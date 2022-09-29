@@ -1,107 +1,109 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { VueGoodTable } from 'vue-good-table-next'
+import _, { keys } from 'lodash'
+import VueMultiSelect from 'vue-multiselect'
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
 import CustomButton from '../../components/CustomButton.vue'
 
 const store = useStore()
-const overlayIsActive = ref(false)
 
-const tableData = ref({
-   columns: [
-      {
-         label: 'No',
-         field: 'nomor',
-         type: 'number',
-         thClass: 'text-left !w-16',
-         tdClass: 'text-left !pl-5',
-      },
-      {
-         label: 'ID Pembayaran',
-         field: 'id',
-         thClass: 'text-left',
-      },
-      /* { */
-      /*   label: 'Tanggal Lahir', */
-      /*   field: 'tanggal_lahir', */
-      /*   type: 'date', */
-      /*   dateInputFormat: 'yyyy-MM-dd', */
-      /*   dateOutputFormat: 'MMM do yy', */
-      /*   thClass: 'text-left', */
-      /* }, */
-      {
-         label: 'ID Siswa',
-         field: 'id_siswa',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Pembayaran',
-         field: 'nama_pembayaran',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Nominal',
-         field: 'nominal',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Status',
-         field: 'status',
-         thClass: 'text-left',
-      },
-      {
-         label: 'Metode Pembayaran',
-         field: 'metode_pembayaran',
-         thClass: 'text-left',
-      },
-   ],
-   rows: [
-      /* { id: 2, name: 'Jane', age: 24, createdAt: '2011-10-31', score: 0.03343 }, */
-      /* { id: 3, name: 'Susan', age: 16, createdAt: '2011-10-30', score: 0.03343 }, */
-      /* { id: 4, name: 'Chris', age: 55, createdAt: '2011-10-11', score: 0.03343 }, */
-      /* { id: 5, name: 'Dan', age: 40, createdAt: '2011-10-21', score: 0.03343 }, */
-      /* { id: 6, name: 'John', age: 20, createdAt: '2011-10-31', score: 0.03343 }, */
-   ],
+const multiSelect = ref({
+   value: '',
+   options: [],
 })
-function activeModal() {
-   overlayIsActive.value = !overlayIsActive.value
-}
-// -------------- computed --------------
-const getWindowSize = computed(() => {
-   if (store.getters['windowProp/getWidth'] >= 1024) {
-      return 'sm'
-   }
-   return 'lg'
+const componentToShow = ref({
+   siswaSearch: true,
+   siswaSidebar: false,
 })
-// -------------- cyclehook --------------
-onMounted(() => {
-   overlayIsActive.value = true
+
+/**
+ * to set active class for sidebar item
+ */
+function setActivePage() {
    store.commit('sidebar/setActivePage', 'pembayaran')
+}
+
+/**
+ * fetch data siswa from db and assign to multiSelect
+ */
+async function fetchSiswaForMultiSelect() {
+   await store.dispatch('siswa/getAllSimple', {
+      only: ['id', 'no_induk', 'nama'],
+   })
+   multiSelect.value.options = store.getters['siswa/getAllSimple']
+}
+
+function customMultiSelectLabel({ no_induk, nama }) {
+   return `${no_induk} - ${nama}`
+}
+
+/**
+ * show iuran siswa sidebar
+ * @param {string} idSiswa
+ */
+function showSiswaSidebar(siswaId) {
+   toggleShowComponent('siswaSidebar')
+}
+
+function toggleShowComponent(name) {
+   _.forEach(componentToShow.value, (item, key) => {
+      componentToShow.value[key] = false
+   })
+   componentToShow.value[name] = true
+}
+// -------------- cyclehook --------------
+watch(
+   () => multiSelect.value.value,
+   (value) => {
+      if (value != null) {
+         showSiswaSidebar(value.id)
+         multiSelect.value.value = null
+      }
+   }
+)
+onMounted(() => {
+   setActivePage()
+   fetchSiswaForMultiSelect()
 })
 </script>
 <template>
+   <Sidebar />
    <div class="content">
       <div class="wrapper">
-         <CustomHeader />
-         <div class="table-data">
-            <div class="table-data__title">
-               <h4>data pembayaran</h4>
+         <CustomHeader>
+            <template v-slot:right-nav>
                <CustomButton
-                  title="tambah data"
-                  color="primary"
-                  @button-action="activeModal"
-                  :size="getWindowSize"
+                  title="cari data siswa"
+                  variant="solid"
+                  color="verdigris"
+                  size="md"
+                  @button-action="toggleShowComponent('siswaSearch')"
                />
+            </template>
+         </CustomHeader>
+         <div class="content__body" v-if="componentToShow.siswaSearch">
+            <div class="custom-card">
+               <div class="custom-card__header">
+                  <div class="custom-card__title">
+                     <h4>cari data siswa</h4>
+                  </div>
+                  <div class="custom-card__body">
+                     <VueMultiSelect
+                        v-model="multiSelect.value"
+                        :options="multiSelect.options"
+                        :custom-label="customMultiSelectLabel"
+                        placeholder="Masukan no induk atau nama siswa"
+                     >
+                     </VueMultiSelect>
+                  </div>
+               </div>
             </div>
-            <vue-good-table
-               :columns="tableData.columns"
-               :rows="tableData.rows"
-               styleClass="vgt-table stiped"
-            />
+         </div>
+         <div class="content__body" v-if="componentToShow.siswaSidebar">
+            sidebar siswa
          </div>
       </div>
    </div>
-   <Sidebar />
 </template>

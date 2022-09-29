@@ -962,6 +962,11 @@ module.exports = {
             'jet-stream': '#afd2c4',
             'green-sheen': '#72b292',
             'dark-sea-green': '#83b99c',
+            verdi: {
+               normal: '#41c3a9',
+               hover: '#3aaf89',
+               active: '#277565',
+            },
             primary: {
                normal: '#007bff',
                hover: '#0069d9',

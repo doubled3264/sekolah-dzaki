@@ -19,5 +19,8 @@
    .content {
       @apply w-10/12 py-6 px-6;
       @apply bg-jet-stream;
+      &__body {
+         @apply mt-10;
+      }
    }
 }

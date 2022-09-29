@@ -1,23 +1,5 @@
-@screen 2xl {
-   .table-data {
-      @apply h-full mt-10 p-6;
-      @apply rounded-lg bg-white;
-      @apply shadow-md;
-
-      &__title {
-         @apply flex justify-between items-center;
-         @apply text-lg font-semibold capitalize text-verdigris;
-      }
-   }
-
-   .vgt-wrap {
-      @apply mt-6;
-   }
-}
-
 .vgt-table.striped tbody tr:nth-of-type(odd) {
    background-color: rgba(198, 218, 191, 0.4);
-   // @apply bg-pastel-gray;
 }
 
 @screen lg {
@@ -1073,4 +1055,34 @@ table.vgt-table tr.clickable:hover {
    color: #394567;
    opacity: 0.3;
    /* Firefox */
+}
+@screen 2xl {
+   .table-data {
+      @apply h-full mt-6 p-6;
+      @apply rounded-lg bg-white;
+      @apply shadow-md;
+
+      &__title {
+         @apply flex justify-between items-center;
+         @apply capitalize text-verdigris;
+
+         h4 {
+            @apply text-xl font-semibold;
+         }
+      }
+   }
+
+   .vgt-wrap {
+      @apply mt-6;
+   }
+   .vgt-table thead th {
+      @apply text-base;
+   }
+
+   .vgt-table th {
+      @apply py-2;
+      // padding: 0.75em 1.5em 0.75em 0.75em;
+      vertical-align: middle;
+      position: relative;
+   }
 }
