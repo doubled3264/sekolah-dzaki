@@ -1,26 +1,56 @@
-// .content {
-//    @apply relative;
-//    @apply w-full h-screen pl-72;
-//    @apply bg-jet-stream;
-//    .wrapper {
-//       @apply px-10;
-//    }
-// }
-
-// @screen lg {
-//    .content {
-//       @apply pl-56;
-//       .wrapper {
-//          @apply px-6;
-//       }
-//    }
-// }
 @screen 2xl {
    .content {
       @apply w-10/12 py-6 px-6;
       @apply bg-jet-stream;
       &__body {
          @apply mt-10;
+      }
+   }
+
+   .pembayaran {
+      @apply flex;
+
+      &__search {
+         @apply w-1/2 mx-auto mt-6;
+      }
+
+      &__sidebar {
+         @apply w-3/12 py-4 px-3;
+         @apply rounded-lg;
+         @apply bg-white shadow-lg;
+
+         &__list {
+            @apply mt-4;
+         }
+
+         &__item {
+            @apply flex items-center gap-3;
+            @apply py-3 px-4;
+            @apply text-lg font-semibold capitalize text-gray-400;
+            @apply cursor-pointer;
+         }
+      }
+
+      &__info-siswa {
+         @apply flex items-center;
+         &__icon {
+            @apply max-w-fit p-4;
+            @apply text-verdigris;
+            @apply border-2 rounded-full border-verdigris;
+         }
+         &__detail {
+            @apply ml-4;
+            p {
+               @apply text-lg font-semibold text-verdigris;
+            }
+            p:last-child {
+               @apply text-sm font-semibold text-gray-400;
+            }
+         }
+      }
+
+      &__catatan {
+         @apply w-1/2;
       }
    }
 }

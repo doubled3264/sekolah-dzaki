@@ -999,7 +999,7 @@ module.exports = {
             },
          },
          fontFamily: {
-            poppins: ['Poppins'],
+            poppins: ['Poppins', 'sans-serif'],
          },
       },
    },

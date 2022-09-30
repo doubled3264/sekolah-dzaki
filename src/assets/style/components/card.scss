@@ -1,12 +1,10 @@
 @screen 2xl {
    .custom-card {
-      @apply w-1/2 mx-auto mt-6 py-4 px-6;
+      @apply w-full  py-4 px-6;
       @apply bg-white;
       @apply rounded-lg shadow-md;
       &__header {
-      }
-      &__body {
-         @apply mt-4;
+         @apply flex justify-between items-center;
       }
 
       &__title {
@@ -16,6 +14,12 @@
       }
 
       &__right-nav {
+      }
+      &__body {
+         @apply mt-4;
+      }
+      &__footer {
+         @apply mt-4;
       }
    }
 }

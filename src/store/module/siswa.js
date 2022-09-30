@@ -6,6 +6,7 @@ export default {
       siswa: {
          all: {},
          allSimple: {},
+         single: {},
       },
    },
    getters: {
@@ -15,6 +16,9 @@ export default {
       getAllSimple(state) {
          return state.siswa.allSimple
       },
+      getSingle(state) {
+         return state.siswa.single
+      },
    },
    mutations: {
       setSiswa(state, data) {
@@ -22,6 +26,9 @@ export default {
       },
       setAllSimple(state, data) {
          state.siswa.allSimple = data.collection
+      },
+      setSingle(state, data) {
+         state.siswa.single = data.collection
       },
    },
    actions: {
@@ -49,8 +56,19 @@ export default {
             axios
                .post('siswa/simple', credentials)
                .then((response) => {
-                  console.log(response.data)
                   resolve(commit('setAllSimple', response.data))
+               })
+               .catch((err) => {
+                  reject(err.data)
+               })
+         })
+      },
+      async getSingle({ commit }, credentials) {
+         return new Promise((resolve, reject) => {
+            axios
+               .post('siswa/single', credentials)
+               .then((response) => {
+                  resolve(commit('setSingle', response.data))
                })
                .catch((err) => {
                   reject(err.data)

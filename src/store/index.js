@@ -8,7 +8,17 @@ import vueTable from './module/vue.table'
 import siswa from './module/siswa'
 import iuran from './module/iuran'
 import variantIuran from './module/variant-iuran'
+import catatan from './module/catatan'
 
 export const store = createStore({
-   modules: { auth, sidebar, windowProp, vueTable, siswa, iuran, variantIuran },
+   modules: {
+      auth,
+      sidebar,
+      windowProp,
+      vueTable,
+      siswa,
+      iuran,
+      variantIuran,
+      catatan,
+   },
 })

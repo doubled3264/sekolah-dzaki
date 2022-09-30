@@ -1,0 +1,74 @@
+.pembayaran {
+   @apply flex;
+
+   &__search {
+      @apply w-1/2 mx-auto mt-6;
+   }
+
+   &__sidebar {
+      @apply w-3/12 h-fit py-4 px-3;
+      @apply rounded-lg;
+      @apply bg-white shadow-lg;
+
+      &__list {
+         @apply mt-4;
+      }
+
+      &__item {
+         @apply flex items-center gap-3;
+         @apply py-3 px-4;
+         @apply text-lg font-semibold capitalize text-gray-400;
+         @apply cursor-pointer;
+      }
+   }
+
+   &__info-siswa {
+      @apply flex items-center;
+      &__icon {
+         @apply max-w-fit p-4;
+         @apply text-verdigris;
+         @apply border-2 rounded-full border-verdigris;
+      }
+      &__detail {
+         @apply ml-4;
+         p {
+            @apply text-lg font-semibold text-verdigris;
+         }
+         p:last-child {
+            @apply text-sm font-semibold text-gray-400;
+         }
+      }
+   }
+
+   &__catatan {
+      @apply w-1/2 #{!important};
+
+      &__new-item {
+         @apply flex flex-col gap-2;
+         @apply mb-2;
+      }
+
+      &__list {
+         max-height: 600px;
+         @apply overflow-x-scroll;
+      }
+
+      &__item {
+         @apply p-3 mb-3;
+         @apply text-sm font-semibold text-verdigris;
+         @apply border-2 border-verdigris rounded-lg shadow-lg bg-white;
+         @apply cursor-pointer;
+         &-info {
+            @apply flex justify-between items-center;
+            @apply mt-2;
+         }
+         &-date {
+            @apply flex items-center gap-3;
+         }
+         &:hover {
+            @apply text-white;
+            @apply bg-verdigris;
+         }
+      }
+   }
+}
