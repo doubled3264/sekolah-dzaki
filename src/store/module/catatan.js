@@ -41,5 +41,17 @@ export default {
                })
          })
       },
+      async remove({}, credentials) {
+         return new Promise((resolve, reject) => {
+            axios
+               .delete('catatan', {data: credentials})
+               .then((response) => {
+                  resolve(response.data)
+               })
+               .catch((err) => {
+                  reject(err.data)
+               })
+         })
+      },
    },
 }

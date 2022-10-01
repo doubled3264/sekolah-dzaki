@@ -71,4 +71,25 @@
          }
       }
    }
+   &__tagihan {
+      @apply w-4/12;
+      &__list {
+         max-height: 600px;
+         @apply overflow-x-scroll;
+      }
+
+      &__item {
+        @apply flex flex-1 self-stretch;
+        @apply mt-2 p-2;
+        @apply border-2 rounded-lg border-verdigris;
+
+        &__detail {
+          @apply  w-full pl-2;
+        }
+
+        &__keterangan {
+          @apply flex justify-between;
+        }
+      }
+   }
 }

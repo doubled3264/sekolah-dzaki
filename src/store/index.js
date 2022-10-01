@@ -9,6 +9,7 @@ import siswa from './module/siswa'
 import iuran from './module/iuran'
 import variantIuran from './module/variant-iuran'
 import catatan from './module/catatan'
+import pembayaran from './module/pembayaran'
 
 export const store = createStore({
    modules: {
@@ -20,5 +21,6 @@ export const store = createStore({
       iuran,
       variantIuran,
       catatan,
+     pembayaran,
    },
 })
