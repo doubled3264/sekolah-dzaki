@@ -6,18 +6,18 @@
    }
 
    &__sidebar {
-      @apply w-3/12 h-fit py-4 px-3;
+      @apply w-3/12 h-fit py-3 px-3;
       @apply rounded-lg;
       @apply bg-white shadow-lg;
 
       &__list {
-         @apply mt-4;
+         @apply mt-2;
       }
 
       &__item {
          @apply flex items-center gap-3;
          @apply py-3 px-4;
-         @apply text-lg font-semibold capitalize text-gray-400;
+         @apply text-base font-semibold capitalize text-gray-400;
          @apply cursor-pointer;
       }
    }
@@ -32,16 +32,17 @@
       &__detail {
          @apply ml-4;
          p {
-            @apply text-lg font-semibold text-verdigris;
+            @apply text-base uppercase font-semibold text-verdigris;
          }
          p:last-child {
-            @apply text-sm font-semibold text-gray-400;
+            @apply mt-1.5;
+            @apply text-xs font-semibold text-gray-400;
          }
       }
    }
 
    &__catatan {
-      @apply w-1/2 #{!important};
+      @apply w-4/12 #{!important};
 
       &__new-item {
          @apply flex flex-col gap-2;
@@ -60,7 +61,7 @@
          @apply cursor-pointer;
          &-info {
             @apply flex justify-between items-center;
-            @apply mt-2;
+            // @apply mt-2;
          }
          &-date {
             @apply flex items-center gap-3;
@@ -68,6 +69,27 @@
          &:hover {
             @apply text-white;
             @apply bg-verdigris;
+         }
+      }
+   }
+   &__catatan-detail {
+      @apply w-4/12;
+      &__right-nav {
+         @apply flex gap-1.5 items-center;
+         @apply font-semibold text-verdigris;
+      }
+      &__footer {
+         @apply flex gap-3 items-center;
+         @apply text-verdigris;
+
+         &__delete-icon {
+            @apply p-1;
+            @apply border-2 rounded border-verdigris;
+            @apply cursor-pointer;
+            &:hover {
+               @apply text-white;
+               @apply bg-verdigris;
+            }
          }
       }
    }
@@ -79,17 +101,26 @@
       }
 
       &__item {
-        @apply flex flex-1 self-stretch;
-        @apply mt-2 p-2;
-        @apply border-2 rounded-lg border-verdigris;
+         @apply flex flex-1 self-stretch;
+         @apply mt-2 p-2;
+         @apply text-sm font-medium uppercase text-verdigris;
+         @apply border-2 rounded-lg border-verdigris;
 
-        &__detail {
-          @apply  w-full pl-2;
-        }
+         &__detail {
+            @apply w-full pl-2;
+         }
 
-        &__keterangan {
-          @apply flex justify-between;
-        }
+         &__keterangan {
+            @apply flex justify-between;
+         }
+
+         &__checkbox-cicilan {
+            @apply flex items-center;
+            label {
+               @apply mr-2;
+               @apply text-xs font-medium text-gray-400;
+            }
+         }
       }
    }
 }

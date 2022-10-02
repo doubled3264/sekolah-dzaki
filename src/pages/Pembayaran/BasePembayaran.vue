@@ -108,7 +108,7 @@ onMounted(() => {
                   title="cari data siswa"
                   variant="solid"
                   color="verdigris"
-                  size="md"
+                  size="sm"
                   @button-action="toggleSwitchComponent('searchBox')"
                />
             </template>
@@ -142,7 +142,7 @@ onMounted(() => {
                @toggle-menu="togglePembayaranComponent"
                :siswa-id="siswaId"
             />
-            <Tagihan v-if="pembayaranComponent.tagihan" :id_siswa="siswaId"/>
+            <Tagihan v-if="pembayaranComponent.tagihan" :id_siswa="siswaId" />
             <Riwayat v-if="pembayaranComponent.riwayat" />
             <Catatan v-if="pembayaranComponent.catatan" :id_siswa="siswaId" />
          </div>

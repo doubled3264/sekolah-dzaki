@@ -2,7 +2,7 @@
    .header {
       &__wrapper {
          @apply flex justify-between items-center;
-         @apply px-4 py-4;
+         @apply px-4 py-2;
          @apply shadow-md rounded-lg bg-midnight-green;
       }
       h4 {
