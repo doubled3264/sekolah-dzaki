@@ -21,6 +21,9 @@
             &::placeholder {
                @apply text-sm;
             }
+            &[type='number'] {
+               -moz-appearance: textfield;
+            }
          }
          &--error {
             input {

@@ -1,8 +1,9 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import CustomInput from '../../components/CustomInput.vue'
+import { setToIDR } from '../../utils/formater'
 
-const emit = defineEmits(['setPembayaran'])
+const emit = defineEmits(['setPembayaran', 'updatePembayaran'])
 const props = defineProps({
    tagihan: {
       type: Object,
@@ -25,12 +26,36 @@ const pembayaran = ref({
    nominal_cicilan: '',
 })
 
-function inputEvent(event) {
-   if (event.target.name == 'bayar') {
-      pembayaran.value.bayar = !pembayaran.value.bayar
-   } else if ((event.target.name = 'cicil')) {
-      pembayaran.value.cicil = !pembayaran.value.cicil
+function bayarEvent(event) {
+   if (event.target.checked) {
+      pembayaran.value.bayar = true
+      setPembayaran()
+   } else {
+      pembayaran.value.bayar = false
+      pembayaran.value.cicil = false
+      setPembayaran()
    }
+}
+
+function cicilEvent(event) {
+   /* cicilan cheked */
+   if (event.target.checked) {
+      /* if bayar not chekced */
+      pembayaran.value.cicil = true
+      if (!pembayaran.value.bayar) {
+         pembayaran.value.bayar = true
+         setPembayaran()
+      }
+      updatePembayaran()
+   } else {
+      pembayaran.value.cicil = false
+      updatePembayaran()
+      clearCicilanInput()
+   }
+}
+
+function clearCicilanInput() {
+   pembayaran.value.nominal_cicilan = ''
 }
 
 function cekPembayaranValue() {
@@ -43,54 +68,13 @@ function setPembayaran() {
    emit('setPembayaran', pembayaran.value)
 }
 
+function updatePembayaran() {
+   emit('updatePembayaran', pembayaran.value)
+}
+
 const getNominalIDR = computed(() => {
-   let formatter = new Intl.NumberFormat('id-ID', {
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-   })
-   return formatter.format(props.tagihan.nominal)
+   return setToIDR(props.tagihan.nominal)
 })
-
-watch(
-   () => pembayaran.value.nominal_cicilan,
-   (value) => {
-      /* if (value != '') { */
-      /*    pembayaran.value.bayar = true */
-      /*    setPembayaran() */
-      /* } else { */
-      /*    pembayaran.value.bayar = false */
-      /* } */
-      /* const numberTest = new RegExp('^[0-9]+$') */
-      /* console.log(numberTest.test(value)) */
-      if (new RegExp('^[0-9]+$').test(value)) {
-         pembayaran.value.bayar = true
-         setPembayaran()
-      } else {
-         pembayaran.value.bayar = false
-      }
-   }
-)
-
-watch(
-   () => pembayaran.value.bayar,
-   (value) => {
-      if (value && pembayaran.value.nominal_cicilan == '') {
-         pembayaran.value.cicil = false
-      }
-      console.log(value)
-      setPembayaran()
-   }
-)
-
-watch(
-   () => pembayaran.value.cicil,
-   (value) => {
-      if (value) {
-         pembayaran.value.bayar = false
-      }
-   }
-)
-
 onMounted(() => {
    pembayaran.value.id = props.tagihan.id
    pembayaran.value.nominal = props.tagihan.nominal
@@ -103,7 +87,7 @@ onMounted(() => {
          <input
             type="checkbox"
             name="bayar"
-            @click="inputEvent"
+            @click="bayarEvent"
             :checked="pembayaran.bayar"
          />
       </div>
@@ -113,20 +97,21 @@ onMounted(() => {
             <p>{{ getNominalIDR }}</p>
          </div>
          <div class="pembayaran__tagihan__item__checkbox-cicilan">
-            <div class="input-field w-2/3">
+            <div class="input-field w-3/5">
                <label>cicil pembayaran</label>
                <input
                   type="checkbox"
-                  @click="inputEvent"
+                  @click="cicilEvent"
                   :checked="pembayaran.cicil"
                />
             </div>
-            <div class="input-field w-1/3">
+            <div class="input-field w-2/5">
                <CustomInput
                   v-if="pembayaran.cicil"
                   type="number"
                   placeholder="masukan nominal"
                   v-model:input-value="pembayaran.nominal_cicilan"
+                  @input="updatePembayaran"
                />
             </div>
          </div>

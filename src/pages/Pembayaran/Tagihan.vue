@@ -1,8 +1,9 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import _ from 'lodash'
 import TagihanItem from './TagihanItem.vue'
+import { setToIDR } from '../../utils/formater'
 
 const store = useStore()
 const props = defineProps({ id_siswa: { type: String } })
@@ -23,12 +24,73 @@ function setPembayaranList(pembayaran) {
       })
       _.pullAt(pembayaranList.value, [indexToRemove])
    }
+}
 
+function updatePembayaranList(pembayaran) {
+   let indexToUpdate = _.findIndex(pembayaranList.value, {
+      id: pembayaran.id,
+   })
+   console.log('sebelum')
    _.forEach(pembayaranList.value, (item) => {
       console.log(item.id)
+      console.log(item.bayar)
+      console.log(item.cicil)
+      console.log(item.nominal)
+      console.log(item.nominal_cicilan)
+   })
+   _.set(pembayaranList.value, indexToUpdate, pembayaran)
+   console.log('sesudah')
+   _.forEach(pembayaranList.value, (item) => {
+      console.log(item.id)
+      console.log(item.bayar)
+      console.log(item.cicil)
+      console.log(item.nominal)
+      console.log(item.nominal_cicilan)
    })
 }
 
+const getTotalPembayaran = computed(() => {
+   return (jenis) => {
+      let total = 0
+      _.forEach(pembayaranList.value, (item) => {
+         if (jenis == 'kontan') {
+            total += Number(item.nominal)
+         } else if (jenis == 'cicil') {
+            total += Number(item.nominal_cicilan)
+         }
+      })
+      return setToIDR(total)
+   }
+})
+const getBanyakPembayaran = computed(() => {
+   return (jenis) => {
+      let count = 0
+      _.forEach(pembayaranList.value, (item) => {
+         if (jenis == 'kontan') {
+            if (!item.cicil) {
+               count++
+            }
+         } else if (jenis == 'cicil') {
+            if (item.cicil) {
+               count++
+            }
+         }
+      })
+      return count
+   }
+})
+
+const getGrandTotalPembayaran = computed(() => {
+   let total = 0
+   _.forEach(pembayaranList.value, (item) => {
+      if (!item.cicil) {
+         total += Number(item.nominal)
+      } else if (item.cicil) {
+         total += Number(item.nominal_cicilan)
+      }
+   })
+   return setToIDR(total)
+})
 watch(
    () => pembayaranList.value.length,
    (value) => {
@@ -56,6 +118,7 @@ onMounted(() => {
                   :key="index + 1"
                   :tagihan="item"
                   @set-pembayaran="setPembayaranList"
+                  @update-pembayaran="updatePembayaranList"
                />
             </div>
          </div>
@@ -68,7 +131,35 @@ onMounted(() => {
                <h4>ringkasan tagihan</h4>
             </div>
          </div>
-         <div class="custom-card__body"></div>
+         <div class="custom-card__body">
+            <div class="pembayaran__ringkasan-tagihan__list">
+               <div
+                  class="pembayaran__ringkasan-tagihan__item"
+                  v-if="getBanyakPembayaran('kontan') != 0"
+               >
+                  <p>iuran kontan ({{ getBanyakPembayaran('kontan') }})</p>
+                  <p>{{ getTotalPembayaran('kontan') }}</p>
+               </div>
+               <div
+                  class="pembayaran__ringkasan-tagihan__item"
+                  v-if="getBanyakPembayaran('cicil') != 0"
+               >
+                  <p>iuran dicicil ({{ getBanyakPembayaran('cicil') }})</p>
+                  <p>{{ getTotalPembayaran('cicil') }}</p>
+               </div>
+            </div>
+         </div>
+         <div
+            class="pembayaran__ringkasan-tagihan__total pembayaran__ringkasan-tagihan__item"
+            v-if="pembayaranList.length != 0"
+         >
+            <p>total</p>
+            <p>{{ getGrandTotalPembayaran }}</p>
+         </div>
+         <div class="pembayaran__ringkasan-tagihan__item">
+            <p>metode pembayaran</p>
+            <div class="pembayaran__ringkasan-tagihan__metode-pembayaran"></div>
+         </div>
       </div>
    </div>
 </template>

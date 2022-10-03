@@ -123,4 +123,21 @@
          }
       }
    }
+   &__ringkasan-tagihan {
+      @apply w-4/12;
+
+      &__list {
+         @apply px-2;
+      }
+      &__item {
+         @apply flex justify-between;
+         @apply mb-2;
+         @apply text-base font-semibold uppercase text-verdigris;
+      }
+
+      &__total {
+         @apply mt-20 px-2 pt-6;
+         @apply border-t-2 border-verdigris;
+      }
+   }
 }
