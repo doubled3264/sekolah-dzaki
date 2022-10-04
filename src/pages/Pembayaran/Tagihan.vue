@@ -4,12 +4,20 @@ import { useStore } from 'vuex'
 import _ from 'lodash'
 import TagihanItem from './TagihanItem.vue'
 import { setToIDR } from '../../utils/formater'
+import CustomDoubleSwitch from '../../components/CustomDoubleSwitch.vue'
+import CustomInput from '../../components/CustomInput.vue'
+import CustomButton from '../../components/CustomButton.vue'
 
 const store = useStore()
 const props = defineProps({ id_siswa: { type: String } })
 
 const tagihanList = ref([])
 const pembayaranList = ref([])
+const metodePembayaran = ref({
+   metode: 0,
+   catatan: '',
+   totalTagihan: 0,
+})
 async function fetchTagihan() {
    await store.dispatch('pembayaran/getSpecific', { id_siswa: props.id_siswa })
    tagihanList.value = store.getters['pembayaran/getTagihan']
@@ -54,9 +62,13 @@ const getTotalPembayaran = computed(() => {
       let total = 0
       _.forEach(pembayaranList.value, (item) => {
          if (jenis == 'kontan') {
-            total += Number(item.nominal)
+            if (!item.cicil) {
+               total += Number(item.nominal)
+            }
          } else if (jenis == 'cicil') {
-            total += Number(item.nominal_cicilan)
+            if (item.cicil) {
+               total += Number(item.nominal_cicilan)
+            }
          }
       })
       return setToIDR(total)
@@ -89,15 +101,17 @@ const getGrandTotalPembayaran = computed(() => {
          total += Number(item.nominal_cicilan)
       }
    })
+   metodePembayaran.value.totalTagihan = total
    return setToIDR(total)
 })
-watch(
-   () => pembayaranList.value.length,
-   (value) => {
-      console.log(value)
-   }
-)
 
+function prosesPembayaran() {
+   let pembayaran = {
+      pembayaran: pembayaranList.value,
+      metodePembayaran: metodePembayaran.value,
+   }
+   store.dispatch('transaksi/pay', pembayaran)
+}
 onMounted(() => {
    fetchTagihan()
 })
@@ -156,9 +170,32 @@ onMounted(() => {
             <p>total</p>
             <p>{{ getGrandTotalPembayaran }}</p>
          </div>
-         <div class="pembayaran__ringkasan-tagihan__item">
-            <p>metode pembayaran</p>
-            <div class="pembayaran__ringkasan-tagihan__metode-pembayaran"></div>
+         <div
+            class="pembayaran__ringkasan-tagihan__metode-pembayaran"
+            v-if="pembayaranList.length != 0"
+         >
+            <div class="row justify-between">
+               <p class="text-verdigris">pembayaran</p>
+               <CustomDoubleSwitch
+                  :item="['tunai', 'transfer']"
+                  v-model:input-value="metodePembayaran.metode"
+               />
+            </div>
+            <div class="row">
+               <div class="input-field w-full mb-3">
+                  <CustomInput
+                     type="text"
+                     placeholder="Catatan"
+                     v-model:input-value="metodePembayaran.catatan"
+                  />
+               </div>
+            </div>
+            <CustomButton
+               title="proses pembayaran"
+               color="verdigris"
+               block
+               @button-action="prosesPembayaran"
+            />
          </div>
       </div>
    </div>

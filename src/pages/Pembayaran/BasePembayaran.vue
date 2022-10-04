@@ -141,6 +141,7 @@ onMounted(() => {
             <SidebarPembayaran
                @toggle-menu="togglePembayaranComponent"
                :siswa-id="siswaId"
+               :sidebar-item-active="pembayaranComponent"
             />
             <Tagihan v-if="pembayaranComponent.tagihan" :id_siswa="siswaId" />
             <Riwayat v-if="pembayaranComponent.riwayat" />

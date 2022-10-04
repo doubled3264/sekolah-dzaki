@@ -16,34 +16,25 @@ function toggleActiveIndex(event) {
       activeIndex.value = 1
    }
    emit('update:inputValue', activeIndex.value)
-   emit('changeSwithValue', activeIndex.value == 0 ? false : true)
 }
 
 function checkedInput(event) {}
 </script>
+
 <template>
-   <div class="custom-switch" v-if="item.length == 1">
-      <p :class="[{ 'custom-switch--active': activeIndex == 1 }]">
+   <div class="custom-double-switch">
+      <p :class="[{ 'custom-double-switch--active': activeIndex == 0 }]">
          {{ item[0] }}
       </p>
-      <label class="custom-switch__wrapper">
+      <label class="custom-double-switch__wrapper">
          <input
             type="checkbox"
             :checked="inputValue == 1"
             @click="toggleActiveIndex"
          />
-         <span class="custom-switch__slider"></span>
+         <span class="custom-double-switch__slider"></span>
       </label>
-   </div>
-   <div class="custom-switch" v-if="item.length == 2">
-      <p :class="[{ 'custom-switch--active': activeIndex == 0 }]">
-         {{ item[0] }}
-      </p>
-      <label class="custom-switch__wrapper">
-         <input type="checkbox" @click="toggleActiveIndex" />
-         <span class="custom-switch__slider"></span>
-      </label>
-      <p :class="[{ 'custom-switch--active': activeIndex == 1 }]">
+      <p :class="[{ 'custom-double-switch--active': activeIndex == 1 }]">
          {{ item[1] }}
       </p>
    </div>

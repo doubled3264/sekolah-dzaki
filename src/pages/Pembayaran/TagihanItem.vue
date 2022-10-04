@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import CustomInput from '../../components/CustomInput.vue'
 import { setToIDR } from '../../utils/formater'
+import CustomSwitch from '../../components/CustomSwitch.vue'
 
 const emit = defineEmits(['setPembayaran', 'updatePembayaran'])
 const props = defineProps({
@@ -13,6 +14,7 @@ const props = defineProps({
          keterangan: '',
          nominal: '',
          tahun_ajaran: '',
+         cicil: '',
       },
    },
 })
@@ -24,6 +26,10 @@ const pembayaran = ref({
    nominal: '',
    cicil: false,
    nominal_cicilan: '',
+   isCicil: '',
+})
+const switchValue = ref({
+   cicilan: 0,
 })
 
 function bayarEvent(event) {
@@ -33,13 +39,14 @@ function bayarEvent(event) {
    } else {
       pembayaran.value.bayar = false
       pembayaran.value.cicil = false
+      switchValue.value.cicilan = 0
       setPembayaran()
    }
 }
 
-function cicilEvent(event) {
+function cicilEvent(value) {
    /* cicilan cheked */
-   if (event.target.checked) {
+   if (value) {
       /* if bayar not chekced */
       pembayaran.value.cicil = true
       if (!pembayaran.value.bayar) {
@@ -78,6 +85,7 @@ const getNominalIDR = computed(() => {
 onMounted(() => {
    pembayaran.value.id = props.tagihan.id
    pembayaran.value.nominal = props.tagihan.nominal
+   pembayaran.value.isCicil = props.tagihan.cicil
 })
 </script>
 
@@ -98,11 +106,10 @@ onMounted(() => {
          </div>
          <div class="pembayaran__tagihan__item__checkbox-cicilan">
             <div class="input-field w-3/5">
-               <label>cicil pembayaran</label>
-               <input
-                  type="checkbox"
-                  @click="cicilEvent"
-                  :checked="pembayaran.cicil"
+               <CustomSwitch
+                  :item="['cicil pembayaran']"
+                  v-model:input-value="switchValue.cicilan"
+                  @change-swith-value="cicilEvent"
                />
             </div>
             <div class="input-field w-2/5">

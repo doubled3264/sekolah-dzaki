@@ -3,13 +3,24 @@ import { detail, user, payment, paymentHistory } from '../../utils/svg-var'
 import CustomIcon from '../../components/CustomIcon.vue'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import { object } from 'yup'
 
 const store = useStore()
 const props = defineProps({
    siswaId: {
       type: String,
    },
+   sidebarItemActive: {
+      type: Object,
+      defaut: {
+         tagihan: false,
+         riwayat: false,
+         catatan: false,
+      },
+   },
 })
+
+const activeMenu = ref('')
 
 const siswa = ref({
    no_induk: '',
@@ -27,7 +38,7 @@ function setSiswa() {
 }
 
 onMounted(async () => {
-   await fetchSiswa()
+   activeMenu.value = await fetchSiswa()
    setSiswa()
 })
 </script>
@@ -45,6 +56,12 @@ onMounted(async () => {
       <ul class="pembayaran__sidebar__list">
          <li
             class="pembayaran__sidebar__item"
+            :class="[
+               {
+                  'text-white bg-verdigris rounded-lg':
+                     sidebarItemActive.tagihan,
+               },
+            ]"
             @click="$emit('toggleMenu', 'tagihan')"
          >
             <CustomIcon :svg-icon="payment" />
@@ -52,13 +69,25 @@ onMounted(async () => {
          </li>
          <li
             class="pembayaran__sidebar__item"
+            :class="[
+               {
+                  'text-white bg-verdigris rounded-lg':
+                     sidebarItemActive.riwayat,
+               },
+            ]"
             @click="$emit('toggleMenu', 'riwayat')"
          >
             <CustomIcon :svg-icon="paymentHistory" />
-            <p>riwayat tagihan</p>
+            <p>riwayat pembayaran</p>
          </li>
          <li
             class="pembayaran__sidebar__item"
+            :class="[
+               {
+                  'text-white bg-verdigris rounded-lg':
+                     sidebarItemActive.catatan,
+               },
+            ]"
             @click="$emit('toggleMenu', 'catatan')"
          >
             <CustomIcon :svg-icon="detail" />
