@@ -124,7 +124,8 @@ async function submitAction() {
             Swal.fire({
                icon: 'success',
                text: 'data berhasil disimpan',
-               confirmButtonText: 'tutup',
+               showConfirmButton: false,
+               timer: 1500,
             })
             toggleCatatanComponent()
             clearForm()
@@ -156,8 +157,9 @@ async function deleteNote(id) {
          await store.dispatch('catatan/remove', { id: id }).then(() => {
             Swal.fire({
                icon: 'success',
-               text: 'data berhasil disimpan',
-               confirmButtonText: 'tutup',
+               text: 'data berhasil dihapus',
+               showConfirmButton: false,
+               timer: 1500,
             })
             catatanComponent.value.detail = false
             fetchCatatan()

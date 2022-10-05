@@ -3,6 +3,36 @@ import _ from 'lodash'
 export default {
    namespaced: true,
    state: {
+      'riwayat-pembayaran': {
+         columns: [
+            {
+               label: 'no',
+               field: 'no',
+               type: 'number',
+               width: '70px',
+            },
+            {
+               label: 'nama',
+               field: 'nama',
+            },
+            {
+               label: 'keterangan',
+               field: 'keterangan',
+            },
+            {
+               label: 'tahun ajaran',
+               field: 'tahun_ajaran',
+            },
+            {
+               label: 'nominal',
+               field: 'nominal',
+            },
+            {
+               label: 'status',
+               field: 'status',
+            },
+         ],
+      },
       siswa: {
          columns: [
             {

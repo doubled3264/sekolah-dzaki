@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 const props = defineProps({
    inputValue: { type: String, required: true },
-   label: { type: String, required: true },
+   label: { type: String },
    placeholder: { type: String, default: 'please input..' },
    helperText: { type: String },
    errorState: {

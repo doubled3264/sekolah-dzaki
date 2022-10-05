@@ -35,7 +35,11 @@ const getCatatanCreatedAt = computed(() => {
             </div>
          </div>
          <div class="custom-card__body">
-            {{ catatan.isi_catatan }}
+            <div class="pembayaran__catatan__item-info">
+               <div class="pembayaran__catatan__item-date w-full">
+                  <p class="whitespace-normal">{{ catatan.isi_catatan }}</p>
+               </div>
+            </div>
          </div>
          <div class="custom-card__footer">
             <div class="pembayaran__catatan-detail__footer">

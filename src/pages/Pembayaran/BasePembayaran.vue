@@ -144,7 +144,11 @@ onMounted(() => {
                :sidebar-item-active="pembayaranComponent"
             />
             <Tagihan v-if="pembayaranComponent.tagihan" :id_siswa="siswaId" />
-            <Riwayat v-if="pembayaranComponent.riwayat" />
+            <Riwayat
+               v-if="pembayaranComponent.riwayat"
+               :siswaId="siswaId"
+               :maman="siswaId"
+            />
             <Catatan v-if="pembayaranComponent.catatan" :id_siswa="siswaId" />
          </div>
       </div>

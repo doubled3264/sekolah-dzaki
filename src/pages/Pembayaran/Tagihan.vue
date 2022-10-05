@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import Swal from 'sweetalert2'
 import _ from 'lodash'
 import TagihanItem from './TagihanItem.vue'
 import { setToIDR } from '../../utils/formater'
@@ -110,9 +111,30 @@ function prosesPembayaran() {
       pembayaran: pembayaranList.value,
       metodePembayaran: metodePembayaran.value,
    }
-   store.dispatch('transaksi/pay', pembayaran)
+   Swal.fire({
+      title: 'Anda yakin ?',
+      text: 'Pembayaran akan diproses',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonColor: '#c82333',
+      confirmButtonText: 'Ya, proses !',
+      confirmButtonColor: '#41c3a9',
+   }).then(async (result) => {
+      if (result.isConfirmed) {
+         await store.dispatch('transaksi/pay', pembayaran).then(() => {
+            Swal.fire({
+               icon: 'success',
+               text: 'data berhasil disimpan',
+               showConfirmButton: false,
+               timer: 1500,
+            })
+            fetchTagihan()
+         })
+      }
+   })
 }
 onMounted(() => {
+   console.log(props.id_siswa)
    fetchTagihan()
 })
 </script>

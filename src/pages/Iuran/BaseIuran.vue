@@ -195,6 +195,7 @@ onMounted(async () => {
 })
 </script>
 <template>
+   <Sidebar />
    <div class="content">
       <div class="wrapper">
          <CustomHeader />
@@ -293,5 +294,4 @@ onMounted(async () => {
          </CustomModal>
       </CustomOverlay>
    </div>
-   <Sidebar />
 </template>
