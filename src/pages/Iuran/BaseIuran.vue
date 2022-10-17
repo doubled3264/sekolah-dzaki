@@ -6,7 +6,7 @@ import { VueGoodTable } from 'vue-good-table-next'
 import VueMultiselect from 'vue-multiselect'
 import Swal from 'sweetalert2'
 import CustomHeader from '../../components/layouts/header/CustomHeader.vue'
-import CustomOverlay from '../../components/CustomOverlay.vue'
+import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
 import CustomModal from '../../components/CustomModal.vue'
 import Sidebar from '../../components/layouts/sidebar/Sidebar.vue'
 import CustomButton from '../../components/CustomButton.vue'
@@ -219,7 +219,12 @@ onMounted(async () => {
             />
          </div>
       </div>
-      <CustomOverlay v-if="overlayIsActive" @click="toggleModal(false)">
+   </div>
+   <Teleport to="body">
+      <CustomModalOverlay
+         v-if="overlayIsActive"
+         @close-modal="toggleModal(false)"
+      >
          <CustomModal>
             <template v-slot:title>
                <h4>tambah data iuran</h4>
@@ -292,6 +297,6 @@ onMounted(async () => {
                </div>
             </template>
          </CustomModal>
-      </CustomOverlay>
-   </div>
+      </CustomModalOverlay>
+   </Teleport>
 </template>

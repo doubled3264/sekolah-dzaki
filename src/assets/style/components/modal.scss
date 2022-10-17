@@ -1,94 +1,94 @@
 @screen 2xl {
-   .modal__wrapper {
-      @apply w-6/12 mt-8 mx-auto;
-      @apply rounded-xl bg-white;
-      @apply shadow-lg;
-   }
+   // .modal__wrapper {
+   //    @apply w-6/12 mt-8 mx-auto;
+   //    @apply rounded-xl bg-white;
+   //    @apply shadow-lg;
+   // }
 
-   .card {
-      @apply py-4 px-6;
-      &__header {
-      }
-      &__title {
-         h4 {
-            @apply text-lg font-semibold capitalize text-verdigris;
-         }
-      }
-      &__body {
-         @apply mt-2.5;
-      }
-      &__footer {
-         @apply mt-4;
-      }
-      &__form-section {
-         @apply flex justify-center gap-4;
-         @apply w-full pb-4;
-         &__item {
-            @apply text-lg font-semibold capitalize text-gray-500;
-            @apply cursor-pointer;
-            &--active {
-               @apply font-bold text-verdigris;
-            }
-         }
-      }
-   }
+   // .card {
+   //    @apply py-4 px-6;
+   //    &__header {
+   //    }
+   //    &__title {
+   //       h4 {
+   //          @apply text-lg font-semibold capitalize text-verdigris;
+   //       }
+   //    }
+   //    &__body {
+   //       @apply mt-2.5;
+   //    }
+   //    &__footer {
+   //       @apply mt-4;
+   //    }
+   //    &__form-section {
+   //       @apply flex justify-center gap-4;
+   //       @apply w-full pb-4;
+   //       &__item {
+   //          @apply text-lg font-semibold capitalize text-gray-500;
+   //          @apply cursor-pointer;
+   //          &--active {
+   //             @apply font-bold text-verdigris;
+   //          }
+   //       }
+   //    }
+   // }
 
-   .modal__siswa-detail {
-   }
+   // .modal__siswa-detail {
+   // }
 
-   .modal-informasi {
-      @apply w-6/12;
+   // .modal-informasi {
+   //    @apply w-6/12;
 
-      &__icon {
-         @apply p-4;
-         @apply text-verdigris;
-         @apply border-2 rounded-full border-verdigris;
-      }
-      &__nama {
-         @apply px-4;
+   //    &__icon {
+   //       @apply p-4;
+   //       @apply text-verdigris;
+   //       @apply border-2 rounded-full border-verdigris;
+   //    }
+   //    &__nama {
+   //       @apply px-4;
 
-         p {
-            @apply text-lg font-semibold capitalize text-verdigris;
-         }
-         & > p:last-child {
-            @apply text-sm font-semibold text-gray-400;
-         }
-      }
-      &__detail-chooser {
-         @apply flex gap-6;
-         @apply mt-4;
-         @apply border-b-2 border-gray-400;
+   //       p {
+   //          @apply text-lg font-semibold capitalize text-verdigris;
+   //       }
+   //       & > p:last-child {
+   //          @apply text-sm font-semibold text-gray-400;
+   //       }
+   //    }
+   //    &__detail-chooser {
+   //       @apply flex gap-6;
+   //       @apply mt-4;
+   //       @apply border-b-2 border-gray-400;
 
-         div {
-            @apply cursor-pointer;
-         }
-         p {
-            @apply pb-1 -mb-0.5;
-            @apply text-sm font-semibold capitalize text-gray-400;
-         }
-         & .active {
-            p {
-               @apply text-verdigris;
-               @apply border-b-2 border-verdigris;
-            }
-         }
-      }
-      &__item {
-         @apply relative;
-         @apply mt-6 py-4 px-3;
-         @apply border-2 rounded-lg border-verdigris;
-      }
-      &__siswa-item {
-         @apply w-4/12;
-         @apply font-semibold;
-         p {
-            @apply text-sm text-gray-400;
-         }
-         p:last-child {
-            @apply text-base text-verdigris;
-         }
-      }
-   }
+   //       div {
+   //          @apply cursor-pointer;
+   //       }
+   //       p {
+   //          @apply pb-1 -mb-0.5;
+   //          @apply text-sm font-semibold capitalize text-gray-400;
+   //       }
+   //       & .active {
+   //          p {
+   //             @apply text-verdigris;
+   //             @apply border-b-2 border-verdigris;
+   //          }
+   //       }
+   //    }
+   //    &__item {
+   //       @apply relative;
+   //       @apply mt-6 py-4 px-3;
+   //       @apply border-2 rounded-lg border-verdigris;
+   //    }
+   //    &__siswa-item {
+   //       @apply w-4/12;
+   //       @apply font-semibold;
+   //       p {
+   //          @apply text-sm text-gray-400;
+   //       }
+   //       p:last-child {
+   //          @apply text-base text-verdigris;
+   //       }
+   //    }
+   // }
    // .card__toggle-form {
    //    @apply flex justify-around items-center;
    //    @apply mb-6 px-16;

@@ -1,9 +1,10 @@
+@import '../mixins/label.scss';
 @screen lg {
    .custom-textarea {
       &__label {
          @apply block;
          @apply mb-2;
-         @apply text-xs capitalize;
+         @include custom-input-label;
          @apply cursor-pointer;
          &--error {
             @apply text-red-400;

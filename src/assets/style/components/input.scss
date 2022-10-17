@@ -1,9 +1,11 @@
+@import '../mixins/label.scss';
+
 @screen 2xl {
    .custom-input {
       &__label {
          @apply block;
          @apply pb-2;
-         @apply text-sm capitalize;
+         @include custom-input-label;
          @apply cursor-pointer;
 
          &--error {
@@ -13,7 +15,7 @@
       &__wrapper {
          input {
             @apply w-full py-2 px-3;
-            @apply border border-gray-400 rounded-lg;
+            @apply border border-gray-400 rounded-md;
 
             &:focus {
                @apply outline-none ring-1 ring-primary-normal;

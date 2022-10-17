@@ -1,9 +1,11 @@
+@import '../mixins/label.scss';
+
 @screen 2xl {
    .custom-radio-button {
       &__label {
          @apply block;
          // @apply pb-2;
-         @apply text-xs capitalize;
+         @include custom-input-label;
       }
 
       &__wrapper {
@@ -13,6 +15,18 @@
             @apply ml-1;
             @apply text-xs capitalize;
             @apply cursor-pointer;
+         }
+      }
+
+      &__item {
+         label {
+            @apply text-sm font-medium text-gray-400;
+         }
+
+         &--active {
+            label {
+               @apply text-gray-700;
+            }
          }
       }
    }

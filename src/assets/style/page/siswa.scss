@@ -1,0 +1,28 @@
+@screen 2xl {
+   .siswa__modal__add-new {
+      @apply w-6/12 mt-8 mx-auto;
+      @apply rounded-xl bg-white;
+      @apply shadow-lg;
+
+      &__form {
+         @apply px-2;
+         &-title {
+            @apply mb-4;
+            @apply text-base font-semibold capitalize text-center text-verdigris;
+         }
+      }
+      &__next-form {
+         @apply self-end;
+         @apply px-4;
+         @apply text-base font-semibold capitalize text-verdigris;
+         @apply cursor-pointer;
+      }
+
+      &__prev-form {
+         @apply self-start;
+         @apply mt-2 px-4;
+         @apply text-base font-semibold capitalize text-verdigris;
+         @apply cursor-pointer;
+      }
+   }
+}
