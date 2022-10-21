@@ -1,0 +1,26 @@
+.custom-input {
+   @apply mb-2;
+   & label {
+      @apply block;
+      @apply text-sm font-medium capitalize text-gray-500;
+      // @apply cursor-pointer;
+   }
+
+   & input {
+      @apply w-full mt-2 py-2 px-3;
+      @apply font-medium text-gray-500;
+      @apply border rounded border-gray-500;
+
+      &::placeholder {
+         @apply text-sm font-medium text-gray-400;
+      }
+      &:focus {
+         @apply border-primary-normal outline-none ring-1 ring-primary-normal;
+      }
+   }
+
+   &__helper {
+      @apply mt-1;
+      @apply text-xs text-red-500;
+   }
+}

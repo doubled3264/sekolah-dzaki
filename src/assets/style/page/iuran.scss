@@ -1,0 +1,13 @@
+.iuran-add {
+   &__content {
+      @apply flex gap-4;
+   }
+
+   &__data {
+      @apply w-8/12;
+   }
+
+   &__rincian {
+      @apply w-4/12;
+   }
+}

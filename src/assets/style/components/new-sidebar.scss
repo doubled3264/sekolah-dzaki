@@ -1,0 +1,86 @@
+.sidebar {
+   @apply px-4;
+
+   &__logo {
+      img {
+         @apply w-36 mx-auto py-3;
+      }
+   }
+
+   h3 {
+      @apply text-sm font-medium capitalize text-white;
+   }
+
+   &__list {
+      @apply mt-4;
+   }
+
+   &__item {
+      width: 236px;
+      @apply flex items-center flex-1 self-stretch;
+      @apply mt-1.5 px-4 py-2;
+      @apply text-white;
+      @apply cursor-pointer;
+
+      span {
+         @apply pl-3;
+         @apply text-sm font-medium capitalize;
+      }
+
+      & svg:last-child {
+         @apply ml-auto mr-0;
+         transform: rotate(0deg);
+         transition: transform 300ms ease-out;
+      }
+
+      a {
+         @apply flex;
+
+         span {
+            @apply pl-3;
+            @apply text-sm font-medium capitalize;
+         }
+      }
+
+      &--active {
+         @apply rounded-lg bg-verdigris;
+
+         svg:last-child {
+            transform: rotate(180deg);
+            transition: transform 300ms ease-out;
+            // animation: itemActive 300ms ease-out;
+         }
+      }
+   }
+
+   &__sub-list {
+      @apply max-h-0  ml-10;
+      @apply overflow-hidden;
+      transition: max-height 300ms ease-out;
+
+      &--active {
+         @apply max-h-40;
+         transition: max-height 300ms ease-out;
+      }
+   }
+
+   &__sub-item {
+      @apply mt-1 px-4 py-2;
+
+      span {
+         @apply text-sm font-medium capitalize text-white;
+      }
+      &--active {
+         @apply rounded-lg bg-verdigris;
+       }
+   }
+}
+
+@keyframes subListActive {
+   from {
+      @apply max-h-0;
+   }
+   to {
+      max-height: 100%;
+   }
+}

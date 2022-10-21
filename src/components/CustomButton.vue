@@ -1,5 +1,7 @@
 <script setup>
+import { startCase } from 'lodash'
 import { computed } from 'vue'
+import { object } from 'yup'
 import CustomIcon from './CustomIcon.vue'
 
 const props = defineProps({
@@ -29,10 +31,10 @@ const props = defineProps({
     default: 'secondary',
   },
   startIcon: {
-    type: String,
+    type: Object,
   },
   endIcon: {
-    type: String,
+    type: Object,
   },
 })
 
@@ -50,9 +52,6 @@ const getVariantAndColor = computed(() => {
     return ``
   }
 })
-const getIconSize = computed(() => {
-  return '24'
-})
 
 function buttonClick() {
   emit('buttonAction')
@@ -61,11 +60,11 @@ function buttonClick() {
 <template>
   <button type="button" @click="buttonClick" :class="[getSize, getVariantAndColor, { btn__block: block }]">
     <span v-if="startIcon" class="btn__start-icon">
-      <CustomIcon :width="getIconSize" :svgIcon="startIcon" />
+      <CustomIcon :svgIcon="startIcon.svgIcon" :width="startIcon.width" />
     </span>
     {{ title }}
     <span v-if="endIcon" class="btn__end-icon">
-      <CustomIcon :width="getIconSize" :svgIcon="endIcon" />
+      <CustomIcon :svgIcon="endIcon" />
     </span>
   </button>
 </template>

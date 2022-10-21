@@ -1,0 +1,26 @@
+.content {
+   @apply w-full pr-3 py-3;
+   &__inner {
+      @apply w-full h-full p-4;
+      @apply rounded-2xl;
+      background-color: #e7e9eb;
+   }
+
+   &__path {
+      @apply flex gap-1 items-center;
+      @apply text-sm font-medium capitalize text-gray-500;
+   }
+
+   &__title {
+      @apply flex items-center justify-between;
+      @apply h-8 mt-2;
+      h3{
+
+        @apply text-xl font-semibold capitalize text-verdigris;
+      }
+   }
+
+   &__body {
+      @apply mt-5;
+   }
+}
