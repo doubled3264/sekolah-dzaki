@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import _ from 'lodash'
 defineProps({
   inputValue: {
@@ -12,17 +13,24 @@ defineProps({
     type: Object,
     default: {
       isError: false,
-      message: 'maman racing',
+      message: '',
     },
   },
 })
-const emit = defineEmits(['update:inputValue'])
+const emit = defineEmits(['update:inputValue', 'validateInput'])
 const randomNumberForLabel = _.random(1111, 9999)
+const isTouched = ref(false)
+
+function validateInput(event) {
+  isTouched.value = true
+  emit('update:inputValue', event.target.value)
+  emit('validateInput')
+}
 </script>
 <template>
-  <div class="custom-input">
-    <label :for="randomNumberForLabel">{{ label }}</label>
-    <input :id="randomNumberForLabel" type="text" :placeholder="placeholder" />
-    <p class="custom-input__helper">{{ errorState.message }}</p>
+  <div :class="['custom-input',{'custom-input--error': errorState.isError && isTouched}]">
+    <label :for="randomNumberForLabel" >{{ label }}</label>
+    <input :id="randomNumberForLabel" type="text" :placeholder="placeholder" @input="validateInput" :value="inputValue" />
+    <p class="custom-input__helper" v-show="errorState.isError && isTouched">{{ errorState.message }}</p>
   </div>
 </template>

@@ -4,6 +4,7 @@
       @apply block;
       @apply text-sm font-medium capitalize text-gray-500;
       // @apply cursor-pointer;
+
    }
 
    & input {
@@ -17,10 +18,33 @@
       &:focus {
          @apply border-primary-normal outline-none ring-1 ring-primary-normal;
       }
+
+      & .input--error {
+         @apply border-red-500;
+
+         &:focus {
+            @apply border-danger-normal ring-danger-normal;
+         }
+      }
    }
 
    &__helper {
       @apply mt-1;
       @apply text-xs text-red-500;
+   }
+
+   &--error {
+
+      & label {
+         @apply text-red-500;
+      }
+
+      & input {
+         @apply border-red-500;
+
+         &:focus {
+            @apply border-danger-normal ring-danger-normal;
+         }
+      }
    }
 }

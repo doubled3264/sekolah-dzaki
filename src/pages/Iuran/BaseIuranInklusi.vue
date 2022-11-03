@@ -13,7 +13,7 @@ import CustomRadioButton from '../../components/CustomRadioButton.vue'
 import CustomInput from '../../components/CustomInput.vue'
 import {
    iuranScheme,
-   iuranExistScheme,
+   /* iuranExistScheme, */
 } from '../../utils/validation/iuran.scheme'
 import { error } from '../../utils/svg-var'
 
