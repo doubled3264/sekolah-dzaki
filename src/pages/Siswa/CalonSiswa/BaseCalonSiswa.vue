@@ -1,5 +1,5 @@
 <script setup>
-import NewSidebar from '../../components/layouts/sidebar/NewSidebar.vue'
+import NewSidebar from '../../../components/layouts/sidebar/NewSidebar.vue'
 </script>
 <template>
   <NewSidebar />

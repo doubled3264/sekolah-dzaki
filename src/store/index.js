@@ -3,8 +3,9 @@ import { createStore } from 'vuex'
 import auth from './module/auth'
 import sidebar from './module/sidebar'
 import windowProp from './module/window'
-import vueTable from './module/vue.table'
+import vueTable from './module/vue-table'
 
+import calonSiswa from './module/calon-siswa'
 import siswa from './module/siswa'
 import iuran from './module/iuran'
 import variantIuran from './module/variant-iuran'
@@ -13,16 +14,17 @@ import pembayaran from './module/pembayaran'
 import transaksi from './module/transaksi'
 
 export const store = createStore({
-   modules: {
-      auth,
-      sidebar,
-      windowProp,
-      vueTable,
-      siswa,
-      iuran,
-      variantIuran,
-      catatan,
-      pembayaran,
-      transaksi,
-   },
+  modules: {
+    auth,
+    sidebar,
+    windowProp,
+    vueTable,
+    calonSiswa,
+    siswa,
+    iuran,
+    variantIuran,
+    catatan,
+    pembayaran,
+    transaksi,
+  },
 })

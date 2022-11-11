@@ -30,10 +30,10 @@ export default {
       async signIn({ dispatch }, credentials) {
          return new Promise((resolve, reject) => {
             axios
-               .post('auth/login/pegawai', credentials)
+               .post('auth/login', credentials)
                .then((response) => {
                   console.log(response.data)
-                  resolve(dispatch('attempt', response.data.token))
+                  resolve(dispatch('attempt', response.data.data.token))
                })
                .catch((error) => {
                   console.log(error)
@@ -51,9 +51,9 @@ export default {
          }
 
          await axios
-            .get('auth/info/pegawai')
+            .get('auth/admin-info')
             .then((response) => {
-               commit('setUser', response.data)
+               commit('setUser', response.data.data)
             })
             .catch((error) => {
                commit('setToken', null)

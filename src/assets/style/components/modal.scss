@@ -125,3 +125,47 @@
 //       }
 //    }
 // }
+
+@screen 2xl {
+   .modal {
+      &.table-action {
+         @apply w-1/3 mx-auto mt-36;
+      }
+   }
+
+   .table-action {
+      &__list {
+         @apply flex gap-4;
+      }
+      &__item {
+         @apply w-1/3 py-4;
+         @apply text-center text-gray-500;
+         @apply border-2 rounded-lg border-gray-500;
+         @apply cursor-pointer;
+         p {
+            @apply mt-2;
+            @apply font-medium capitalize;
+         }
+
+         &:hover {
+            @apply text-white;
+            @apply border-verdigris;
+            @apply bg-verdigris;
+            // &.table-action__icon {
+            //    @apply text-primary-normal;
+            // }
+            // p {
+            //    @apply text-primary-normal;
+            // }
+         }
+      }
+   }
+}
+
+@screen 3xl {
+   .modal {
+      &.table-action {
+         @apply w-1/4;
+      }
+   }
+}

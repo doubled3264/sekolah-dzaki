@@ -67,12 +67,12 @@ export default {
         subItem: [
           {
             title: 'daftar calon siswa',
-            path: '/siswa/daftar-calon-siswa',
+            path: '/siswa/calon-siswa',
             isActive: false,
           },
           {
-            title: 'daftar  siswa',
-            path: '/siswa/daftar-siswa',
+            title: 'daftar siswa',
+            path: '/siswa',
             isActive: false,
           },
           {

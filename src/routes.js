@@ -3,7 +3,7 @@ import { store } from './store'
 
 import BaseLogin from './pages/Login/BaseLogin.vue'
 import BasePegawai from './pages/Pegawai/BasePegawai.vue'
-import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
+// import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BasePembayaran from './pages/Pembayaran/BasePembayaran.vue'
 // import BaseIuran from './pages/Iuran/BaseIuran.vue'
 import BaseIuranInklusi from './pages/Iuran/BaseIuranInklusi.vue'
@@ -13,6 +13,9 @@ import NewBaseIuran from './pages/Iuran/NewBaseIuran.vue'
 import NewIuranList from './pages/Iuran/NewIuranList.vue'
 import NewIuranAdd from './pages/Iuran/NewIuranAdd.vue'
 import NewIuranDiscount from './pages/Iuran/NewIuranDiscount.vue'
+
+import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
+import CalonSiswaList from './pages/Siswa/CalonSiswa/CalonSiswaList.vue'
 const routes = [
   {
     path: '/',
@@ -40,8 +43,16 @@ const routes = [
   {
     path: '/siswa',
     name: 'siswa',
-    component: BaseSiswa,
+    component: BaseCalonSiswa,
     meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'calon-siswa',
+        name: 'daftar calon siswa',
+        component: CalonSiswaList,
+        props: { parentItem: 'siswa', childItem: 'daftar calon siswa' },
+      },
+    ],
   },
   {
     path: '/pembayaran',
@@ -57,7 +68,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'iuran list',
+        name: 'daftar iuran',
         component: NewIuranList,
         props: { parentItem: 'iuran', childItem: 'daftar iuran' },
       },
