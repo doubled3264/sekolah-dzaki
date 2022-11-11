@@ -1,7 +1,4 @@
-<script setup>
-import NewSidebar from '../../../components/layouts/sidebar/NewSidebar.vue'
-</script>
+<script setup></script>
 <template>
-  <NewSidebar />
   <router-view></router-view>
 </template>

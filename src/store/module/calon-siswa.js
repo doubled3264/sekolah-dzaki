@@ -5,6 +5,7 @@ export default {
   state: {
     calonSiswa: {
       list: {},
+      single: null,
     },
   },
   getters: {
@@ -15,6 +16,9 @@ export default {
   mutations: {
     setList(state, data) {
       state.calonSiswa.list = data
+    },
+    setSingle(state, data) {
+      state.calonSiswa.single = data
     },
   },
   actions: {

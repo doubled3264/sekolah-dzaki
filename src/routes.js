@@ -14,8 +14,10 @@ import NewIuranList from './pages/Iuran/NewIuranList.vue'
 import NewIuranAdd from './pages/Iuran/NewIuranAdd.vue'
 import NewIuranDiscount from './pages/Iuran/NewIuranDiscount.vue'
 
+import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
 import CalonSiswaList from './pages/Siswa/CalonSiswa/CalonSiswaList.vue'
+import BiodataCalonSiswa from './pages/Siswa/CalonSiswa/Biodata.vue'
 const routes = [
   {
     path: '/',
@@ -43,14 +45,33 @@ const routes = [
   {
     path: '/siswa',
     name: 'siswa',
-    component: BaseCalonSiswa,
+    component: BaseSiswa,
     meta: { requiresAuth: true },
     children: [
       {
         path: 'calon-siswa',
-        name: 'daftar calon siswa',
-        component: CalonSiswaList,
-        props: { parentItem: 'siswa', childItem: 'daftar calon siswa' },
+        name: 'calon siswa',
+        component: BaseCalonSiswa,
+        children: [
+          {
+            path: '',
+            name: 'daftar calon siswa',
+            component: CalonSiswaList,
+            props: {
+              parentItem: 'siswa',
+              childItem: 'daftar calon siswa',
+            },
+          },
+          {
+            path: 'biodata/:id',
+            name: 'biodata calon siswa',
+            component: BiodataCalonSiswa,
+            props: {
+              parentItem: 'siswa',
+              childItem: 'daftar calon siswa',
+            },
+          },
+        ],
       },
     ],
   },

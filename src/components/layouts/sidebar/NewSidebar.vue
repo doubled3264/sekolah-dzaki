@@ -10,9 +10,6 @@ const getSidebarItem = computed(() => {
   return store.getters['sidebar/getItem']
 })
 
-onMounted(() => {
-  console.log(store.getters['sidebar/getItem'])
-})
 </script>
 <template>
   <div class="sidebar">
