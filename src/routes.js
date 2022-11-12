@@ -18,6 +18,7 @@ import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
 import CalonSiswaList from './pages/Siswa/CalonSiswa/CalonSiswaList.vue'
 import BiodataCalonSiswa from './pages/Siswa/CalonSiswa/Biodata.vue'
+import CalonSiswaEdit from './pages/Siswa/CalonSiswa/CalonSiswaEdit.vue'
 const routes = [
   {
     path: '/',
@@ -71,6 +72,16 @@ const routes = [
               childItem: 'daftar calon siswa',
             },
           },
+          {
+
+            path: 'edit/:id',
+            name: 'edit calon siswa',
+            component: CalonSiswaEdit,
+            props: {
+              parentItem: 'siswa',
+              childItem: 'daftar calon siswa',
+            },
+          }
         ],
       },
     ],

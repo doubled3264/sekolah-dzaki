@@ -48,11 +48,8 @@ const getTanggalLahir = computed(() => {
       'yyyy-MM-dd',
       new Date()
     )
-    console.log(isValid(date))
-    const maman = format(date, 'MM')
-    console.log(maman)
+    return format(date, 'dd MMMM yyyy', {locale: id})
   }
-  return calonSiswaData.value.tanggal_lahir
 })
 </script>
 <template>
@@ -100,6 +97,9 @@ const getTanggalLahir = computed(() => {
                 <div class="w-1/3">
                   <CustomInfo label="nomor telepon" :value="calonSiswaData.no_telepon" />
                 </div>
+              </div>
+              <div>
+              <CustomInfo label="alamat" :value="calonSiswaData.alamat" />
               </div>
             </div>
           </div>

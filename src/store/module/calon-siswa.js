@@ -59,7 +59,7 @@ export default {
       async delete({}, credentials) {
          return new Promise((resolve, reject) => {
             axios
-               .delete('calon-siswa', { data: credentials })
+               .delete(`calon-siswa/${credentials}`)
                .then((response) => {
                   resolve(response)
                })

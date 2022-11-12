@@ -1,6 +1,5 @@
 import { object, string, number } from 'yup'
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
 export const siswaScheme = object({
   nama: string().trim().required('Nama tidak boleh kosong'),
   jenis_kelamin: string().trim().required('jenis kelamin tidak boleh kosong'),

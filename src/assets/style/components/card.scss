@@ -15,15 +15,11 @@
 }
 @screen 2xl {
    .card {
-      @apply py-3 px-6;
-      @apply rounded-lg shadow-lg bg-white;
-
+     &.biodata-calon-siswa{
+       @apply w-3/4;
+     }
       &__title {
-         @apply text-lg font-medium capitalize text-gray-500;
-      }
-
-      &__body {
-         @apply mt-3;
+         @apply text-base text-gray-500;
       }
    }
 }

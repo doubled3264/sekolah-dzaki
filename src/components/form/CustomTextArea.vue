@@ -1,11 +1,11 @@
 <script setup>
-import { onMounted,  ref } from 'vue'
+import { onMounted, onUpdated, ref } from 'vue'
 import _ from 'lodash'
 
 const props = defineProps({
-   inputValue: { type: String, required: true, default: '' },
+   inputValue: { type: String, required: true },
    label: { type: String },
-   placeholder: { type: String, default: 'please input..' },
+   placeholder: { type: String, default: '' },
    helperText: { type: String },
    errorState: {
       type: Object,
@@ -55,33 +55,20 @@ onMounted(() => {
 </script>
 
 <template>
-   <div class="custom-textarea">
-      <label
-         :for="randomNumber"
-         :class="[
-            'custom-textarea__label',
-            {
-               'custom-textarea__label--error': errorState.isError && isTouched,
-            },
-         ]"
-         >{{ label }}</label
-      >
-      <div
-         :class="[
-            'custom-textarea__wrapper',
-            {
-               'custom-textarea__wrapper--error':
-                  errorState.isError && isTouched,
-            },
-         ]"
-      >
-         <textarea
-            :id="randomNumber"
-            ref="textarea"
-            :value="inputValue"
-            @input="validateInput"
-         />
-      </div>
+   <div
+      :class="[
+         'custom-textarea',
+         { 'custom-textarea--error': errorState.isError && isTouched },
+      ]"
+   >
+      <label :for="randomNumber">{{ label }}</label>
+      <textarea
+         :id="randomNumber"
+         ref="textarea"
+         :value="inputValue"
+         :placeholder="placeholder"
+         @input="validateInput"
+      />
       <p
          class="custom-textarea__helper"
          v-show="errorState.isError && isTouched"
@@ -90,3 +77,4 @@ onMounted(() => {
       </p>
    </div>
 </template>
+

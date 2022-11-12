@@ -4,6 +4,7 @@ import { random } from 'lodash'
 defineProps({
    inputValue: {
       type: String,
+      default: '',
       required: true,
    },
    label: String,
