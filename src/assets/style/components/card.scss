@@ -1,4 +1,7 @@
 .card {
+   &.biodata-calon-siswa {
+      @apply w-1/2;
+   }
    @apply py-3 px-6;
    @apply rounded-lg shadow-lg bg-white;
 

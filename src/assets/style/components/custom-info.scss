@@ -1,0 +1,12 @@
+.custom-info {
+   @apply w-full;
+   p {
+      @apply text-base font-medium capitalize;
+   }
+   & p:first-child {
+      @apply text-gray-400;
+   }
+   & p:last-child {
+      @apply text-gray-500;
+   }
+}

@@ -14,9 +14,8 @@
    &__title {
       @apply flex items-center justify-between;
       @apply h-8 mt-2;
-      h3{
-
-        @apply text-xl font-semibold capitalize text-verdigris;
+      h3 {
+         @apply text-xl font-semibold capitalize text-verdigris;
       }
    }
 
