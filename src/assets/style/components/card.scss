@@ -15,9 +15,15 @@
 }
 @screen 2xl {
    .card {
-     &.biodata-calon-siswa{
-       @apply w-3/4;
-     }
+      &.iuran-add__form {
+         @apply w-7/12;
+      }
+      &.iuran-add__rincian {
+         @apply w-5/12;
+      }
+      &.biodata-calon-siswa {
+         @apply w-3/4;
+      }
       &__title {
          @apply text-base text-gray-500;
       }

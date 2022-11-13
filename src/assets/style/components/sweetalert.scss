@@ -3,12 +3,17 @@
 }
 
 .swal2-html-container {
-   @apply font-semibold capitalize #{!important};
+   @apply font-medium  #{!important};
 }
 
 .swal2-styled.swal2-confirm {
-   @apply font-semibold capitalize;
-   @apply bg-primary-normal #{!important};
+   @apply font-medium capitalize;
+   @apply bg-verdigris #{!important};
+}
+
+.swal2-styled.swal2-cancel {
+   @apply font-medium capitalize;
+   @apply bg-danger-normal #{!important};
 }
 
 @screen lg {

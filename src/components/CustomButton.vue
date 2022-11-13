@@ -1,7 +1,5 @@
 <script setup>
-import { startCase } from 'lodash'
 import { computed } from 'vue'
-import { object } from 'yup'
 import CustomIcon from './CustomIcon.vue'
 
 const props = defineProps({
@@ -31,10 +29,10 @@ const props = defineProps({
     default: 'secondary',
   },
   startIcon: {
-    type: Object,
+    type: String,
   },
   endIcon: {
-    type: Object,
+    type: String,
   },
 })
 
@@ -49,8 +47,11 @@ const getVariantAndColor = computed(() => {
   } else if (props.variant === 'outline') {
     return `btn__outline--${props.color}`
   } else if (props.variant === 'link') {
-    return ``
+    return `btn__link--${props.color}`
   }
+})
+const getIconSize = computed(() => {
+  return '24'
 })
 
 function buttonClick() {
@@ -60,23 +61,23 @@ function buttonClick() {
 <template>
   <button type="button" @click="buttonClick" :class="[getSize, getVariantAndColor, { btn__block: block }]">
     <span v-if="startIcon" class="btn__start-icon">
-      <CustomIcon :svgIcon="startIcon.svgIcon" :width="startIcon.width" />
+      <CustomIcon :width="getIconSize" :svgIcon="startIcon" />
     </span>
     {{ title }}
     <span v-if="endIcon" class="btn__end-icon">
-      <CustomIcon :svgIcon="endIcon" />
+      <CustomIcon :width="getIconSize" :svgIcon="endIcon" />
     </span>
   </button>
 </template>
 
 <style lang="scss" scoped>
-.btn {
-  span:first-child {
-    @apply mr-2;
-  }
+/* .btn { */
+/*   span:first-child { */
+/*     @apply mr-2; */
+/*   } */
 
-  span:last-child {
-    @apply ml-2;
-  }
-}
+/*   span:last-child { */
+/*     @apply ml-2; */
+/*   } */
+/* } */
 </style>

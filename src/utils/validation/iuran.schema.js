@@ -14,9 +14,10 @@ import { object, string, number } from 'yup'
 // })
 //
 export const iuranScheme = object({
-   nama: string().trim().required('nama iuran tidak boleh kosong'),
-   nominal: number()
-      .required('nominal tidak boleh kosong')
-      .typeError('nominal tidak valid'),
-   keterangan_interval: string().typeError('nominal tidak valid'),
+  nama: string().trim().required('nama iuran tidak boleh kosong'),
+  // nominal: number()
+  //    .required('nominal tidak boleh kosong')
+  //    .typeError('nominal tidak valid'),
+  interval: string().required('Interval tidak boleh kosong').nullable(true),
+  interval_detail: string().nullable(true),
 })

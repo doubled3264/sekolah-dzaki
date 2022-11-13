@@ -1,0 +1,147 @@
+.custom-calendar {
+   & label {
+      @apply block;
+      @apply text-sm font-medium capitalize text-gray-500;
+      // @apply cursor-pointer;
+   }
+   &__inner {
+      @apply flex;
+      @apply mt-1;
+      @apply border rounded border-gray-500;
+      @apply overflow-hidden;
+
+      & input {
+         @apply w-full  py-1.5 px-2;
+         @apply font-medium text-gray-500;
+         // @apply border-t border-r border-b rounded-tr rounded-br border-gray-500;
+
+         &:focus {
+            @apply border-none outline-none ring-0;
+         }
+      }
+
+      &--active {
+         @apply ring-1 ring-primary-normal;
+         &-error {
+            @apply ring-1 ring-red-500;
+         }
+      }
+
+      &--error {
+         @apply border-red-500;
+      }
+   }
+
+   &__icon {
+      @apply py-1.5 px-2;
+      @apply text-white;
+      @apply bg-illuminating-emerald;
+      // @apply border rounded-tl rounded-bl border-gray-500;
+   }
+
+   &--error {
+      & label {
+         @apply text-red-500;
+      }
+   }
+}
+
+@screen 2xl {
+   .custom-calendar {
+      & label {
+         @apply block;
+         @apply text-sm font-medium capitalize text-gray-500;
+         // @apply cursor-pointer;
+      }
+      &__inner {
+         @apply flex;
+         @apply mt-2;
+         @apply border rounded border-gray-500;
+         @apply overflow-hidden;
+
+         & input {
+            @apply w-full  py-1 px-3;
+            @apply font-medium text-gray-500;
+            // @apply border-t border-r border-b rounded-tr rounded-br border-gray-500;
+
+            &:focus {
+               @apply border-none outline-none ring-0;
+            }
+         }
+
+         &--active {
+            @apply ring-1 ring-primary-normal;
+            &-error {
+               @apply ring-1 ring-red-500;
+            }
+         }
+
+         &--error {
+            @apply border-red-500;
+         }
+      }
+
+      &__icon {
+         @apply py-1 px-2;
+         @apply text-white;
+         @apply bg-illuminating-emerald;
+         // @apply border rounded-tl rounded-bl border-gray-500;
+      }
+
+      &--error {
+         & label {
+            @apply text-red-500;
+         }
+      }
+   }
+}
+
+@screen 3xl {
+   .custom-calendar {
+      & label {
+         @apply block;
+         @apply text-sm font-medium capitalize text-gray-500;
+         // @apply cursor-pointer;
+      }
+      &__inner {
+         @apply flex;
+         @apply mt-2;
+         @apply border rounded border-gray-500;
+         @apply overflow-hidden;
+
+         & input {
+            @apply w-full  py-2 px-3;
+            @apply font-medium text-gray-500;
+            // @apply border-t border-r border-b rounded-tr rounded-br border-gray-500;
+
+            &:focus {
+               @apply border-none outline-none ring-0;
+            }
+         }
+
+         &--active {
+            @apply ring-1 ring-primary-normal;
+            &-error {
+               @apply ring-1 ring-red-500;
+            }
+         }
+
+         &--error {
+            @apply border-red-500;
+         }
+      }
+
+      &__icon {
+         @apply py-2 px-3;
+         @apply text-white;
+         @apply bg-illuminating-emerald;
+         // @apply border rounded-tl rounded-bl border-gray-500;
+      }
+
+      &--error {
+         & label {
+            @apply text-red-500;
+         }
+      }
+   }
+}

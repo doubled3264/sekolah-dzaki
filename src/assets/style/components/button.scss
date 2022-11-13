@@ -131,6 +131,14 @@
          @apply bg-warning-normal;
       }
    }
+   &__link--secondary {
+      @apply text-secondary-normal;
+      @apply border-none;
+
+      &:hover {
+         @apply text-secondary-hover;
+      }
+   }
    &__start-icon {
       @apply float-left;
       @apply ml-0 mr-1 #{!important};
