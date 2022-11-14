@@ -1,13 +1,21 @@
-// .iuran-add {
-//    &__content {
-//       @apply flex gap-4;
-//    }
-
-//    &__data {
-//       @apply w-8/12;
-//    }
-
-//    &__rincian {
-//       @apply w-4/12;
-//    }
-// }
+.iuran-add {
+   &__form {
+      @apply h-fit;
+   }
+   &__rincian-list {
+      @apply mt-2;
+   }
+   &__rincian-item {
+      @apply flex gap-2 items-center;
+      @apply py-1;
+      @apply font-medium capitalize text-gray-500;
+   }
+   &__rincian-info {
+      @apply flex justify-between;
+      @apply w-11/12;
+   }
+   &__rincian-action {
+      @apply w-1/12;
+      @apply text-right;
+   }
+}
