@@ -3,16 +3,18 @@ import axios from 'axios'
 export default {
   namespaced: true,
   state: {
-    iuran: [],
+    iuran: {
+      list: null
+    }
   },
   getters: {
-    getIuran(state) {
-      return state.iuran
+    getList(state) {
+      return state.iuran.list
     },
   },
   mutations: {
-    setIuran(state, data) {
-      state.iuran = data.iuran
+    setList(state, data) {
+      state.iuran.list = data
     },
   },
   actions: {
@@ -38,6 +40,22 @@ export default {
           .catch((err) => {
             console.log(err)
             reject()
+          })
+      })
+    },
+    /**
+     * get all iuran data
+     */
+    async getList({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('iuran')
+          .then((response) => {
+            console.log(response.data)
+            resolve(commit('setList', response.data.data))
+          })
+          .catch((err) => {
+            reject(err)
           })
       })
     },

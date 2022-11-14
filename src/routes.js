@@ -103,6 +103,11 @@ const routes = [
         name: 'daftar iuran',
         component: NewIuranList,
         props: { parentItem: 'iuran', childItem: 'daftar iuran' },
+      },{
+        path: '/:id',
+        name: 'daftar iuran',
+        component: NewIuranList,
+        props: { parentItem: 'iuran', childItem: 'daftar iuran' },
       },
       {
         path: 'potongan-biaya',

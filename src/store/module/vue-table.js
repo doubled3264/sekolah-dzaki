@@ -117,14 +117,6 @@ export default {
     },
     calonSiswa: {
       columns: [
-        // {
-        //    label: 'No',
-        //    field: 'no',
-        //    type: 'number',
-        //    thClass: 'text-left',
-        //    tdClass: 'text-left',
-        //    width: '70px',
-        // },
         {
           label: 'Nama',
           field: 'nama',
@@ -188,21 +180,14 @@ export default {
     iuran: {
       columns: [
         {
-          label: 'No',
-          field: 'no',
-          type: 'number',
-          thClass: 'text-left !w-16',
-          tdClass: 'text-left !pl-5',
-        },
-        {
           label: 'ID Iuran',
           field: 'id_iuran',
           hidden: true,
           thClass: 'text-left',
         },
         {
-          label: 'ID Variant',
-          field: 'variant',
+          label: 'ID Varian',
+          field: 'VarianIurans.id_iuran',
           hidden: true,
           thClass: 'text-left',
         },
@@ -218,7 +203,7 @@ export default {
         },
         {
           label: 'Nominal',
-          field: 'nominal',
+          field: (rows) => rows.VarianIurans[0].nominal,
           type: 'number',
           thClass: 'text-left',
         },
