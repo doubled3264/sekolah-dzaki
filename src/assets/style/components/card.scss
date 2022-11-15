@@ -5,8 +5,20 @@
    @apply py-3 px-6;
    @apply rounded-lg shadow-lg bg-white;
 
+   &__head {
+      @apply flex justify-between;
+      @apply text-gray-500;
+   }
    &__title {
-      @apply text-sm font-medium capitalize text-gray-500;
+      @apply text-sm font-medium capitalize;
+   }
+   &__nav {
+      & svg {
+         @apply mx-1;
+         &:hover {
+            @apply text-verdigris;
+         }
+      }
    }
 
    &__body {
@@ -15,11 +27,24 @@
 }
 @screen 2xl {
    .card {
-      &.iuran-add__form {
-         @apply w-6/12;
+      &.iuran-add {
+         &__form {
+            @apply w-6/12;
+         }
       }
-      &.iuran-add__rincian {
-         @apply w-6/12;
+      &.iuran-add {
+         &__rincian {
+            @apply w-6/12;
+         }
+      }
+      &.iuran-info {
+         &__left {
+            @apply w-1/2;
+         }
+
+         &__right {
+            @apply w-1/2;
+         }
       }
       &.biodata-calon-siswa {
          @apply w-3/4;

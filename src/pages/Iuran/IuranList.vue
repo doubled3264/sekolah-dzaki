@@ -2,7 +2,6 @@
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { findIndex } from 'lodash'
 import Swal from 'sweetalert2'
 import { VueGoodTable } from 'vue-good-table-next'
 import CustomIcon from '../../components/CustomIcon.vue'
@@ -19,13 +18,13 @@ const store = useStore()
 const router = useRouter()
 /** @type {Object} modal  */
 const activeModal = ref({
-   tableAction: false,
+  tableAction: false,
 })
 const iuranSelected = ref(null)
 /** @type {object} vue good table props */
 const tableData = ref({
-   columns: [],
-   rows: [],
+  columns: [],
+  rows: [],
 })
 onMounted(() => {
   store.commit('sidebar/setAllToNormal')
@@ -42,31 +41,31 @@ onMounted(() => {
  * @param {}
  */
 function generateVueTable() {
-   tableData.value.columns = store.getters['vueTable/getColumn']('iuran')
-   /* setColumnFn() */
+  tableData.value.columns = store.getters['vueTable/getColumn']('iuran')
+  /* setColumnFn() */
 }
 /**
  * fetch calon siswa data on DB and get from store
  */
 async function fetchIuran() {
-   await store.dispatch('iuran/getList')
-   tableData.value.rows = store.getters['iuran/getList']
+  await store.dispatch('iuran/getList')
+  tableData.value.rows = store.getters['iuran/getList']
 }
 
 function selectRow(param) {
-   toggleShowOption()
-   iuranSelected.value = param.row
+  toggleShowOption()
+  iuranSelected.value = param.row
 }
 
 function toggleShowOption() {
-   activeModal.value.tableAction = !activeModal.value.tableAction
+  activeModal.value.tableAction = !activeModal.value.tableAction
 }
 
 function infoAction() {
-   router.push({
-      name: 'biodata calon siswa',
-      params: { id: calonSiswaSelected.value.id },
-   })
+  router.push({
+    name: 'info iuran',
+    params: { id: iuranSelected.value.id },
+  })
 }
 </script>
 <template>
@@ -82,30 +81,20 @@ function infoAction() {
           <h3>daftar iuran</h3>
           <CustomButton title="tambah data" color="verdigris" size="sm"
             @button-action="router.push('/iuran/tambah-data')" />
-        </div><div class="content__body">
-               <vue-good-table
-                  v-if="
-                     !tableData.columns.length == 0 &&
-                     !tableData.rows.length == 0
-                  "
-                  :columns="tableData.columns"
-                  :rows="tableData.rows"
-                  styleClass="vgt-table striped"
-                  v-on:row-dblclick="selectRow"
-               />
-            </div>
+        </div>
+      </div>
+      <div class="content__body">
+        <vue-good-table v-if="
+           !tableData.columns.length == 0 && !tableData.rows.length == 0
+        " :columns="tableData.columns" :rows="tableData.rows" styleClass="vgt-table striped"
+          v-on:row-dblclick="selectRow" />
       </div>
     </div>
   </div>
 
-   <teleport :disabled="!activeModal.tableAction" to="#modal">
-      <CustomModalOverlayVue
-         v-show="activeModal.tableAction"
-         @close-modal="toggleShowOption"
-      >
-         <TableAction
-            @info-action="infoAction"
-         ></TableAction>
-      </CustomModalOverlayVue>
-   </teleport>
+  <teleport :disabled="!activeModal.tableAction" to="#modal">
+    <CustomModalOverlayVue v-show="activeModal.tableAction" @close-modal="toggleShowOption">
+      <TableAction @info-action="infoAction"></TableAction>
+    </CustomModalOverlayVue>
+  </teleport>
 </template>

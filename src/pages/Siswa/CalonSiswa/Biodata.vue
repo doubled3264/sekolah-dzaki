@@ -1,21 +1,22 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { formatInTimeZone } from 'date-fns-tz'
 import CustomIcon from '../../../components/CustomIcon.vue'
-import { arrowRight } from '../../../utils/svg-var'
+import { arrowRight, pencil, trash } from '../../../utils/svg-var'
 import CustomInfo from '../../../components/form/CustomInfo.vue'
 import { computed } from '@vue/reactivity'
 import { setGender } from '../../../utils/etc.helper'
 import id from 'date-fns/locale/id'
 import { format, isValid, parse } from 'date-fns'
+import Swal from 'sweetalert2'
 const props = defineProps({
   parentItem: String,
   childItem: String,
 })
 const store = useStore()
 const route = useRoute()
+const router = useRouter()
 const calonSiswaId = ref(null)
 const calonSiswaData = ref({})
 onMounted(() => {
@@ -48,9 +49,53 @@ const getTanggalLahir = computed(() => {
       'yyyy-MM-dd',
       new Date()
     )
-    return format(date, 'dd MMMM yyyy', {locale: id})
+    return format(date, 'dd MMMM yyyy', { locale: id })
   }
 })
+function editAction() {
+  router.push({
+    name: 'edit calon siswa',
+    params: { id: calonSiswaId.value },
+  })
+}
+function deleteAction() {
+  Swal.fire({
+    title: 'Anda yakin ?',
+    text: `Data "${calonSiswaData.value.nama}" akan dihapus.`,
+    icon: 'warning',
+    showCancelButton: true,
+    cancelButtonText: 'Batal',
+    cancelButtonColor: '#c82333',
+    confirmButtonText: 'Ya, hapus !',
+    confirmButtonColor: '#41c3a9',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      deleteCalonSiswa()
+    }
+  })
+}
+
+async function deleteCalonSiswa() {
+  await store
+    .dispatch('calonSiswa/delete', calonSiswaData.value)
+    .then(() => {
+      Swal.fire({
+        icon: 'success',
+        text: 'data berhasil dihapus',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      router.back()
+    })
+    .catch(() => {
+      Swal.fire({
+        icon: 'error',
+        text: 'data gagal dihapus',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    })
+}
 </script>
 <template>
   <div class="content">
@@ -59,7 +104,7 @@ const getTanggalLahir = computed(() => {
         <div class="content__path">
           <span>siswa</span>
           <CustomIcon :svg-icon="arrowRight" width="10" />
-          <span class="cursor-pointer" @click="$router.go(-1)">calon siswa</span>
+          <span class="cursor-pointer" @click="$router.go(-1)">daftar calon siswa</span>
           <CustomIcon :svg-icon="arrowRight" width="10" />
           <span>biodata</span>
         </div>
@@ -69,7 +114,11 @@ const getTanggalLahir = computed(() => {
         <div class="content__body">
           <div class="card biodata-calon-siswa">
             <div class="card__head">
-              <div class="card__title">biodata siswa</div>
+              <div class="card__title">biodata calon siswa</div>
+              <div class="card__nav">
+                <CustomIcon :svg-icon="pencil" @click="editAction" />
+                <CustomIcon :svg-icon="trash" @click="deleteAction" />
+              </div>
             </div>
             <div class="card__body">
               <div>
@@ -99,7 +148,7 @@ const getTanggalLahir = computed(() => {
                 </div>
               </div>
               <div>
-              <CustomInfo label="alamat" :value="calonSiswaData.alamat" />
+                <CustomInfo label="alamat" :value="calonSiswaData.alamat" />
               </div>
             </div>
           </div>

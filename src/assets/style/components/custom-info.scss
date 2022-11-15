@@ -1,5 +1,4 @@
 .custom-info {
-   @apply w-full mb-4;
    p {
       @apply text-base font-medium capitalize;
    }
@@ -8,5 +7,12 @@
    }
    & p:last-child {
       @apply text-gray-500;
+   }
+   &__vertical {
+      @apply w-full mb-4;
+   }
+   &__horizontal {
+      @apply flex justify-between;
+      @apply w-full mb-1;
    }
 }
