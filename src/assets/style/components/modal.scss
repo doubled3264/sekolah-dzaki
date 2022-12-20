@@ -131,6 +131,30 @@
       &.table-action {
          @apply w-1/3 mx-auto mt-36;
       }
+      &.article-add {
+         @apply w-1/3 mx-auto mt-36;
+      }
+      & .article-add__list {
+         @apply flex justify-around;
+         @apply mb-2;
+      }
+
+      & .article-add__item {
+         @apply w-1/3 py-4;
+         @apply text-center text-gray-500;
+         @apply border-2 rounded-lg border-gray-500;
+         @apply cursor-pointer;
+         p {
+            @apply mt-2;
+            @apply font-medium capitalize;
+         }
+
+         &:hover {
+            @apply text-white;
+            @apply border-verdigris;
+            @apply bg-verdigris;
+         }
+      }
    }
 
    .table-action {
@@ -165,6 +189,10 @@
 @screen 3xl {
    .modal {
       &.table-action {
+         @apply w-1/4;
+      }
+
+      &.article-add {
          @apply w-1/4;
       }
    }

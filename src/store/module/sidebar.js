@@ -59,6 +59,7 @@ export default {
           },
         ],
       },
+
       {
         title: 'siswa',
         svgIcon: user,
@@ -88,6 +89,19 @@ export default {
         path: '/pembayaran',
         isActive: false,
         subItem: [],
+      },
+      {
+        title: 'artikel',
+        svgIcon: note,
+        path: '/artikel',
+        isActive: false,
+        subItem: [
+          {
+            title: 'daftar artikel',
+            path: '/artikel',
+            isActive: false,
+          },
+        ],
       },
     ],
   },

@@ -177,6 +177,31 @@ export default {
         },
       ],
     },
+    artikel: {
+      columns: [
+        {
+          label: 'ID Artikel',
+          field: 'id',
+          hidden: true,
+          thClass: 'text-left',
+        },
+        {
+          label: 'Judul',
+          field: 'title',
+          thClass: 'text-left',
+        },
+        {
+          label: 'Kategori',
+          field: 'categories',
+          thClass: 'text-left',
+        },
+        {
+          label: 'Kegunaan',
+          field: 'utility',
+          thClass: 'text-left',
+        },
+      ],
+    },
     iuran: {
       columns: [
         {

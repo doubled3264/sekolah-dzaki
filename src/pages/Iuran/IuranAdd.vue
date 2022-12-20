@@ -1,11 +1,11 @@
 <script setup>
-import Swal from 'sweetalert2'
-import { forEach, remove, size } from 'lodash'
 import { computed, onMounted, ref, watch } from 'vue'
+import { forEach, remove, size } from 'lodash'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { iuranScheme } from '../../utils/validation/iuran.schema'
 import { arrowRight, trash } from '../../utils/svg-var'
+import Swal from 'sweetalert2'
 import CustomIcon from '../../components/CustomIcon.vue'
 import CustomInput from '../../components/form/CustomInput.vue'
 import CustomSelectBox from '../../components/form/CustomSelectBox.vue'
