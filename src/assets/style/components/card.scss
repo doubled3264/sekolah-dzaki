@@ -10,13 +10,22 @@
       @apply text-gray-500;
    }
    &__title {
-      @apply text-sm font-medium capitalize;
+      @apply flex items-center;
+      @apply font-medium capitalize;
    }
    &__nav {
-      & svg {
-         @apply mx-1;
+      @apply flex gap-3;
+      .icon__wrapper {
+         @apply h-fit p-1;
+         @apply border-2 border-gray-500 rounded-md;
+         & svg {
+            @apply block;
+         }
          &:hover {
-            @apply text-verdigris;
+            @apply text-white;
+            @apply border-verdigris;
+            @apply bg-verdigris;
+            @apply cursor-pointer;
          }
       }
    }
@@ -49,15 +58,8 @@
       &.biodata-calon-siswa {
          @apply w-3/4;
       }
-      &.artikel-add {
-         @apply w-8/12;
-      }
       &__title {
          @apply text-base text-gray-500;
-      }
-
-      &__nav {
-         @apply flex gap-4;
       }
    }
 }

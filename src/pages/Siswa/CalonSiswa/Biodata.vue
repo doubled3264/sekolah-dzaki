@@ -116,8 +116,12 @@ async function deleteCalonSiswa() {
             <div class="card__head">
               <div class="card__title">biodata calon siswa</div>
               <div class="card__nav">
-                <CustomIcon :svg-icon="pencil" @click="editAction" />
-                <CustomIcon :svg-icon="trash" @click="deleteAction" />
+                <div class="icon__wrapper">
+                  <CustomIcon :svg-icon="pencil" @click="editAction" />
+                </div>
+                <div class="icon__wrapper">
+                  <CustomIcon :svg-icon="trash" @click="deleteAction" />
+                </div>
               </div>
             </div>
             <div class="card__body">

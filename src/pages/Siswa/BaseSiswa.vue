@@ -1,7 +1,8 @@
 <script setup>
-import NewSidebar from '../../components/layouts/sidebar/NewSidebar.vue'
+import Sidebar from '../../layout/sidebar/Sidebar.vue'
 </script>
 <template>
-   <NewSidebar />
-   <router-view></router-view>
+  <NewSidebar />
+  <Sidebar />
+  <router-view></router-view>
 </template>

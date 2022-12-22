@@ -19,21 +19,39 @@
       }
    }
 
+   &__nav {
+      @apply flex gap-3;
+      @apply mr-2;
+      .icon__wrapper {
+         @apply h-fit p-1;
+         @apply border-2 border-gray-500 rounded-md;
+         & svg {
+            @apply block;
+         }
+         &:hover {
+            @apply text-white;
+            @apply border-verdigris;
+            @apply bg-verdigris;
+            @apply cursor-pointer;
+         }
+      }
+   }
+
    &__body {
       @apply mt-5;
    }
 }
 
 @screen 2xl {
-  .content {
-    &__title {
-      @apply mt-1;
-      h3 {
-        @apply text-base font-medium;
+   .content {
+      &__title {
+         @apply mt-1;
+         h3 {
+            @apply text-base font-medium;
+         }
       }
-    }
-    &__body{
-      @apply mt-3;
-    }
-  }
+      &__body {
+         @apply mt-3;
+      }
+   }
 }

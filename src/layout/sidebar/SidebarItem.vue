@@ -1,9 +1,7 @@
 <script setup>
 import { useStore } from 'vuex'
-import CustomIcon from '../../CustomIcon.vue'
-import { arrowDown } from '../../../utils/svg-var'
-import { onMounted, onUpdated, ref, watchEffect } from 'vue'
-import { isArray } from 'lodash'
+import CustomIcon from '../../components/CustomIcon.vue'
+import { arrowDown } from '../../utils/svg-var'
 
 const props = defineProps({
   title: String,

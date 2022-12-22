@@ -1,24 +1,20 @@
 @import './components/vue-good-table.scss';
-// @import './components/vue-multiselect.scss';
 @import './components/sweetalert.scss';
 @import './components/button.scss';
-// @import './components/input.scss';
-// @import './components/sidebar.scss';
 @import './components/header.scss';
-// @import './components/content.scss';
 @import './components/login.scss';
 @import './components/overlay.scss';
 @import './components/modal.scss';
 @import './components/datepicker.scss';
 @import './components/radio-button.scss';
 @import './components/textarea.scss';
-// @import './components/card.scss';
 @import './components/switch.scss';
 
-@import './page/pembayaran.scss';
-@import './page/siswa.scss';
-@import './page/iuran.scss';
+@import './pages/pembayaran.scss';
+@import './pages/siswa.scss';
+@import './pages/iuran.scss';
 
+@import './components/tinymce.scss';
 @import './components/card.scss';
 @import './components/custom-input.scss';
 @import './components/custom-textarea.scss';
@@ -27,6 +23,11 @@
 @import './components/custom-info.scss';
 @import './components/new-content.scss';
 @import './components/new-sidebar.scss';
+
+// layouts
+
+// pages
+@import './pages/artikel.scss';
 
 @tailwind base;
 @tailwind components;

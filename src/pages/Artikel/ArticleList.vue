@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { arrowRight } from '../../utils/svg-var'
+import { arrowRight, textAdd } from '../../utils/svg-var'
 import { VueGoodTable } from 'vue-good-table-next'
 import CustomIcon from '../../components/CustomIcon.vue'
 import CustomButton from '../../components/CustomButton.vue'
@@ -48,8 +48,11 @@ function generateVueTable() {
         </div>
         <div class="content__title">
           <h3>daftar artikel</h3>
-          <CustomButton title="tambah data" color="verdigris" size="sm"
-            @button-action="router.push('/artikel/tambah-data')" />
+          <div class="content__nav">
+            <div class="icon__wrapper" @click="router.push('/artikel/tambah-data')">
+              <CustomIcon :svg-icon="textAdd" />
+            </div>
+          </div>
         </div>
       </div>
       <div class="content__body">

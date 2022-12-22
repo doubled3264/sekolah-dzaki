@@ -1,4 +1,4 @@
-@screen 2xl {
+@screen xl {
    .sidebar {
       @apply flex flex-col;
       @apply w-2/12  px-4;
@@ -45,7 +45,6 @@
       }
 
       &__item:hover {
-         // @apply bg-illuminating-emerald;
          @apply bg-verdi-hover;
          @apply text-white;
       }
@@ -54,17 +53,3 @@
       }
    }
 }
-
-// @screen lg {
-//    .sidebar {
-//       @apply w-56;
-
-//       & > p {
-//          @apply text-xs;
-//       }
-//       &__item {
-//          @apply w-auto;
-//          @apply text-xs;
-//       }
-//    }
-// }
