@@ -72,7 +72,7 @@ function toggleModal(modalName) {
 }
 
 function pushTextArticle() {
-   if (!tinyMceOptions.value.contentValue.length === 0) {
+   if (tinyMceOptions.value.contentValue.length != 0) {
       artikel.value.item.push({
          type: 'text',
          value: tinyMceOptions.value.contentValue,
@@ -84,11 +84,14 @@ function pushTextArticle() {
 }
 
 function pushImageArticle(imageValue) {
+   console.log(imageValue)
    artikel.value.item.push({
       type: 'image',
-      value: imageValue,
+      value: {
+         rawImage: imageValue,
+         previewImage: URL.createObjectURL(imageValue),
+      },
    })
-   console.log(artikel.value.item)
 }
 /**
  * validate input when event triggered
@@ -160,6 +163,23 @@ function addPictureAction() {
                         />
                      </div>
                   </form>
+                  <ul class="artikel-add__preview-list">
+                     <li
+                        v-for="(item, index) in artikel.item"
+                        class="artikel-add__preview-item"
+                     >
+                        <div
+                           v-if="item.type === 'text'"
+                           v-html="item.value"
+                        ></div>
+                        <div v-if="item.type === 'image'">
+                           <img
+                              :src="item.value.previewImage"
+                              :alt="item.value.rawImage.name"
+                           />
+                        </div>
+                     </li>
+                  </ul>
                </div>
             </div>
          </div>
