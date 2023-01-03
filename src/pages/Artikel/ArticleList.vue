@@ -2,65 +2,73 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { arrowRight, textAdd } from '../../utils/svg-var'
+import { arrowRight, textAdd } from '../../utils/svg-vars'
 import { VueGoodTable } from 'vue-good-table-next'
 import CustomIcon from '../../components/CustomIcon.vue'
 import CustomButton from '../../components/CustomButton.vue'
 
 const props = defineProps({
-  parentItem: String,
-  childItem: String,
+   parentItem: String,
+   childItem: String,
 })
 const store = useStore()
 const router = useRouter()
 /** @type {object} vue good table props */
 const tableData = ref({
-  columns: [],
-  rows: [],
+   columns: [],
+   rows: [],
 })
 onMounted(() => {
-  store.commit('sidebar/setAllToNormal')
-  store.commit('sidebar/setActiveParent', props.parentItem)
-  store.commit('sidebar/setActiveChild', {
-    parent: props.parentItem,
-    itemToActive: props.childItem,
-  })
-  generateVueTable()
-  /* fetchIuran() */
+   store.commit('sidebar/setAllToNormal')
+   store.commit('sidebar/setActiveParent', props.parentItem)
+   store.commit('sidebar/setActiveChild', {
+      parent: props.parentItem,
+      itemToActive: props.childItem,
+   })
+   generateVueTable()
+   /* fetchIuran() */
 })
 /**
  * get vuetable column props on store
  * @param {}
  */
 function generateVueTable() {
-  tableData.value.columns = store.getters['vueTable/getColumn']('artikel')
-  /* setColumnFn() */
+   tableData.value.columns = store.getters['vueTable/getColumn']('artikel')
+   /* setColumnFn() */
 }
 </script>
 <template>
-  <div class="content">
-    <div class="content__inner">
-      <div class="content__head">
-        <div class="content__path">
-          <span>artikel</span>
-          <CustomIcon :svg-icon="arrowRight" width="10" />
-          <span>daftar artikel</span>
-        </div>
-        <div class="content__title">
-          <h3>daftar artikel</h3>
-          <div class="content__nav">
-            <div class="icon__wrapper" @click="router.push('/artikel/tambah-data')">
-              <CustomIcon :svg-icon="textAdd" />
+   <div class="content">
+      <div class="content__inner">
+         <div class="content__head">
+            <div class="content__path">
+               <span>artikel</span>
+               <CustomIcon :svg-icon="arrowRight" width="10" />
+               <span>daftar artikel</span>
             </div>
-          </div>
-        </div>
+            <div class="content__title">
+               <h3>daftar artikel</h3>
+               <div class="content__nav">
+                  <div
+                     class="icon__wrapper"
+                     @click="router.push('/artikel/tambah-data')"
+                  >
+                     <CustomIcon :svg-icon="textAdd" />
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="content__body">
+            <vue-good-table
+               v-if="
+                  !tableData.columns.length == 0 && !tableData.rows.length == 0
+               "
+               :columns="tableData.columns"
+               :rows="tableData.rows"
+               styleClass="vgt-table striped"
+               v-on:row-dblclick="selectRow"
+            />
+         </div>
       </div>
-      <div class="content__body">
-        <vue-good-table v-if="
-           !tableData.columns.length == 0 && !tableData.rows.length == 0
-        " :columns="tableData.columns" :rows="tableData.rows" styleClass="vgt-table striped"
-          v-on:row-dblclick="selectRow" />
-      </div>
-    </div>
-  </div>
+   </div>
 </template>

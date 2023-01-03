@@ -1,3 +1,32 @@
+.artikel-add {
+   &__preview-list {
+   }
+
+   &__preview-item {
+      @apply relative;
+      @apply py-2;
+      & > .image-content {
+         @apply flex justify-center;
+         @apply text-gray-500;
+
+         .image-content__nav {
+            @apply absolute top-0 bottom-0 right-0;
+            @apply flex flex-col justify-center;
+         }
+      }
+
+      p {
+         @apply text-base text-gray-500;
+      }
+
+      img {
+         @apply w-2/5;
+      }
+   }
+}
+.card.artikel-add__image {
+   @apply w-1/2 mx-auto mt-36;
+}
 @screen lg {
    .card.artikel-add {
       @apply w-full;

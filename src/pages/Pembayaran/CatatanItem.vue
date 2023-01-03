@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import CustomIcon from '../../components/CustomIcon.vue'
-import { calendar, trash } from '../../utils/svg-var'
+import { calendar, trash } from '../../utils/svg-vars'
 
 const props = defineProps({
    catatan: {

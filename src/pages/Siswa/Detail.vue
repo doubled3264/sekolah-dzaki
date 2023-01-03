@@ -1,7 +1,7 @@
 <script setup>
 import CustomModal from '../../components/CustomModal.vue'
 import CustomIcon from '../../components/CustomIcon.vue'
-import { user } from '../../utils/svg-var'
+import { user } from '../../utils/svg-vars'
 import { ref } from 'vue'
 
 /** @type {string} section siswa | akademik  */

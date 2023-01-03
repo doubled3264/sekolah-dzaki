@@ -1,7 +1,7 @@
 <script setup>
 import { useStore } from 'vuex'
 import CustomIcon from '../../components/CustomIcon.vue'
-import { arrowDown } from '../../utils/svg-var'
+import { arrowSolidDown } from '../../utils/svg-vars'
 
 const props = defineProps({
   title: String,
@@ -31,16 +31,16 @@ function setActiveParent() {
     <div @click="setActiveParent" :class="[' sidebar__item', { 'sidebar__item--active': isActive }]">
       <CustomIcon width="24" stroke-width="0.1" :svg-icon="svgIcon" />
       <span>{{ title }}</span>
-      <CustomIcon width="16" stroke-width="0.1" :svg-icon="arrowDown" />
+      <CustomIcon width="16" stroke-width="0.1" :svg-icon="arrowSolidDown" />
     </div>
     <ul ref="subList" :class="[
-       'sidebar__sub-list',
-       { 'sidebar__sub-list--active': isActive },
-    ]">
+  'sidebar__sub-list',
+  { 'sidebar__sub-list--active': isActive },
+]">
       <li v-for="(item, index) in subItem" :key="index + 1" :class="[
-         'sidebar__sub-item',
-         { 'sidebar__sub-item--active': item.isActive },
-      ]">
+  'sidebar__sub-item',
+  { 'sidebar__sub-item--active': item.isActive },
+]">
         <router-link :to="item.path"><span>{{ item.title }}</span></router-link>
       </li>
     </ul>

@@ -2,14 +2,14 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import CustomIcon from '../../../components/CustomIcon.vue'
-import { arrowRight, pencil, trash } from '../../../utils/svg-var'
-import CustomInfo from '../../../components/form/CustomInfo.vue'
+import { arrowRight, pencil, trash } from '../../../utils/svg-vars'
 import { computed } from '@vue/reactivity'
 import { setGender } from '../../../utils/etc.helper'
 import id from 'date-fns/locale/id'
 import { format, isValid, parse } from 'date-fns'
 import Swal from 'sweetalert2'
+import CustomIcon from '../../../components/CustomIcon.vue'
+import CustomInfo from '../../../components/form/CustomInfo.vue'
 const props = defineProps({
   parentItem: String,
   childItem: String,

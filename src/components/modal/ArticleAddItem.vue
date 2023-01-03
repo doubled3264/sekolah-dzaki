@@ -1,5 +1,5 @@
 <script setup>
-import { imageAdd, textAdd } from '../../utils/svg-var'
+import { imageAdd, textAdd } from '../../utils/svg-vars'
 import CustomIcon from '../CustomIcon.vue'
 
 defineEmits(['addTextAction', 'addPictureAction'])

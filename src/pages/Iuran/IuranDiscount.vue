@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { useStore } from 'vuex'
 import CustomIcon from '../../components/CustomIcon.vue'
-import { arrowRight } from '../../utils/svg-var'
+import { arrowRight } from '../../utils/svg-vars'
 
 const props = defineProps({
    parentItem: String,

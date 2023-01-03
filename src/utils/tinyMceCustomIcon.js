@@ -1,4 +1,4 @@
-import { disket } from './svg-var'
+import { disket } from './svg-vars'
 export const save = (width) => {
   return `
 

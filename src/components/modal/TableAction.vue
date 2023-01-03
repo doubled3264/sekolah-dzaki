@@ -1,5 +1,5 @@
 <script setup>
-import { trash, pencil, info } from '../../utils/svg-var'
+import { trash, pencil, info } from '../../utils/svg-vars'
 import CustomIcon from '../CustomIcon.vue'
 
 defineEmits(['infoAction', 'editAction', 'deleteAction'])

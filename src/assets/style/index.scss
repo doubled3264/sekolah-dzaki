@@ -34,8 +34,9 @@
 @tailwind utilities;
 
 body {
-   @apply font-poppins;
+   // @apply font-poppins;
    @apply bg-midnight-green;
+   font-family: 'Rubik', sans-serif;
 }
 .app-wrapper {
    @apply flex;

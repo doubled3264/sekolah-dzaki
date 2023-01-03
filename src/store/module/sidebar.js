@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { note, power, user } from '../../utils/svg-var'
+import { note, power, user } from '../../utils/svg-vars'
 export default {
   namespaced: true,
   state: {
