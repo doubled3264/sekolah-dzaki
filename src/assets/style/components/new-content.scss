@@ -11,6 +11,17 @@
       @apply text-sm font-medium capitalize text-gray-500;
    }
 
+   &__path-list {
+      @apply flex gap-1 items-center;
+      @apply text-sm font-medium capitalize text-gray-500;
+   }
+
+   &__path-item {
+     svg {
+       @apply ml-1;
+     }
+   }
+
    &__title {
       @apply flex items-center justify-between;
       @apply h-8 mt-2;

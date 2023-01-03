@@ -15,9 +15,9 @@ import IuranAdd from './pages/Iuran/IuranAdd.vue'
 import IuranInfo from './pages/Iuran/IuranInfo.vue'
 import IuranDiscount from './pages/Iuran/IuranDiscount.vue'
 
-import BaseArticle from './pages/Artikel/BaseArticle.vue'
-import ArticleList from './pages/Artikel/ArticleList.vue'
-import ArticleAdd from './pages/Artikel/ArticleAdd.vue'
+import BaseArticle from './pages/Article/BaseArticle.vue'
+import ArticleList from './pages/Article/ArticleList.vue'
+import ArticleAdd from './pages/Article/ArticleAdd.vue'
 
 import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
@@ -98,7 +98,7 @@ const routes = [
   // },
   {
     path: '/artikel',
-    name: 'artikel',
+    name: 'article',
     component: BaseArticle,
     meta: { requiresAuth: true },
     children: [
