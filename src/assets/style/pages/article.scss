@@ -1,3 +1,13 @@
+.card.article-add__image {
+   @apply w-1/2 mx-auto mt-36;
+}
+.article-add {
+   &__preview-image {
+      img {
+         @apply w-1/2 mx-auto;
+      }
+   }
+}
 .artikel-add {
    &__preview-list {
    }
@@ -9,8 +19,12 @@
          @apply flex justify-center;
          @apply text-gray-500;
 
+         .image-content__delete {
+            @apply absolute top-20 right-20 z-10;
+            @apply cursor-pointer;
+         }
          .image-content__nav {
-            @apply absolute top-0 bottom-0 right-0;
+            @apply absolute top-0 bottom-0 right-20;
             @apply flex flex-col justify-center;
          }
       }
@@ -23,9 +37,6 @@
          @apply w-2/5;
       }
    }
-}
-.card.artikel-add__image {
-   @apply w-1/2 mx-auto mt-36;
 }
 @screen lg {
    .card.artikel-add {

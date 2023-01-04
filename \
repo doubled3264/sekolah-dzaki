@@ -112,7 +112,8 @@ function reorderingImage(imageIndex, to) {
 }
 
 function removeImage(imageIndex) {
-  article.value.item.splice(imageIndex, 1)
+  console.log(imageIndex)
+  /* article.value.item.splice(imageIndex, 1) */
 }
 /**
  * validate input when event triggered
