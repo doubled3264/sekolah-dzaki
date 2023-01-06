@@ -1,22 +1,17 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import {
-   arrowSolidUp,
-   arrowSolidDown,
-   arrowRight,
-   imageAdd,
-   textAdd,
-   disket,
-} from '../../utils/svg-vars'
+import { imageAdd, textAdd, disket } from '../../utils/svg-vars'
 import { articleSchema } from '../../utils/validation/article.schema'
-import ArticleAddPreviewList from './ArticleAddPreviewList.vue'
+import { articleDialog } from '../../utils/sweetalert-object'
+import Swal from 'sweetalert2'
+import ContentHead from '../../components/Content/ContentHead.vue'
 import CustomIcon from '../../components/CustomIcon.vue'
 import CustomInput from '../../components/form/CustomInput.vue'
 import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
+import ArticleAddPreviewList from './ArticleAddPreviewList.vue'
 import AddNewImage from '../../components/modal/Article/AddNewImage.vue'
 import AddNewText from '../../components/modal/Article/AddNewText.vue'
-import ContentHead from '../../components/Content/ContentHead.vue'
 
 const props = defineProps({
    parentItem: String,
@@ -35,11 +30,14 @@ const errorState = ref({
    },
 })
 const modal = ref({
-   chooseItem: false,
    textEditor: false,
    imageEditor: false,
 })
-const contentValue = ref({})
+const textToEdit = ref({
+   value: '',
+   index: 0,
+})
+const editorPurpose = ref('add')
 
 onMounted(() => {
    store.commit('sidebar/setAllToNormal')
@@ -54,7 +52,29 @@ function toggleModal(modalName) {
    modal.value[modalName] = !modal.value[modalName]
 }
 
-function pushTextArticle(textValue) {
+function addNewText() {
+   editorPurpose.value = 'add'
+   toggleModal('textEditor')
+}
+
+function editText(textIndex) {
+   textToEdit.value.value = article.value.item[textIndex].value
+   textToEdit.value.index = textIndex
+   editorPurpose.value = 'edit'
+   toggleModal('textEditor')
+}
+
+function closeTextEditor() {
+   Swal.fire(articleDialog.preventClose).then(async (result) => {
+      if (result.isConfirmed) {
+         textToEdit.value.value = ''
+         textToEdit.value.index = 0
+         toggleModal('textEditor')
+      }
+   })
+}
+
+function pushNewText(textValue) {
    article.value.item.push({
       type: 'text',
       value: textValue,
@@ -62,7 +82,20 @@ function pushTextArticle(textValue) {
    toggleModal('textEditor')
 }
 
-function pushImageArticle(imageValue) {
+function pushEditedText(content, textIndex) {
+   article.value.item[textIndex].value = content
+   toggleModal('textEditor')
+}
+
+function closeAddImageModal() {
+   Swal.fire(articleDialog.preventClose).then(async (result) => {
+      if (result.isConfirmed) {
+         toggleModal('imageEditor')
+      }
+   })
+}
+
+function pushNewImage(imageValue) {
    article.value.item.push({
       type: 'image',
       value: {
@@ -70,11 +103,6 @@ function pushImageArticle(imageValue) {
       },
    })
    toggleModal('imageEditor')
-}
-
-function editText(textIndex) {
-   contentValue.value = article.value.item[textIndex].value
-   toggleModal('textEditor')
 }
 
 function reorderingImage(imageIndex, to) {
@@ -89,7 +117,11 @@ function reorderingImage(imageIndex, to) {
 }
 
 function removeImage(imageIndex) {
-   article.value.item.splice(imageIndex, 1)
+   Swal.fire(articleDialog.deleteImage).then(async (result) => {
+      if (result.isConfirmed) {
+         article.value.item.splice(imageIndex, 1)
+      }
+   })
 }
 /**
  * validate input when event triggered
@@ -105,15 +137,6 @@ async function validateInput(field) {
          errorState.value[field].isError = true
          errorState.value[field].message = err.message
       })
-}
-
-function addTextItem() {
-   toggleModal('chooseItem')
-   toggleModal('textEditor')
-}
-function addPictureAction() {
-   toggleModal('chooseItem')
-   console.log('addPictureAction run')
 }
 </script>
 <template>
@@ -132,10 +155,7 @@ function addPictureAction() {
                      <h3>Masukan Data Artikel</h3>
                   </div>
                   <div class="card__nav">
-                     <div
-                        class="icon__wrapper"
-                        @click="toggleModal('textEditor')"
-                     >
+                     <div class="icon__wrapper" @click="addNewText">
                         <CustomIcon :svg-icon="textAdd" />
                      </div>
                      <div
@@ -175,21 +195,23 @@ function addPictureAction() {
    </div>
    <teleport to="#modal">
       <CustomModalOverlay
-         v-show="modal.textEditor"
-         @close-modal="toggleModal('textEditor')"
+         v-if="modal.textEditor"
+         @close-modal="closeTextEditor()"
       >
          <AddNewText
-            @process-text="pushTextArticle"
-            :content-value="contentValue"
+            @process-text="pushNewText"
+            @process-edit="pushEditedText"
+            :text-to-edit="textToEdit"
+            :purpose="editorPurpose"
          />
       </CustomModalOverlay>
       <CustomModalOverlay
          v-if="modal.imageEditor"
-         @close-modal="toggleModal('imageEditor')"
+         @close-modal="closeAddImageModal"
       >
          <AddNewImage
             @cancel-action="toggleModal('imageEditor')"
-            @process-image="pushImageArticle"
+            @process-image="pushNewImage"
          />
       </CustomModalOverlay>
    </teleport>

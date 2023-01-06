@@ -1,13 +1,20 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, toRef, watch } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 import * as tinyMceCustomIcon from '../../../utils/tinyMceCustomIcon'
 
-const emit = defineEmits(['processText'])
+const emit = defineEmits(['processText', 'processEdit', 'setTinyMceArgs'])
 const props = defineProps({
-   contentValue: {
+   textToEdit: {
+      type: Object,
+      default: {
+         value: '',
+         index: 0,
+      },
+   },
+   purpose: {
       type: String,
-      default: '',
+      default: 'add',
    },
 })
 const tinyMceOptions = ref({
@@ -21,6 +28,8 @@ const tinyMceOptions = ref({
          pushTextArticle()
       },
       setup: (editor) => {
+         editor.on('init', editorInit)
+         editor.on('remove', editorClose)
          editor.ui.registry.addIcon(
             'customSaveIcon',
             tinyMceCustomIcon.save('18')
@@ -30,9 +39,15 @@ const tinyMceOptions = ref({
             enabled: false,
             onAction: (_) => {
                /* pushTextArticle() */
-               emit('processText', editor.getContent())
-               editor.setContent('')
-               _.setEnabled(false)
+               if (props.purpose === 'add') {
+                  emit('processText', editor.getContent())
+               } else if (props.purpose === 'edit') {
+                  emit(
+                     'processEdit',
+                     editor.getContent(),
+                     props.textToEdit.index
+                  )
+               }
             },
             onSetup: (buttonApi) => {
                const formChanged = (eventApi) => {
@@ -43,23 +58,29 @@ const tinyMceOptions = ref({
                   }
                }
                editor.on('input', formChanged)
-
                return () => editor.off('input', formChanged)
             },
          })
       },
    },
-   contentValue: props.contentValue,
 })
+
+function editorInit(editor) {
+   if (props.purpose == 'edit') {
+      editor.target.setContent(props.textToEdit.value)
+   }
+}
+
+function editorClose(editor) {
+   const { buttons } = editor.target.ui.registry.getAll()
+   buttons.customsave.enabled = false
+   editor.target.setContent('')
+}
 </script>
 <template>
    <div class="tinymce__wrapper">
       <form>
-         <Editor
-            :api-key="tinyMceOptions.apiKey"
-            :init="tinyMceOptions.init"
-            v-model="tinyMceOptions.contentValue"
-         />
+         <Editor :api-key="tinyMceOptions.apiKey" :init="tinyMceOptions.init" />
       </form>
    </div>
 </template>
