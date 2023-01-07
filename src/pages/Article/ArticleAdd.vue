@@ -78,6 +78,7 @@ function pushNewText(textValue) {
    article.value.item.push({
       type: 'text',
       value: textValue,
+      showOptions: false,
    })
    toggleModal('textEditor')
 }
@@ -101,6 +102,7 @@ function pushNewImage(imageValue) {
       value: {
          ...imageValue,
       },
+      showOptions: false,
    })
    toggleModal('imageEditor')
 }
@@ -122,6 +124,11 @@ function removeImage(imageIndex) {
          article.value.item.splice(imageIndex, 1)
       }
    })
+}
+
+function toggleShowOptions(index) {
+   article.value.item[index].showOptions =
+      !article.value.item[index].showOptions
 }
 /**
  * validate input when event triggered
@@ -187,6 +194,7 @@ async function validateInput(field) {
                      @edit-text="editText"
                      @reordering-image="reorderingImage"
                      @remove-image="removeImage"
+                     @toggle-show-options="toggleShowOptions"
                   />
                </div>
             </div>

@@ -17,12 +17,11 @@
       @apply py-2;
       & > .text-content {
          @apply flex;
-         @apply mr-14;
          @apply text-gray-500;
 
          .text-content__nav {
-            @apply absolute top-0 bottom-0 right-0;
-            @apply flex flex-col justify-center;
+            @apply relative;
+            @apply h-fit pb-2 pl-4;
 
             svg {
                @apply cursor-pointer;
@@ -33,28 +32,22 @@
          @apply flex flex-col items-center;
          @apply text-gray-500;
 
+         // & > p {
+         //    @apply text-base text-gray-500;
+         // }
+         & > p {
+            @apply mt-2;
+            @apply text-sm text-gray-400;
+         }
          .image__wrapper {
             @apply w-3/5;
             @apply rounded-lg;
             @apply overflow-hidden;
          }
-         p {
-            @apply mt-2;
-            @apply text-sm text-gray-400;
-         }
-
-         .image-content__delete {
-            @apply absolute top-20 right-20 z-10;
-            @apply cursor-pointer;
-         }
          .image-content__nav {
-            @apply absolute top-0 bottom-0 right-20;
-            @apply flex flex-col justify-center;
+            @apply absolute top-0 right-0;
+            @apply h-fit pb-2 pl-4;
          }
-      }
-
-      p {
-         @apply text-base text-gray-500;
       }
    }
 }
