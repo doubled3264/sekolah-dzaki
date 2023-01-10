@@ -2,8 +2,8 @@
    &__list {
       @apply hidden opacity-0;
       @apply absolute top-10 right-2.5;
+      @apply w-max;
       @apply rounded bg-white/80;
-      // @apply border-2 border-gray-500;
       @apply border-2 border-verdigris;
 
       &--show {

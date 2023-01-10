@@ -12,6 +12,19 @@ export const articleDialog = {
     },
     buttonsStyling: false,
   },
+  deleteText: {
+    title: 'Anda yakin ?',
+    text: `Teks akan dihapus.`,
+    icon: 'warning',
+    showCancelButton: true,
+    cancelButtonText: 'Batal',
+    confirmButtonText: 'Ya, hapus !',
+    customClass: {
+      cancelButton: 'btn btn--md btn__link--secondary',
+      confirmButton: 'btn btn--md btn--danger',
+    },
+    buttonsStyling: false,
+  },
   deleteImage: {
     title: 'Anda yakin ?',
     text: `Gambar akan dihapus.`,
@@ -24,6 +37,5 @@ export const articleDialog = {
       confirmButton: 'btn btn--md btn--danger',
     },
     buttonsStyling: false,
-
-  }
+  },
 }

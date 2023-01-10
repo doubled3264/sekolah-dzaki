@@ -10,7 +10,13 @@ import CustomIcon from '../../components/CustomIcon.vue'
 import CustomThreeDotOptionsList from '../../components/CustomThreeDotOpions/OptionsList.vue'
 import CustomThreeDotOptionsItem from '../../components/CustomThreeDotOpions/OptionsItem.vue'
 
-defineEmits(['editText', 'reorderingImage', 'removeImage', 'toggleShowOptions'])
+defineEmits([
+   'editText',
+   'removeText',
+   'reorderingImage',
+   'removeImage',
+   'toggleShowOptions',
+])
 defineProps({
    items: {
       type: Array,
@@ -49,7 +55,10 @@ onMounted(() => {
                      </div>
                   </CustomThreeDotOptionsItem>
                   <CustomThreeDotOptionsItem>
-                     <div class="flex gap-4">
+                     <div
+                        class="flex gap-4"
+                        @click="$emit('removeText', index)"
+                     >
                         <CustomIcon :svg-icon="trash" />
                         <p>hapus</p>
                      </div>
@@ -63,37 +72,39 @@ onMounted(() => {
             </div>
             <p>{{ item.value.caption }}</p>
             <div
-               class="image-content__delete"
-               @click="$emit('removeImage', index)"
+               class="image-content__nav"
+               @mouseenter="$emit('toggleShowOptions', index)"
+               @mouseleave="$emit('toggleShowOptions', index)"
             >
-               <div
-                  class="image-content__nav"
-                  @mouseenter="$emit('toggleShowOptions', index)"
-                  @mouseleave="$emit('toggleShowOptions', index)"
-               >
-                  <CustomThreeDotOptionsList :is-show="item.showOptions">
-                     <CustomThreeDotOptionsItem v-if="index != 0">
-                        <div
-                           class="flex gap-4"
-                           @click="$emit('reorderingImage', index, 'go up')"
-                        >
-                           <CustomIcon :svg-icon="arrowSolidUp" />
-                           <p>atas</p>
-                        </div>
-                     </CustomThreeDotOptionsItem>
-                     <CustomThreeDotOptionsItem
-                        v-if="index != items.length - 1"
+               <CustomThreeDotOptionsList :is-show="item.showOptions">
+                  <CustomThreeDotOptionsItem v-if="index != 0">
+                     <div
+                        class="flex gap-4"
+                        @click="$emit('reorderingImage', index, 'go up')"
                      >
-                        <div
-                           class="flex gap-4"
-                           @click="$emit('reorderingImage', index, 'go down')"
-                        >
-                           <CustomIcon :svg-icon="arrowSolidDown" />
-                           <p>bawah</p>
-                        </div>
-                     </CustomThreeDotOptionsItem>
-                  </CustomThreeDotOptionsList>
-               </div>
+                        <CustomIcon :svg-icon="arrowSolidUp" />
+                        <p>atas</p>
+                     </div>
+                  </CustomThreeDotOptionsItem>
+                  <CustomThreeDotOptionsItem v-if="index != items.length - 1">
+                     <div
+                        class="flex gap-4"
+                        @click="$emit('reorderingImage', index, 'go down')"
+                     >
+                        <CustomIcon :svg-icon="arrowSolidDown" />
+                        <p>bawah</p>
+                     </div>
+                  </CustomThreeDotOptionsItem>
+                  <CustomThreeDotOptionsItem>
+                     <div
+                        class="flex gap-4"
+                        @click="$emit('removeImage', index)"
+                     >
+                        <CustomIcon :svg-icon="trash" />
+                        <p>hapus</p>
+                     </div>
+                  </CustomThreeDotOptionsItem>
+               </CustomThreeDotOptionsList>
             </div>
          </div>
       </li>

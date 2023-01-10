@@ -5,6 +5,7 @@ import sidebar from './module/sidebar'
 import windowProp from './module/window'
 import vueTable from './module/vue-table'
 
+import article from './module/article'
 import calonSiswa from './module/calon-siswa'
 import siswa from './module/siswa'
 import iuran from './module/iuran'
@@ -19,6 +20,7 @@ export const store = createStore({
     sidebar,
     windowProp,
     vueTable,
+    article,
     calonSiswa,
     siswa,
     iuran,

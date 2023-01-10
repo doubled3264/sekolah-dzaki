@@ -13,6 +13,7 @@ function selectFile() {
 
 function onSelectFile() {
    if (fileInput.value.files && fileInput.value.files[0]) {
+      console.log(fileInput.value)
       if (startsWith(fileInput.value.files[0].type, 'image')) {
          emit('onSelectFile', fileInput.value.files[0])
       } else {

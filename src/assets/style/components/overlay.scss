@@ -1,5 +1,6 @@
 @screen 2xl {
    .custom-modal-overlay {
+      z-index: 2;
       @apply absolute top-0;
       @apply w-full h-screen;
       background-color: rgba(0, 0, 0, 0.6);

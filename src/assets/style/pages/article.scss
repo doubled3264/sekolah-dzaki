@@ -10,6 +10,7 @@
       }
    }
    &__preview-list {
+      @apply overflow-scroll;
    }
 
    &__preview-item {
@@ -52,5 +53,12 @@
    }
 }
 .card.artikel-add {
-   @apply w-full overflow-scroll;
+   @apply w-full;
+}
+
+.card__nav.article-add {
+   z-index: 1;
+   @apply relative;
+   @apply pb-2 pl-4;
+   @apply cursor-pointer;
 }
