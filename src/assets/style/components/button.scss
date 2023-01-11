@@ -139,6 +139,15 @@
          @apply text-secondary-hover;
       }
    }
+   &__link--verdigris {
+      @apply text-verdigris;
+      @apply px-0 #{!important};
+      @apply border-none;
+
+      &:hover {
+         @apply text-verdigris;
+      }
+   }
    &__start-icon {
       @apply float-left;
       @apply ml-0 mr-1 #{!important};

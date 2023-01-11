@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
+/* import SocketioService from '../services/socketio.service' */
 
 const store = useStore()
 
@@ -9,10 +10,12 @@ function setDimension() {
 }
 
 onMounted(() => {
+  /* SocketioService.setupSocketConnection() */
   window.addEventListener('resize', setDimension)
 })
 
 onUnmounted(() => {
+  /* SocketioService.disconnect() */
   window.removeEventListener('resize', setDimension)
 })
 </script>

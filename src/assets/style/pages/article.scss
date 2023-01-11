@@ -4,13 +4,28 @@
 .article-add {
 }
 .article-add {
+   &__preview {
+      @apply w-8/12 mx-auto;
+   }
+   &__preview-title {
+      h2 {
+         @apply text-xl font-semibold text-gray-500;
+      }
+   }
+   &__preview-thumbnail {
+      @apply my-4;
+      @apply rounded-xl overflow-hidden;
+      img {
+         // @apply w-1/2 mx-auto;
+      }
+   }
    &__preview-image {
       img {
          @apply w-1/2 mx-auto;
       }
    }
    &__preview-list {
-      @apply overflow-scroll;
+      // @apply overflow-scroll;
    }
 
    &__preview-item {
@@ -21,8 +36,9 @@
          @apply text-gray-500;
 
          .text-content__nav {
-            @apply relative;
+            @apply absolute -right-10;
             @apply h-fit pb-2 pl-4;
+            z-index: 2;
 
             svg {
                @apply cursor-pointer;
@@ -41,12 +57,12 @@
             @apply text-sm text-gray-400;
          }
          .image__wrapper {
-            @apply w-3/5;
+            @apply w-10/12 my-6;
             @apply rounded-lg;
             @apply overflow-hidden;
          }
          .image-content__nav {
-            @apply absolute top-0 right-0;
+            @apply absolute top-8 -right-10;
             @apply h-fit pb-2 pl-4;
          }
       }
@@ -61,4 +77,12 @@
    @apply relative;
    @apply pb-2 pl-4;
    @apply cursor-pointer;
+}
+
+.card__body.article-add {
+   @apply overflow-scroll;
+   h5 {
+      @apply mt-4;
+      @apply font-medium capitalize text-gray-500;
+   }
 }
