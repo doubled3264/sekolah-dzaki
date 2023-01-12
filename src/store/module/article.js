@@ -1,33 +1,6 @@
 import axios from 'axios'
 import { forEach } from 'lodash'
-import { ulid } from 'ulid'
 import { omit, pick } from '../../utils/objet-helper'
-
-function createFormData(articleData) {
-   const formData = new FormData()
-   let articleItem = []
-   forEach(articleData.item, (item, index) => {
-      if (item.type == 'text') {
-         articleItem.push(omit(item, 'showOptions'))
-      } else if (item.type == 'image') {
-         articleItem.push(pick(item, 'type'))
-         articleItem[index].value = pick(item.value, 'caption')
-      }
-   })
-
-   formData.append('article', {
-      title: articleData.title,
-      item: articleItem,
-   })
-   // formData.append('thumbnail', articleData.thumbnailImage)
-   console.log(articleData)
-   // forEach(articleData.item, (item) => {
-   //    if (item.type == 'image') {
-   //       formData.append('image', item.value.raw)
-   //    }
-   // })
-   return formData
-}
 
 function createImageFormData(articleData, uuid) {
    const formData = new FormData()
@@ -38,31 +11,65 @@ function createImageFormData(articleData, uuid) {
          formData.append('image', item.value.raw)
       }
    })
-
    return formData
+}
+
+function createArticleData(articleData, uuid) {
+   const article = {}
+   article.id = uuid
+   article.title = articleData.title
+   article.thumbnail = articleData.thumbnailImage.name
+   article.category = articleData.category
+   article.placement = articleData.placement
+   article.item = []
+   forEach(articleData.item, (data, index) => {
+      if (data.type == 'text') {
+         article.item.push(pick(data, 'type'))
+         article.item[index].content = data.value
+      } else if (data.type == 'image') {
+         article.item.push(pick(data, 'type'))
+         article.item[index].content = data.value.raw.name
+         article.item[index].caption = data.value.caption
+      }
+   })
+   return article
 }
 
 export default {
    namespaced: true,
    actions: {
-      async add({}, articleData) {
-         const uuid = ulid()
-         // const formData = createFormData(articleData)
+      async addImage({}, data) {
+         const { articleData, uuid } = data
          const imageFormData = createImageFormData(articleData, uuid)
          return new Promise((resolve, reject) => {
             axios({
                method: 'post',
-               url: 'test-upload',
+               url: 'article/add-image',
                data: imageFormData,
                headers: {
                   'Content-Type': 'multipart/form-data',
                },
             })
                .then((response) => {
-                  resolve(console.log(response))
+                  resolve(response)
                })
                .catch((error) => {
-                  reject(console.log(error))
+                  reject(error)
+               })
+         })
+      },
+      // second, add article
+      async addArticle({}, data) {
+         const { articleData, uuid } = data
+         const article = createArticleData(articleData, uuid)
+         return new Promise((resolve, reject) => {
+            axios
+               .post('article', { article: article })
+               .then((response) => {
+                  resolve(response)
+               })
+               .catch((error) => {
+                  reject(error)
                })
          })
       },

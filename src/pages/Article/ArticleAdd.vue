@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import io from 'socket.io-client'
+import { ulid } from 'ulid'
 import {
   imageAdd,
   textAdd,
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2'
 import ContentHead from '../../components/Content/ContentHead.vue'
 import CustomIcon from '../../components/CustomIcon.vue'
 import CustomInput from '../../components/form/CustomInput.vue'
+import CustomSelectBox from '../../components/form/CustomSelectBox.vue'
 import CustomThreeDotOptionsList from '../../components/CustomThreeDotOpions/OptionsList.vue'
 import CustomThreeDotOptionsItem from '../../components/CustomThreeDotOpions/OptionsItem.vue'
 import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
@@ -29,15 +30,25 @@ const props = defineProps({
   childItem: String,
 })
 const store = useStore()
-const socket = ref(null)
 const article = ref({
   title: '',
+  category: '',
+  placement: '',
   thumbnailImage: null,
   item: [],
 })
-
+const categoryOptions = ['artikel', 'berita']
+const placementOptions = ['yayasan', 'sd', 'smp']
 const errorState = ref({
   title: {
+    isError: true,
+    message: '',
+  },
+  category: {
+    isError: true,
+    message: '',
+  },
+  placement: {
     isError: true,
     message: '',
   },
@@ -59,7 +70,6 @@ const textToEdit = ref({
 const editorPurpose = ref('add')
 
 onMounted(() => {
-  socket.value = io('http://localhost:3000')
   store.commit('sidebar/setAllToNormal')
   store.commit('sidebar/setActiveParent', props.parentItem)
   store.commit('sidebar/setActiveChild', {
@@ -209,7 +219,7 @@ async function validateForm() {
   if (!article.value.thumbnailImage) {
     Swal.fire({
       icon: 'warning',
-      text: 'Thumbnail belum diisi',
+      text: 'Thumbnail belum dipilih',
       confirmButtonText: 'tutup',
     })
     return ''
@@ -239,10 +249,17 @@ async function validateForm() {
   })
 }
 async function createArticleData() {
-  store.dispatch('article/add', article.value)
-  /* socket.value.emit('uploadThumbnail', article.value.thumbnailImage, (status) => { */
-  /*   console.log(status) */
-  /* }) */
+  const uuid = ulid()
+  //first, upload image file
+  await store.dispatch('article/addImage', {
+    articleData: article.value,
+    uuid: uuid,
+  })
+  //sencond, upload article
+  await store.dispatch('article/addArticle', {
+    articleData: article.value,
+    uuid: uuid,
+  })
 }
 </script>
 <template>
@@ -287,6 +304,19 @@ async function createArticleData() {
               <CustomInput type="text" label="Judul" placeholder="Masukan judul artikel.."
                 v-model:input-value="article.title" :error-state="errorState.title"
                 @validate-input="validateInput('title')" />
+              <div class="flex gap-2">
+                <div class="w-6/12">
+                  <CustomSelectBox label="kategori" placeholder="pilih kategori" :options="categoryOptions"
+                    v-model:input-value="article.category" :error-state="errorState.category"
+                    @validate-input="validateInput('category')" />
+                </div>
+                <div class="w-6/12">
+                  <CustomSelectBox label="penempatan" placeholder="pilih penempatan" :options="placementOptions"
+                    v-model:input-value="article.placement" :error-state="errorState.placement"
+                    @validate-input="validateInput('placement')" />
+
+                </div>
+              </div>
               <h5>tambahkan thumbnail</h5>
               <div v-if="!article.thumbnailImage" class="text-center">
                 <CustomImageInput @on-select-file="setThumbnailImage" />
