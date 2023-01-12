@@ -3,13 +3,10 @@ import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { findIndex } from 'lodash'
-import Swal from 'sweetalert2'
 import { VueGoodTable } from 'vue-good-table-next'
 import { setGender } from '../../../utils/etc.helper.js'
 import CustomIcon from '../../../components/CustomIcon.vue'
 import { arrowRight } from '../../../utils/svg-vars'
-import CustomModalOverlayVue from '../../../components/CustomModalOverlay.vue'
-import TableAction from '../../../components/modal/TableAction.vue'
 
 const props = defineProps({
    parentItem: String,

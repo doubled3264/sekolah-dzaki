@@ -2,13 +2,11 @@
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import Swal from 'sweetalert2'
 import { VueGoodTable } from 'vue-good-table-next'
 import CustomIcon from '../../components/CustomIcon.vue'
 import { arrowRight } from '../../utils/svg-vars'
 import CustomModalOverlayVue from '../../components/CustomModalOverlay.vue'
 import CustomButton from '../../components/CustomButton.vue'
-import TableAction from '../../components/modal/TableAction.vue'
 
 const props = defineProps({
    parentItem: String,

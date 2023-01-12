@@ -2,34 +2,44 @@
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { ulid } from 'ulid'
+import { forEach } from 'lodash'
 import {
   imageAdd,
   textAdd,
   disket,
   arrowNext,
   arrowPrev,
-} from '../../utils/svg-vars'
-import { articleSchema } from '../../utils/validation/article.schema'
-import { articleDialog } from '../../utils/sweetalert-object'
+} from '../../../utils/svg-vars'
+import { articleSchema } from '../../../utils/validation/article.schema'
+import { articleDialog } from '../../../utils/sweetalert-object'
 import Swal from 'sweetalert2'
-import ContentHead from '../../components/Content/ContentHead.vue'
-import CustomIcon from '../../components/CustomIcon.vue'
-import CustomInput from '../../components/form/CustomInput.vue'
-import CustomSelectBox from '../../components/form/CustomSelectBox.vue'
-import CustomThreeDotOptionsList from '../../components/CustomThreeDotOpions/OptionsList.vue'
-import CustomThreeDotOptionsItem from '../../components/CustomThreeDotOpions/OptionsItem.vue'
-import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
-import CustomImageInput from '../../components/form/CustomImageInput.vue'
+import ContentHead from '../../../components/Content/ContentHead.vue'
+import CustomIcon from '../../../components/CustomIcon.vue'
+import CustomInput from '../../../components/form/CustomInput.vue'
+import CustomSelectBox from '../../../components/form/CustomSelectBox.vue'
+import CustomThreeDotOptionsList from '../../../components/CustomThreeDotOpions/OptionsList.vue'
+import CustomThreeDotOptionsItem from '../../../components/CustomThreeDotOpions/OptionsItem.vue'
+import CustomModalOverlay from '../../../components/CustomModalOverlay.vue'
+import CustomImageInput from '../../../components/form/CustomImageInput.vue'
 import ArticleAddPreviewList from './ArticleAddPreviewList.vue'
-import AddNewImage from '../../components/modal/Article/AddNewImage.vue'
-import AddNewText from '../../components/modal/Article/AddNewText.vue'
-import CustomButton from '../../components/CustomButton.vue'
+import CustomButton from '../../../components/CustomButton.vue'
+import Spinner from '../../../components/modal/Spinner.vue'
+import AddNewImage from '../../../components/modal/Article/AddNewImage.vue'
+import AddNewText from '../../../components/modal/Article/AddNewText.vue'
 
+const store = useStore()
+/** @type {Object} parent & child sidebar item value for active state  */
 const props = defineProps({
   parentItem: String,
   childItem: String,
 })
-const store = useStore()
+/** @type {Object} content head value */
+const contentHeadItem = [
+  { title: 'artikel', path: '/artikel' },
+  { title: 'tambah data artikel baru', path: '' },
+]
+const spinnerState = ref(false)
+/** @type {Object} article item  */
 const article = ref({
   title: '',
   category: '',
@@ -37,8 +47,7 @@ const article = ref({
   thumbnailImage: null,
   item: [],
 })
-const categoryOptions = ['artikel', 'berita']
-const placementOptions = ['yayasan', 'sd', 'smp']
+/** @type {Object} error state of each field  */
 const errorState = ref({
   title: {
     isError: true,
@@ -53,20 +62,28 @@ const errorState = ref({
     message: '',
   },
 })
+/** @type {Object} category item  */
+const categoryOptions = ['artikel', 'berita']
+/** @type {Object} placement item  */
+const placementOptions = ['yayasan', 'sd', 'smp']
+/** @type {Object} modal state  */
 const modal = ref({
   textEditor: false,
   imageEditor: false,
 })
+/** @type {Object} section state  */
 const section = ref({
   first: true,
   second: false,
 })
-
+/** @type {Boolean} main menu state, only true if second section active  */
 const mainMenu = ref(false)
+/** @type {Object} state for edit text  */
 const textToEdit = ref({
   value: '',
   index: 0,
 })
+/** @type {String} text editor purpose value, add | edit  */
 const editorPurpose = ref('add')
 
 onMounted(() => {
@@ -77,48 +94,80 @@ onMounted(() => {
     itemToActive: props.childItem,
   })
 })
-
+/**
+* toggle modal form
+* @param {String} modal name
+*/
 function toggleModal(modalName) {
   modal.value[modalName] = !modal.value[modalName]
 }
-
+/**
+* toggle section
+*/
 function toggleSection() {
-  section.value.first = !section.value.first
-  section.value.second = !section.value.second
+  forEach(section.value, (item, fieldName) => {
+    section.value[fieldName] = !item
+  })
 }
-
-function setThumbnailImage(value) {
-  console.log(value)
-  article.value.thumbnailImage = value
+/**
+* toggle show options
+* @param {Number} index of item 
+*/
+function toggleShowOptions(index) {
+  article.value.item[index].showOptions =
+    !article.value.item[index].showOptions
 }
-
+/**
+* set thumbnailImage value
+* @param {Object} image value
+*/
+function setThumbnailImage(imageValue) {
+  article.value.thumbnailImage = imageValue
+}
+/**
+* convert raw image to blob 
+* @returns {Blob} image
+*/
 const getThumbnailImage = computed(() => {
   return URL.createObjectURL(article.value.thumbnailImage)
 })
-
+/**
+* open text editor for add new text
+* @param {}
+*/
 function addNewText() {
-  //fix bug
+  //fix bug, tell form to add new text action
   editorPurpose.value = 'add'
   toggleModal('textEditor')
 }
-
+/**
+* open text editor for edit text
+* @param {String} index of item
+*/
 function editText(textIndex) {
   textToEdit.value.value = article.value.item[textIndex].value
   textToEdit.value.index = textIndex
+  //fix bug, tell form to edit text action
   editorPurpose.value = 'edit'
   toggleModal('textEditor')
 }
-
+/**
+* prevent accidentally close text editor modal
+*/
 function closeTextEditor() {
   Swal.fire(articleDialog.preventClose).then(async (result) => {
     if (result.isConfirmed) {
+      /* if agree to close */
       textToEdit.value.value = ''
       textToEdit.value.index = 0
       toggleModal('textEditor')
     }
   })
 }
-
+/**
+* push new item to article
+* @param {String} text editor value
+*/
 function pushNewText(textValue) {
   article.value.item.push({
     type: 'text',
@@ -127,21 +176,30 @@ function pushNewText(textValue) {
   })
   toggleModal('textEditor')
 }
-
+/**
+* remove text from article item
+* @param {Number} index of text to remove
+*/
 function removeText(textIndex) {
-  console.log(textIndex)
   Swal.fire(articleDialog.deleteText).then(async (result) => {
     if (result.isConfirmed) {
       article.value.item.splice(textIndex, 1)
     }
   })
 }
-
-function pushEditedText(content, textIndex) {
-  article.value.item[textIndex].value = content
+/**
+* replace exist text on article item
+* @param {String} text editor value 
+* @param {Number} index of text to replace
+*/
+function pushEditedText(textValue, textIndex) {
+  article.value.item[textIndex].value = textValue
   toggleModal('textEditor')
 }
 
+/**
+* prevent accidentally close add image modal
+*/
 function closeAddImageModal() {
   Swal.fire(articleDialog.preventClose).then(async (result) => {
     if (result.isConfirmed) {
@@ -149,9 +207,11 @@ function closeAddImageModal() {
     }
   })
 }
-
+/**
+* push new item to article
+* @param {Object} image object 
+*/
 function pushNewImage(imageValue) {
-  console.log(imageValue)
   article.value.item.push({
     type: 'image',
     value: {
@@ -159,12 +219,15 @@ function pushNewImage(imageValue) {
     },
     showOptions: false,
   })
-  console.log(article.value.item)
   toggleModal('imageEditor')
 }
-
+/**
+* reordering image to go up or go down
+* @param {Number} index of image to reordering
+* @oaram {String} action fo reordering go up | go down
+*/
 function reorderingImage(imageIndex, to) {
-  // fix bug
+  // fix bug, change state show options after change image item order
   article.value.item[imageIndex].showOptions = false
   Array.prototype.move = function (from, to) {
     this.splice(to, 0, this.splice(from, 1)[0])
@@ -175,7 +238,10 @@ function reorderingImage(imageIndex, to) {
     article.value.item.move(imageIndex, imageIndex + 1)
   }
 }
-
+/**
+* remove image from article item
+* @param {Number} infex of image to remove
+*/
 function removeImage(imageIndex) {
   Swal.fire(articleDialog.deleteImage).then(async (result) => {
     if (result.isConfirmed) {
@@ -184,13 +250,9 @@ function removeImage(imageIndex) {
   })
 }
 
-function toggleShowOptions(index) {
-  article.value.item[index].showOptions =
-    !article.value.item[index].showOptions
-}
 /**
  * validate input when event triggered
- * @param {string} siswa object key
+ * @param {String} article field 
  */
 async function validateInput(field) {
   await articleSchema
@@ -203,8 +265,11 @@ async function validateInput(field) {
       errorState.value[field].message = err.message
     })
 }
-
+/**
+* validate all form before send article to backend
+*/
 async function validateForm() {
+  /* validate input component */
   for (const item in errorState.value) {
     if (errorState.value[item].isError) {
       Swal.fire({
@@ -215,7 +280,7 @@ async function validateForm() {
       return ''
     }
   }
-
+  /* validate thumbnail input */
   if (!article.value.thumbnailImage) {
     Swal.fire({
       icon: 'warning',
@@ -224,7 +289,7 @@ async function validateForm() {
     })
     return ''
   }
-
+  /* validate article length */
   if (article.value.item.length == 0) {
     Swal.fire({
       icon: 'warning',
@@ -248,7 +313,11 @@ async function validateForm() {
     }
   })
 }
+/**
+* send article to backend
+*/
 async function createArticleData() {
+  spinnerState.value = true
   const uuid = ulid()
   //first, upload image file
   await store.dispatch('article/addImage', {
@@ -260,15 +329,13 @@ async function createArticleData() {
     articleData: article.value,
     uuid: uuid,
   })
+  spinnerState.value = false
 }
 </script>
 <template>
   <div class="content">
     <div class="content__inner">
-      <ContentHead :items="[
-  { title: 'artikel', path: '/artikel' },
-  { title: 'tambah data artikel baru', path: '' },
-]" />
+      <ContentHead :items="contentHeadItem" />
       <div class="content__body">
         <div class="card artikel-add">
           <div class="card__head">
@@ -314,7 +381,6 @@ async function createArticleData() {
                   <CustomSelectBox label="penempatan" placeholder="pilih penempatan" :options="placementOptions"
                     v-model:input-value="article.placement" :error-state="errorState.placement"
                     @validate-input="validateInput('placement')" />
-
                 </div>
               </div>
               <h5>tambahkan thumbnail</h5>
@@ -350,6 +416,9 @@ async function createArticleData() {
     </CustomModalOverlay>
     <CustomModalOverlay v-if="modal.imageEditor" @close-modal="closeAddImageModal">
       <AddNewImage @cancel-action="toggleModal('imageEditor')" @process-image="pushNewImage" />
+    </CustomModalOverlay>
+    <CustomModalOverlay v-if="spinnerState">
+      <Spinner :is-active="spinnerState" />
     </CustomModalOverlay>
   </teleport>
 </template>
