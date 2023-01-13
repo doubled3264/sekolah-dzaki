@@ -2,23 +2,32 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { arrowRight, textAdd } from '../../utils/svg-vars'
 import { VueGoodTable } from 'vue-good-table-next'
-import CustomIcon from '../../components/CustomIcon.vue'
-import CustomButton from '../../components/CustomButton.vue'
+/* import CustomButton from '../../components/CustomButton.vue' */
+import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
+import ContentHead from '../../components/Content/ContentHead.vue'
+import Spinner from '../../components/modal/Spinner.vue'
 
+const store = useStore()
+const router = useRouter()
+/** @type {Object} parent & child sidebar item value for active state  */
 const props = defineProps({
    parentItem: String,
    childItem: String,
 })
-const store = useStore()
-const router = useRouter()
 /** @type {object} vue good table props */
 const tableData = ref({
    columns: [],
    rows: [],
 })
+/** @type {Object} content head value */
+const contentHeadItem = [
+   { title: 'artikel', path: '#' },
+   { title: 'daftar artikel', path: '' },
+]
+const spinnerState = ref(false)
 onMounted(() => {
+   spinnerState.value = true
    store.commit('sidebar/setAllToNormal')
    store.commit('sidebar/setActiveParent', props.parentItem)
    store.commit('sidebar/setActiveChild', {
@@ -26,38 +35,34 @@ onMounted(() => {
       itemToActive: props.childItem,
    })
    generateVueTable()
-   /* fetchIuran() */
+   fetchArticle()
+   spinnerState.value = false
 })
 /**
  * get vuetable column props on store
  * @param {}
  */
 function generateVueTable() {
-   tableData.value.columns = store.getters['vueTable/getColumn']('artikel')
+   tableData.value.columns = store.getters['vueTable/getColumn']('article')
    /* setColumnFn() */
+}
+async function fetchArticle() {
+   await store.dispatch('article/getSimple')
+   tableData.value.rows = store.getters['article/getSimple']
+}
+
+function selectRow(param) {
+   const { id } = param.row
+   router.push({
+      name: 'article detail',
+      params: { id: id },
+   })
 }
 </script>
 <template>
    <div class="content">
       <div class="content__inner">
-         <div class="content__head">
-            <div class="content__path">
-               <span>artikel</span>
-               <CustomIcon :svg-icon="arrowRight" width="10" />
-               <span>daftar artikel</span>
-            </div>
-            <div class="content__title">
-               <h3>daftar artikel</h3>
-               <div class="content__nav">
-                  <div
-                     class="icon__wrapper"
-                     @click="router.push('/artikel/tambah-data')"
-                  >
-                     <CustomIcon :svg-icon="textAdd" />
-                  </div>
-               </div>
-            </div>
-         </div>
+         <ContentHead :items="contentHeadItem" />
          <div class="content__body">
             <vue-good-table
                v-if="
@@ -71,4 +76,9 @@ function generateVueTable() {
          </div>
       </div>
    </div>
+   <Teleport to="#modal">
+      <CustomModalOverlay v-if="spinnerState">
+         <Spinner :is-active="spinnerState" />
+      </CustomModalOverlay>
+   </Teleport>
 </template>

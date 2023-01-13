@@ -8,12 +8,12 @@ import { setGender } from '../../../utils/etc.helper.js'
 import CustomIcon from '../../../components/CustomIcon.vue'
 import { arrowRight } from '../../../utils/svg-vars'
 
+const store = useStore()
+const router = useRouter()
 const props = defineProps({
    parentItem: String,
    childItem: String,
 })
-const store = useStore()
-const router = useRouter()
 /** @type {Object} modal  */
 const activeModal = ref({
    tableAction: false,

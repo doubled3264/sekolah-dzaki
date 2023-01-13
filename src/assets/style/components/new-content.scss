@@ -17,9 +17,12 @@
    }
 
    &__path-item {
-     svg {
-       @apply ml-1;
-     }
+      p {
+         @apply inline;
+      }
+      svg {
+         @apply ml-1;
+      }
    }
 
    &__title {

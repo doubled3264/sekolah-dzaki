@@ -18,6 +18,7 @@ import IuranDiscount from './pages/Iuran/IuranDiscount.vue'
 import BaseArticle from './pages/Article/BaseArticle.vue'
 import ArticleList from './pages/Article/ArticleList.vue'
 import ArticleAdd from './pages/Article/Add/ArticleAdd.vue'
+import ArticleDetail from './pages/Article/ArticleDetail.vue'
 
 import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
@@ -106,6 +107,12 @@ const routes = [
             path: '',
             name: 'daftar artikel',
             component: ArticleList,
+            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+         },
+         {
+            path: ':id',
+            name: 'article detail',
+            component: ArticleDetail,
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
          {
