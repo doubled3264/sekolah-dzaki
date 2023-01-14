@@ -1,10 +1,14 @@
 <script setup>
 import { computed } from '@vue/reactivity'
+import { onMounted } from 'vue';
 import { useStore } from 'vuex'
 import alIrsyadLogo from '../../assets/images/alirsyad.png'
 import SidebarItem from './SidebarItem.vue'
 
 const store = useStore()
+onMounted(()=>{
+    console.log(alIrsyadLogo)
+  })
 const getSidebarItem = computed(() => {
   return store.getters['sidebar/getItem']
 })

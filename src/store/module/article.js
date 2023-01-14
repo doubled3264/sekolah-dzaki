@@ -61,6 +61,29 @@ export default {
     },
   },
   actions: {
+    async getSimple({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('article/get-simple')
+          .then((response) => {
+            resolve(commit('setSimple', response.data.data))
+          })
+          .catch((error) => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
+    async getSingle({ commit }, articleId) {
+      await axios
+        .get(`article/${articleId}`)
+        .then((response) => {
+          commit('setSingle', response.data.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
     async addImage({ }, data) {
       const { articleData, uuid } = data
       const imageFormData = createImageFormData(articleData, uuid)
@@ -96,28 +119,18 @@ export default {
           })
       })
     },
-    async getSimple({ commit }) {
-      return new Promise((resolve, reject) => {
+    async editInfo({}, data){
+      console.log(data)
+      return new Promise(((resolve, reject) => {
         axios
-          .get('article/get-simple')
+          .post('article/edit-info', data)
           .then((response) => {
-            resolve(commit('setSimple', response.data.data))
+            resolve(response)
           })
           .catch((error) => {
-            console.log(error)
             reject(error)
           })
-      })
-    },
-    async getSingle({ commit }, articleId) {
-      await axios
-        .get(`article/${articleId}`)
-        .then((response) => {
-          commit('setSingle', response.data.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+      }))
+    }
   },
 }

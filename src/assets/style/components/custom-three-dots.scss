@@ -4,7 +4,7 @@
       @apply absolute top-10 right-2.5;
       @apply w-max;
       @apply rounded bg-white/80;
-      @apply border-2 border-verdigris;
+      @apply border-2 border-verdigris shadow-lg;
 
       &--show {
          @apply block opacity-100;

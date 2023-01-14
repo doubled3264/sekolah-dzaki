@@ -19,6 +19,7 @@ import BaseArticle from './pages/Article/BaseArticle.vue'
 import ArticleList from './pages/Article/ArticleList.vue'
 import ArticleAdd from './pages/Article/Add/ArticleAdd.vue'
 import ArticleDetail from './pages/Article/ArticleDetail.vue'
+import ArticleEdit from './pages/Article/Edit/ArticleEdit.vue'
 
 import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
@@ -110,14 +111,20 @@ const routes = [
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
          {
+            path: 'tambah-data',
+            component: ArticleAdd,
+            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+         },
+         {
             path: ':id',
             name: 'article detail',
             component: ArticleDetail,
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
          {
-            path: 'tambah-data',
-            component: ArticleAdd,
+            path: 'edit/:id',
+            name: 'article change',
+            component: ArticleEdit,
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
       ],

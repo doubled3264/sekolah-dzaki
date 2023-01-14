@@ -1,0 +1,6 @@
+.custom-image-input {
+  @apply flex items-center justify-center;
+  @apply w-full h-full;
+@apply border-2 border-dashed rounded-xl border-gray-400;
+@apply cursor-pointer;
+}

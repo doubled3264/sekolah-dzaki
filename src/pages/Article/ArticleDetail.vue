@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { parse, format } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -14,6 +14,7 @@ import Spinner from '../../components/modal/Spinner.vue'
 
 const store = useStore()
 const route = useRoute()
+const router = useRouter()
 /** @type {Object} parent & child sidebar item value for active state  */
 const props = defineProps({
   parentItem: String,
@@ -78,6 +79,13 @@ const getContentImage = computed(() => {
     return `http://localhost:3000/files/article/${article.value.id}/${value}`
   }
 })
+
+function editArticle(){
+router.push({
+    name: 'article change',
+    params: {id: article.value.id}
+  })
+  }
 </script>
 <template>
   <div class="content">
@@ -93,7 +101,7 @@ const getContentImage = computed(() => {
               @mouseleave="mainMenuState = !mainMenuState">
               <CustomThreeDotOptionsList :is-show="mainMenuState">
                 <CustomThreeDotOptionsItem>
-                  <div class="flex gap-4" @click="addNewText">
+                  <div class="flex gap-4" @click="editArticle">
                     <CustomIcon :svg-icon="pencil" />
                     <p>edit artikel</p>
                   </div>
