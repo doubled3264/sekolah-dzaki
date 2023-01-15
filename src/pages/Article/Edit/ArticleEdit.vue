@@ -22,6 +22,7 @@ import CustomImageInput from '../../../components/form/CustomImageInput.vue'
 import CustomImagePicker from '../../../components/form/CustomImagePicker.vue'
 import CustomIcon from '../../../components/CustomIcon.vue'
 import Spinner from '../../../components/modal/Spinner.vue'
+import ArticleEditItem from './ArticleEditItem.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -59,6 +60,7 @@ const articleInfo = ref({
       raw: null,
       isEdited: false,
       showOptions: false,
+      fileName: ''
    },
 })
 /** @type {Object} error state of each field  */
@@ -107,6 +109,10 @@ async function fetchArticle() {
    articleInfo.value.category = article.value.category
    articleInfo.value.placement = article.value.placement
    articleInfo.value.thumbnailImage.preview = `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
+
+   forEach(article.value.ArticleDetails, (item, index)=>{
+       article.value.ArticleDetails[index].showOptions = false
+     })
 }
 /**
  * toggle section
@@ -135,6 +141,7 @@ const getCardTitle = computed(() => {
 })
 
 function setNewThumbnail(value) {
+   articleInfo.value.thumbnailImage.fileName = value.name
    articleInfo.value.thumbnailImage.raw = value
    articleInfo.value.thumbnailImage.preview = URL.createObjectURL(value)
    articleInfo.value.thumbnailImage.isEdited = true
@@ -179,7 +186,7 @@ async function validateFormInfo() {
    }).then((result) => {
       if (result.isConfirmed) {
          if (articleInfo.value.thumbnailImage.isEdited) {
-            console.log('isEdited bro')
+            processArticleInfoImage()
          }
          processArticleInfo()
       }
@@ -188,6 +195,12 @@ async function validateFormInfo() {
 async function processArticleInfo() {
    spinner('on')
    await store.dispatch('article/editInfo', { article: articleInfo.value })
+   spinner('off')
+}
+
+async function processArticleInfoImage() {
+   spinner('on')
+   await store.dispatch('article/editInfoImage', { article: articleInfo.value })
    spinner('off')
 }
 function validateForm() {}
@@ -264,8 +277,8 @@ function validateForm() {}
                         </div>
                      </div>
                   </div>
-                  <div v-show="section.second.isActive" class="section-second">
-                     section second
+                  <div v-if="section.second.isActive" class="section-second">
+                     <ArticleEditItem :article="article" />
                   </div>
                </div>
                <div class="card__footer">
