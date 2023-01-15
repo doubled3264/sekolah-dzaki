@@ -3,7 +3,12 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { forEach } from 'lodash'
-import { arrowNext, arrowPrev, disket ,imageAdd} from '../../../utils/svg-vars'
+import {
+   arrowNext,
+   arrowPrev,
+   disket,
+   imageEdit,
+} from '../../../utils/svg-vars'
 import { articleSchema } from '../../../utils/validation/article.schema'
 import Swal from 'sweetalert2'
 import ContentHead from '../../../components/Content/ContentHead.vue'
@@ -14,6 +19,7 @@ import CustomSelectBox from '../../../components/form/CustomSelectBox.vue'
 import CustomThreeDotOptionsList from '../../../components/CustomThreeDotOpions/OptionsList.vue'
 import CustomThreeDotOptionsItem from '../../../components/CustomThreeDotOpions/OptionsItem.vue'
 import CustomImageInput from '../../../components/form/CustomImageInput.vue'
+import CustomImagePicker from '../../../components/form/CustomImagePicker.vue'
 import CustomIcon from '../../../components/CustomIcon.vue'
 import Spinner from '../../../components/modal/Spinner.vue'
 
@@ -115,10 +121,10 @@ function toggleMainMenu() {
    mainMenu.value = !mainMenu.value
 }
 
-function toggleShowOptions() {
-   articleInfo.value.thumbnailImage.showOptions =
-      !articleInfo.value.thumbnailImage.showOptions
-}
+/* function toggleShowOptions() { */
+/*    articleInfo.value.thumbnailImage.showOptions = */
+/*       !articleInfo.value.thumbnailImage.showOptions */
+/* } */
 
 const getCardTitle = computed(() => {
    if (section.value.first.isActive) {
@@ -127,6 +133,12 @@ const getCardTitle = computed(() => {
       return section.value.second.title
    }
 })
+
+function setNewThumbnail(value) {
+   articleInfo.value.thumbnailImage.raw = value
+   articleInfo.value.thumbnailImage.preview = URL.createObjectURL(value)
+   articleInfo.value.thumbnailImage.isEdited = true
+}
 
 /**
  * validate input when event triggered
@@ -145,8 +157,6 @@ async function validateInput(field) {
 }
 
 async function validateFormInfo() {
-   if (articleInfo.value.thumbnailImage.isEdited) {
-   }
    for (const item in errorState.value) {
       if (errorState.value[item].isError) {
          Swal.fire({
@@ -168,6 +178,9 @@ async function validateFormInfo() {
       confirmButtonColor: '#41c3a9',
    }).then((result) => {
       if (result.isConfirmed) {
+         if (articleInfo.value.thumbnailImage.isEdited) {
+            console.log('isEdited bro')
+         }
          processArticleInfo()
       }
    })
@@ -234,29 +247,14 @@ function validateForm() {}
                      </div>
                      <div class="w-1/2">
                         <h3>gambar thumbnail</h3>
-                        <div class="h-56 flex justify-center items-center">
+                        <div
+                           class="h-56 flex justify-center items-center relative"
+                        >
                            <div class="image__wrapper">
-                              <div
-                                 class="image__wrapper-nav"
-                                 @mouseenter="toggleShowOptions"
-                                 @mouseleave="toggleShowOptions"
-                              >
-                                 <CustomThreeDotOptionsList
-                                    :is-show="
-                                       articleInfo.thumbnailImage.showOptions
-                                    "
-                                 >
-                                    <CustomThreeDotOptionsItem>
-                                       <div
-                                          class="flex gap-4"
-                                          @click="validateFormInfo"
-                                       >
-                                          <CustomIcon :svg-icon="imageAdd" />
-                                          <p>ganti thumbnail</p>
-                                       </div>
-                                    </CustomThreeDotOptionsItem>
-                                 </CustomThreeDotOptionsList>
-                              </div>
+                              <CustomImagePicker
+                                 title="ganti gambar"
+                                 @on-select-file="setNewThumbnail"
+                              />
                               <img
                                  crossorigin="anonymous"
                                  :src="articleInfo.thumbnailImage.preview"

@@ -1,0 +1,27 @@
+.custom-image-picker {
+   @apply opacity-0 absolute;
+   @apply flex flex-col items-center justify-center;
+   @apply w-full h-full;
+   @apply text-white;
+   @apply cursor-pointer;
+   z-index: 2;
+   p {
+      @apply text-lg font-medium capitalize;
+   }
+
+   &.visited {
+      @apply gap-3 opacity-100;
+      @apply bg-gray-500/60;
+      animation: showOptions 300ms ease;
+   }
+}
+
+@keyframes showOptions {
+   from {
+      @apply opacity-0;
+   }
+   to {
+      @apply opacity-100;
+      @apply bg-gray-500/60;
+   }
+}
