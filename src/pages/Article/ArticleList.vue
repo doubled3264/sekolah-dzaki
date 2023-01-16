@@ -4,9 +4,11 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { VueGoodTable } from 'vue-good-table-next'
 /* import CustomButton from '../../components/CustomButton.vue' */
+import { textAdd } from '../../utils/svg-vars'
 import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
 import ContentHead from '../../components/Content/ContentHead.vue'
 import Spinner from '../../components/modal/Spinner.vue'
+import CustomIcon from '../../components/CustomIcon.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -58,11 +60,23 @@ function selectRow(param) {
       params: { id: id },
    })
 }
+
+function goToAddForm() {
+   router.push({
+      path: 'artikel/tambah-data',
+   })
+}
 </script>
 <template>
    <div class="content">
       <div class="content__inner">
-         <ContentHead :items="contentHeadItem" />
+         <ContentHead :items="contentHeadItem">
+            <template #rightNav>
+               <div class="icon__wrapper">
+                  <CustomIcon :svg-icon="textAdd" @click="goToAddForm" />
+               </div>
+            </template>
+         </ContentHead>
          <div class="content__body">
             <vue-good-table
                v-if="

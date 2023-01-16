@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRef, watch } from 'vue'
+import { ref } from 'vue'
 import Editor from '@tinymce/tinymce-vue'
 import * as tinyMceCustomIcon from '../../../utils/tinyMceCustomIcon'
 

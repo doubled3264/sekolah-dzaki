@@ -2,6 +2,24 @@
    @apply w-1/2 mx-auto mt-36;
 }
 .article-add {
+   .section-first {
+      @apply flex gap-4;
+
+      h3 {
+         @apply mb-2;
+         @apply text-sm font-medium capitalize text-gray-500;
+      }
+
+      .image__wrapper {
+         @apply relative;
+         @apply w-3/4 h-full;
+         @apply rounded-lg;
+         @apply overflow-hidden;
+      }
+   }
+   .section-second {
+      @apply overflow-scroll;
+   }
    &__preview {
       @apply w-8/12 mx-auto;
    }
@@ -134,25 +152,10 @@
          @apply w-3/4;
          @apply rounded-lg;
          @apply overflow-hidden;
-
-         // &-nav {
-         //    @apply opacity-0 absolute;
-         //    @apply flex flex-col items-center justify-center;
-         //    @apply w-full h-full;
-         //    @apply text-white;
-         //    @apply cursor-pointer;
-         //    z-index: 2;
-         //    p {
-         //       @apply font-medium capitalize;
-         //    }
-
-         //    &.visited {
-         //       @apply gap-3 opacity-100;
-         //       @apply bg-gray-500/60;
-         //       animation: showoptions 300ms ease;
-         //    }
-         // }
       }
+   }
+   .section-second {
+      @apply overflow-scroll;
    }
 }
 .card.artikel-add {

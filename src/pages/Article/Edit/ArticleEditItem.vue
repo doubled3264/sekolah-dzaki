@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue'
 import {
    arrowSolidDown,
    arrowSolidUp,
@@ -11,16 +11,15 @@ import CustomThreeDotOptionsList from '../../../components/CustomThreeDotOpions/
 import CustomThreeDotOptionsItem from '../../../components/CustomThreeDotOpions/OptionsItem.vue'
 
 const props = defineProps({
-    article: {
-        type: Object,
-        default: {
-            title: '',
-            thumbnail: '',
-            ArticleDetails: []
-          }
-        
-      }
-  })
+   article: {
+      type: Object,
+      default: {
+         title: '',
+         thumbnail: '',
+         ArticleDetails: [],
+      },
+   },
+})
 defineEmits([
    'editText',
    'removeText',
@@ -29,19 +28,11 @@ defineEmits([
    'toggleShowOptions',
 ])
 const availHeight = ref(0)
-const getThumbnailImage = computed(()=>{
-  if(props.article){
-  return `http://localhost:3000/files/article/${props.article.id}/${props.article.thumbnail}`
-    }
-  })
-
-const getItemImage = computed(()=>{
-    if(props.artice){
-        return(index)=>{
-  return `http://localhost:3000/files/article/${props.article.id}/${props.ArticleDetails[index].content}`
-          }
-      }
-  })
+const getThumbnailImage = computed(() => {
+   if (props.article) {
+      return `http://localhost:3000/files/article/${props.article.id}/${props.article.thumbnail}`
+   }
+})
 
 onMounted(() => {
    availHeight.value = window.innerHeight - (32 + 24 + 20 + 36 + 142 + 12)
@@ -54,7 +45,8 @@ onMounted(() => {
       </div>
       <div class="article-add__preview-thumbnail">
          <img crossorigin="anonymous" :src="getThumbnailImage" alt="" />
-      </div><ul class="article-add__preview-list">
+      </div>
+      <ul class="article-add__preview-list">
          <li
             v-for="(item, index) in article.ArticleDetails"
             :key="index + 1"
@@ -91,7 +83,11 @@ onMounted(() => {
             </div>
             <div v-if="item.type === 'image'" class="image-content">
                <div class="image__wrapper">
-                  <img crossorigin="anonymous" :src=" `http://localhost:3000/files/article/${article.id}/${item.content}`" alt="" />
+                  <img
+                     crossorigin="anonymous"
+                     :src="`http://localhost:3000/files/article/${article.id}/${item.content}`"
+                     alt=""
+                  />
                </div>
                <p>{{ item.caption }}</p>
                <div
@@ -135,5 +131,4 @@ onMounted(() => {
          </li>
       </ul>
    </div>
-
 </template>

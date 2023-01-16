@@ -35,6 +35,7 @@ const getTitle = computed(() => {
     </ul>
     <div class="content__title">
       <h3>{{ getTitle }}</h3>
+      <slot name="rightNav"></slot>
     </div>
   </div>
 </template>

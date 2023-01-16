@@ -1,3 +1,12 @@
+const normalButton = {
+  cancelButton: 'btn btn--md btn__link--secondary',
+  confirmButton: 'btn btn--md btn--verdigris',
+}
+const dangerButton = {
+  cancelButton: 'btn btn--md btn__link--secondary',
+  confirmButton: 'btn btn--md btn--danger',
+}
+
 export const articleDialog = {
   preventClose: {
     title: 'Anda yakin ?',
@@ -5,37 +14,32 @@ export const articleDialog = {
     icon: 'warning',
     showCancelButton: true,
     cancelButtonText: 'Batal',
-    confirmButtonText: 'Ya, keluar !',
-    customClass: {
-      cancelButton: 'btn btn--md btn__link--secondary',
-      confirmButton: 'btn btn--md btn--verdigris',
-    },
+    confirmButtonText: 'Ya, kembali !',
+    customClass: normalButton,
     buttonsStyling: false,
   },
-  deleteText: {
-    title: 'Anda yakin ?',
-    text: `Teks akan dihapus.`,
-    icon: 'warning',
-    showCancelButton: true,
-    cancelButtonText: 'Batal',
-    confirmButtonText: 'Ya, hapus !',
-    customClass: {
-      cancelButton: 'btn btn--md btn__link--secondary',
-      confirmButton: 'btn btn--md btn--danger',
-    },
-    buttonsStyling: false,
+  confirm: (text) => {
+    return {
+      title: 'Anda yakin ?',
+      text: text,
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Batal',
+      confirmButtonText: 'Ya, simpan !',
+      customClass: normalButton,
+      buttonsStyling: false,
+    }
   },
-  deleteImage: {
-    title: 'Anda yakin ?',
-    text: `Gambar akan dihapus.`,
-    icon: 'warning',
-    showCancelButton: true,
-    cancelButtonText: 'Batal',
-    confirmButtonText: 'Ya, hapus !',
-    customClass: {
-      cancelButton: 'btn btn--md btn__link--secondary',
-      confirmButton: 'btn btn--md btn--danger',
-    },
-    buttonsStyling: false,
+  delete: (text) => {
+    return {
+      title: 'Anda yakin ?',
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'Batal',
+      confirmButtonText: 'Ya, hapus !',
+      customClass: dangerButton,
+      buttonsStyling: false,
+    }
   },
 }
