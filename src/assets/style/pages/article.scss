@@ -1,5 +1,5 @@
 .card.article-add__image {
-   @apply w-1/2 mx-auto mt-36;
+   @apply w-2/5 mx-auto mt-20;
 }
 .article-add {
    .section-first {
@@ -10,11 +10,16 @@
          @apply text-sm font-medium capitalize text-gray-500;
       }
 
-      .image__wrapper {
-         @apply relative;
-         @apply w-3/4 h-full;
-         @apply rounded-lg;
-         @apply overflow-hidden;
+      // .image__wrapper {
+      //    @apply relative;
+      //    @apply w-3/4 h-full;
+      //    @apply rounded-lg;
+      //    @apply overflow-hidden;
+      // }
+      .thumbnail-image {
+         @apply flex-1 relative;
+         @apply flex flex-col;
+         @apply rounded-xl overflow-hidden;
       }
    }
    .section-second {
@@ -85,6 +90,19 @@
    }
 }
 
+.article-add__image {
+   &-upload {
+      @apply flex-1 relative;
+      @apply flex flex-col;
+      @apply rounded-xl overflow-hidden;
+      min-height: 250px;
+   }
+
+   &-caption {
+      @apply mt-4;
+   }
+}
+
 .article-detail {
    &__wrapper {
       @apply w-9/12 mx-auto px-10;
@@ -147,11 +165,10 @@
          @apply text-sm font-medium capitalize text-gray-500;
       }
 
-      .image__wrapper {
-         @apply relative;
-         @apply w-3/4;
-         @apply rounded-lg;
-         @apply overflow-hidden;
+      .thumbnail-image {
+         @apply flex-1 relative;
+         @apply flex flex-col;
+         @apply rounded-xl overflow-hidden;
       }
    }
    .section-second {
@@ -172,9 +189,8 @@
 }
 
 .card__body.article-add {
-   @apply overflow-scroll;
-   h5 {
-      @apply mt-4;
-      @apply font-medium capitalize text-gray-500;
-   }
+   // h5 {
+   //    @apply mt-4;
+   //    @apply font-medium capitalize text-gray-500;
+   // }
 }

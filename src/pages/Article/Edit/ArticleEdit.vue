@@ -19,7 +19,6 @@ import Spinner from '../../../components/modal/Spinner.vue'
 import ArticleEditItem from './ArticleEditItem.vue'
 import AddNewText from '../../../components/modal/Article/AddNewText.vue'
 import { articleDialog } from '../../../utils/sweetalert-object'
-import { ulid } from 'ulid'
 
 const store = useStore()
 const route = useRoute()
@@ -127,6 +126,7 @@ async function fetchArticle() {
   articleInfo.value.category = article.value.category
   articleInfo.value.placement = article.value.placement
   articleInfo.value.thumbnailImage.preview = `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
+  articleInfo.value.thumbnailImage.isEdited = false
 
   forEach(article.value.ArticleDetails, (item, index) => {
     article.value.ArticleDetails[index].showOptions = false
@@ -187,10 +187,10 @@ function addNewText() {
  * @param {String} index of item
  */
 function editText(textIndex) {
-  textToEdit.value.value = article.value.ArticleDetails[textIndex].content
+  textToEdit.value.content = article.value.ArticleDetails[textIndex].content
   textToEdit.value.index = textIndex
-  console.log(textToEdit.value)
   //fix bug, tell form to edit text action
+  console.log(textToEdit)
   editorPurpose.value = 'edit'
   toggleModal('textEditor')
 }
@@ -198,7 +198,7 @@ function editText(textIndex) {
  * prevent accidentally close text editor modal
  */
 function closeTextEditor() {
-  Swal.fire(articleDialog.preventClose).then(async (result) => {
+  Swal.fire(articleDialog.preventClose('Artikel yang sudah diketik akan terhapus.')).then(async (result) => {
     if (result.isConfirmed) {
       /* if agree to close */
       textToEdit.value.value = ''
@@ -306,41 +306,44 @@ async function pushNewText(textValue) {
     content: textValue,
     position: article.value.ArticleDetails.length + 1
   }
-  Swal.fire({
-    title: 'Anda yakin ?',
-    text: 'Teks akan ditambahkan pada artikel.',
-    icon: 'question',
-    showCancelButton: true,
-    cancelButtonColor: '#c82333',
-    confirmButtonText: 'Ya, simpan !',
-    confirmButtonColor: '#41c3a9',
-  }).then(async (result) => {
+  Swal.fire(articleDialog.confirm('Teks akan ditambahkan pada artikel.')).then(async (result) => {
     if (result.isConfirmed) {
-      toggleModal('textEditor')
       spinner('on')
-      await store.dispatch('article/addSingleText', textItem)
+      await store.dispatch('article/addTextItem', textItem)
         .then(() => {
-          Swal.fire({
-            icon: 'success',
-            text: 'Teks berhasil ditambahkan.',
-            showConfirmButton: false,
-            timer: 1500,
-          })
+          Swal.fire(articleDialog.success('Teks berhasil ditambahkan.'))
           router.push({
             name: 'article detail',
             params: { id: article.value.id }
           })
-        }).catch(() => {
-          Swal.fire({
-            icon: 'warning',
-            text: 'Terjadi kesalahan.',
-            confirmButtonText: 'tutup',
-          })
+        })
+        .catch(() => {
+          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+        })
+      toggleModal('textEditor')
+      spinner('off')
+    }
+  })
+}
+async function removeTextItem(textIndex) {
+  let textItem = {
+    articleId: article.value.id,
+    itemId: article.value.ArticleDetails[textIndex].id,
+  }
+  Swal.fire(articleDialog.delete('Teks akan dihapus')).then(async (result) => {
+    if (result.isConfirmed) {
+      spinner('on')
+      await store.dispatch('article/removeTextItem', { data: textItem })
+        .then(async () => {
+          Swal.fire(articleDialog.success('Teks berhasil dihapus.'))
+          await fetchArticle()
+        })
+        .catch(() => {
+          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
         })
       spinner('off')
     }
   })
-
 }
 async function pushEditedText(textValue, textIndex) {
   let textItem = {
@@ -351,19 +354,14 @@ async function pushEditedText(textValue, textIndex) {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/editTextItem', textItem)
-      spinner('off')
-    }
-  })
-}
-async function removeTextItem(textIndex) {
-  let textItem = {
-    articleId: article.value.id,
-    itemId: article.value.ArticleDetails[textIndex].id,
-  }
-  Swal.fire(articleDialog.delete('Teks akan dihaps')).then(async (result) => {
-    if (result.isConfirmed) {
-      spinner('on')
-      await store.dispatch('article/removeTextItem', textItem)
+        .then(async () => {
+          Swal.fire(articleDialog.success('Teks berhasil diubah.'))
+          await fetchArticle()
+          toggleModal('textEditor')
+        })
+        .catch(() => {
+          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+        })
       spinner('off')
     }
   })
@@ -397,17 +395,13 @@ async function removeTextItem(textIndex) {
                 <CustomThreeDotOptionsItem>
                   <div class="flex gap-4" @click="addNewText">
                     <CustomIcon :svg-icon="textAdd" />
-                    <p>
-                      tambah teks
-                    </p>
+                    <p>tambah teks</p>
                   </div>
                 </CustomThreeDotOptionsItem>
                 <CustomThreeDotOptionsItem>
                   <div class="flex gap-4" @click="validateFormInfo">
                     <CustomIcon :svg-icon="imageAdd" />
-                    <p>
-                      tambah gambar
-                    </p>
+                    <p>tambah gambar</p>
                   </div>
                 </CustomThreeDotOptionsItem>
               </CustomThreeDotOptionsList>
@@ -415,7 +409,7 @@ async function removeTextItem(textIndex) {
           </div>
           <div class="card__body article-edit">
             <div v-show="section.first.isActive" class="section-first">
-              <div class="w-1/2">
+              <div class="w-2/3">
                 <CustomTextArea type="text" label="Judul" placeholder="Masukan judul artikel.."
                   v-model:input-value="articleInfo.title" :error-state="errorState.title"
                   @validate-input="validateInput('title')" />
@@ -426,14 +420,17 @@ async function removeTextItem(textIndex) {
                   v-model:input-value="articleInfo.placement" :error-state="errorState.placement"
                   @validate-input="validateInput('placement')" />
               </div>
-              <div class="w-1/2">
-                <h3>gambar thumbnail</h3>
-                <div class="h-56 flex justify-center items-center relative">
-                  <div class="image__wrapper">
-                    <CustomImagePicker title="ganti gambar" @on-select-file="setNewThumbnail" />
-                    <img crossorigin="anonymous" :src="articleInfo.thumbnailImage.preview" alt="" />
+              <div class="w-1/3 flex flex-col">
+                <h3>thumbnail</h3>
+                <div class="thumbnail-image">
+                  <CustomImagePicker :title="[' tambahkan gambar', 'ubah gambar']" @on-select-file="setNewThumbnail"
+                    :image-is-exist="articleInfo.thumbnailImage.preview" />
+                  <div class="thumbnail-image__content">
+                    <img v-if="articleInfo.thumbnailImage.preview" crossorigin="anonymous"
+                      :src="articleInfo.thumbnailImage.preview" alt="" />
                   </div>
                 </div>
+
               </div>
             </div>
             <div v-if="section.second.isActive" class="section-second">

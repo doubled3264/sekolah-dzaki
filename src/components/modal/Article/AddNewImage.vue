@@ -4,7 +4,7 @@ import { forEach, size } from 'lodash'
 import { articleSchema } from '../../../utils/validation/article.schema'
 import Swal from 'sweetalert2'
 import CustomButton from '../../CustomButton.vue'
-import CustomImageInput from '../../form/CustomImageInput.vue'
+import CustomImagePicker from '../../form/CustomImagePicker.vue'
 import CustomInput from '../../form/CustomInput.vue'
 
 const emit = defineEmits(['cancelAction', 'processImage'])
@@ -63,11 +63,17 @@ function validateForm() {
          </div>
       </div>
       <div class="card__body">
-         <div v-if="!image.raw" class="text-center">
-            <CustomImageInput @on-select-file="setPreviewImage" />
+         <div class="article-add__image-upload">
+            <CustomImagePicker
+               :title="[' tambahkan gambar', 'ubah gambar']"
+               @on-select-file="setPreviewImage"
+               :image-is-exist="image.raw"
+            />
+            <div class="article-add__image-preview">
+               <img :src="image.preview" :alt="image.raw.name" />
+            </div>
          </div>
-         <div v-if="image.raw" class="article-add__preview-image">
-            <img :src="image.preview" :alt="image.raw.name" />
+         <div v-if="image.raw" class="article-add__image-caption">
             <CustomInput
                label="keterangan gambar"
                placeholder="Masukan keterangan.."

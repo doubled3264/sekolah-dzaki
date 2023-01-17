@@ -16,12 +16,10 @@ import { articleDialog } from '../../../utils/sweetalert-object'
 import Swal from 'sweetalert2'
 import ContentHead from '../../../components/Content/ContentHead.vue'
 import CustomIcon from '../../../components/CustomIcon.vue'
-import CustomInput from '../../../components/form/CustomInput.vue'
 import CustomSelectBox from '../../../components/form/CustomSelectBox.vue'
 import CustomThreeDotOptionsList from '../../../components/CustomThreeDotOpions/OptionsList.vue'
 import CustomThreeDotOptionsItem from '../../../components/CustomThreeDotOpions/OptionsItem.vue'
 import CustomModalOverlay from '../../../components/CustomModalOverlay.vue'
-import CustomImageInput from '../../../components/form/CustomImageInput.vue'
 import CustomImagePicker from '../../../components/form/CustomImagePicker.vue'
 import ArticleAddPreviewList from './ArticleAddPreviewList.vue'
 import CustomButton from '../../../components/CustomButton.vue'
@@ -90,7 +88,7 @@ const section = ref({
 const mainMenu = ref(false)
 /** @type {Object} state for edit text  */
 const textToEdit = ref({
-  value: '',
+  content: '',
   index: 0,
 })
 /** @type {String} text editor purpose value, add | edit  */
@@ -170,7 +168,7 @@ function addNewText() {
  * @param {String} index of item
  */
 function editText(textIndex) {
-  textToEdit.value.value = article.value.item[textIndex].value
+  textToEdit.value.content = article.value.item[textIndex].content
   textToEdit.value.index = textIndex
   //fix bug, tell form to edit text action
   editorPurpose.value = 'edit'
@@ -180,10 +178,10 @@ function editText(textIndex) {
  * prevent accidentally close text editor modal
  */
 function closeTextEditor() {
-  Swal.fire(articleDialog.preventClose).then(async (result) => {
+  Swal.fire(articleDialog.preventClose('Artikel yang sudah diketik akan terhapus.')).then(async (result) => {
     if (result.isConfirmed) {
       /* if agree to close */
-      textToEdit.value.value = ''
+      textToEdit.value.content = ''
       textToEdit.value.index = 0
       toggleModal('textEditor')
     }
@@ -196,7 +194,7 @@ function closeTextEditor() {
 function pushNewText(textValue) {
   article.value.item.push({
     type: 'text',
-    value: textValue,
+    content: textValue,
     showOptions: false,
   })
   toggleModal('textEditor')
@@ -206,7 +204,7 @@ function pushNewText(textValue) {
  * @param {Number} index of text to remove
  */
 function removeText(textIndex) {
-  Swal.fire(articleDialog.deleteText).then(async (result) => {
+  Swal.fire(articleDialog.delete('Teks akan dihapus.')).then(async (result) => {
     if (result.isConfirmed) {
       article.value.item.splice(textIndex, 1)
     }
@@ -218,7 +216,7 @@ function removeText(textIndex) {
  * @param {Number} index of text to replace
  */
 function pushEditedText(textValue, textIndex) {
-  article.value.item[textIndex].value = textValue
+  article.value.item[textIndex].content = textValue
   toggleModal('textEditor')
 }
 
@@ -226,7 +224,7 @@ function pushEditedText(textValue, textIndex) {
  * prevent accidentally close add image modal
  */
 function closeAddImageModal() {
-  Swal.fire(articleDialog.preventClose).then(async (result) => {
+  Swal.fire(articleDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
     if (result.isConfirmed) {
       toggleModal('imageEditor')
     }
@@ -239,7 +237,7 @@ function closeAddImageModal() {
 function pushNewImage(imageValue) {
   article.value.item.push({
     type: 'image',
-    value: {
+    content: {
       ...imageValue,
     },
     showOptions: false,
@@ -268,7 +266,7 @@ function reorderingImage(imageIndex, to) {
  * @param {Number} infex of image to remove
  */
 function removeImage(imageIndex) {
-  Swal.fire(articleDialog.deleteImage).then(async (result) => {
+  Swal.fire(articleDialog.delete('Gambar akan dihapus.')).then(async (result) => {
     if (result.isConfirmed) {
       article.value.item.splice(imageIndex, 1)
     }
@@ -297,34 +295,22 @@ async function validateForm() {
   /* validate input component */
   for (const item in errorState.value) {
     if (errorState.value[item].isError) {
-      Swal.fire({
-        icon: 'warning',
-        text: 'terdapat form yang belum terisi',
-        confirmButtonText: 'tutup',
-      })
+      Swal.fire(articleDialog.error('terdapat form yang belum terisi'))
       return ''
     }
   }
   /* validate thumbnail input */
   if (!article.value.thumbnailImage) {
-    Swal.fire({
-      icon: 'warning',
-      text: 'Thumbnail belum dipilih',
-      confirmButtonText: 'tutup',
-    })
+    Swal.fire(articleDialog.error('Thumbnail belum dipilih'))
     return ''
   }
   /* validate article length */
   if (article.value.item.length == 0) {
-    Swal.fire({
-      icon: 'warning',
-      text: 'Tambahkan minimal 2 artikel',
-      confirmButtonText: 'tutup',
-    })
+    Swal.fire(articleDialog.error('Tambahkan minimal 2 artikel'))
     return ''
   }
 
-  Swal.fire(articleDialog.addArticle).then((result) => {
+  Swal.fire(articleDialog.confirm('Simpan artikel.')).then((result) => {
     if (result.isConfirmed) {
       createArticleData()
     }
@@ -336,39 +322,20 @@ async function validateForm() {
 async function createArticleData() {
   spinner('on')
   const uuid = ulid()
-  //first, upload image file
-  await store.dispatch('article/addImage', {
+  await store.dispatch('article/add', {
     articleData: article.value,
     uuid: uuid,
-  }).catch(() => {
-    Swal.fire({
-      icon: 'warning',
-      text: 'Terjadi kesalahan',
-      confirmButtonText: 'tutup',
-    })
   })
-  //sencond, upload article
-  await store.dispatch('article/addArticle', {
-    articleData: article.value,
-    uuid: uuid,
-  }).then(() => {
-    Swal.fire({
-      icon: 'success',
-      text: 'Artikel berhasil di tambahkan.',
-      showConfirmButton: false,
-      timer: 1500,
+    .then(() => {
+      Swal.fire(articleDialog.success('Artikel berhasil di simpan.'))
+      router.push({
+        name: 'article detail',
+        params: { id: uuid }
+      })
     })
-    router.push({
-      name: 'article detail',
-      params: { id: uuid }
+    .catch(() => {
+      Swal.fire(articleDialog.error('Terjadi kesalahan.'))
     })
-  }).catch(() => {
-    Swal.fire({
-      icon: 'warning',
-      text: 'Terjadi kesalahan',
-      confirmButtonText: 'tutup',
-    })
-  })
   spinner('off')
 }
 </script>
@@ -419,13 +386,13 @@ async function createArticleData() {
                   v-model:input-value="article.placement" :error-state="errorState.placement"
                   @validate-input="validateInput('placement')" />
               </div>
-              <div class="w-1/2">
-                <h3>gambar thumbnail</h3>
-                <div class="h-56 flex justify-center items-center relative">
-                  <div class="image__wrapper">
-                    <CustomImagePicker title="tambahkan gambar" @on-select-file="setThumbnailImage" />
+              <div class="w-1/2 flex flex-col">
+                <h3>thumbnail</h3>
+                <div class="thumbnail-image">
+                  <CustomImagePicker :title="[' tambahkan gambar', 'ubah gambar']" @on-select-file="setThumbnailImage"
+                    :image-is-exist="article.thumbnailImage" />
+                  <div class="thumbnail-image__content">
                     <img v-if="article.thumbnailImage" :src="getThumbnailImage" alt="" />
-                    <div v-else class="w-full h-full border-2 border-dashed border-gray-400"></div>
                   </div>
                 </div>
               </div>

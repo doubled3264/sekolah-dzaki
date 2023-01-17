@@ -5,7 +5,7 @@ import { imageEdit } from '../../utils/svg-vars'
 import CustomIcon from '../CustomIcon.vue'
 
 const emit = defineEmits(['onSelectFile'])
-defineProps(['title'])
+defineProps(['title', 'imageIsExist'])
 const fileInput = ref(null)
 const isVisited = ref(false)
 
@@ -30,6 +30,7 @@ function onSelectFile() {
 </script>
 <template>
    <div
+      v-show="imageIsExist"
       @click="selectFile"
       :class="[
          'custom-image-picker',
@@ -41,7 +42,15 @@ function onSelectFile() {
       @mouseleave="toggleIsVisited"
    >
       <CustomIcon :svg-icon="imageEdit" width="54" />
-      <p>{{ title }}</p>
-      <input ref="fileInput" type="file" hidden @input="onSelectFile" />
+      <p>{{ title[1] }}</p>
    </div>
+   <div
+      @click="selectFile"
+      v-show="!imageIsExist"
+      class="custom-image-picker--empty"
+   >
+      <CustomIcon :svg-icon="imageEdit" width="54" />
+      <p>{{ title[0] }}</p>
+   </div>
+   <input ref="fileInput" type="file" hidden @input="onSelectFile" />
 </template>

@@ -37,7 +37,7 @@
 @tailwind utilities;
 
 body {
-   // @apply font-poppins;
+   @apply h-screen m-0 p-0;
    @apply bg-midnight-green;
    font-family: 'Rubik', sans-serif;
 }

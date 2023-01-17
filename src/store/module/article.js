@@ -1,40 +1,31 @@
 import axios from 'axios'
 import { forEach } from 'lodash'
-import { omit, pick } from '../../utils/objet-helper'
 
-function createImageFormData(articleData, uuid) {
-  const formData = new FormData()
+function generateFormData(data) {
+  const { articleData, uuid } = data
+  let formData = new FormData()
   formData.append('id', uuid)
-  formData.append('thumbnail', articleData.thumbnailImage)
+  formData.append('title', articleData.title)
+  formData.append('category', articleData.category)
+  formData.append('placement', articleData.placement)
+  formData.append('thumbnail', articleData.thumbnailImage.name)
+  forEach(articleData.item, (item, index) => {
+    if (item.type == 'text') {
+      formData.append(`${index + 1}-text`, item.content)
+    } else if (item.type == 'image') {
+      formData.append(
+        `${index + 1}-image`,
+        `${item.content.raw.name}#${item.content.caption}`
+      )
+    }
+  })
+  formData.append('thumbnailImage', articleData.thumbnailImage)
   forEach(articleData.item, (item) => {
     if (item.type == 'image') {
-      formData.append('image', item.value.raw)
+      formData.append('image', item.content.raw)
     }
   })
   return formData
-}
-
-function createArticleData(articleData, uuid) {
-  const article = {}
-  article.id = uuid
-  article.title = articleData.title
-  article.thumbnail = articleData.thumbnailImage.name
-  article.category = articleData.category
-  article.placement = articleData.placement
-  article.item = []
-  forEach(articleData.item, (data, index) => {
-    if (data.type == 'text') {
-      article.item.push(pick(data, 'type'))
-      article.item[index].content = data.value
-      article.item[index].position = index + 1
-    } else if (data.type == 'image') {
-      article.item.push(pick(data, 'type'))
-      article.item[index].content = data.value.raw.name
-      article.item[index].caption = data.value.caption
-      article.item[index].position = index + 1
-    }
-  })
-  return article
 }
 
 export default {
@@ -56,7 +47,6 @@ export default {
       state.articleSimple = data
     },
     setSingle: (state, data) => {
-      console.log(data)
       state.articleSingle = data
     },
   },
@@ -82,16 +72,16 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+          reject(error)
         })
     },
-    async addImage({ }, data) {
-      const { articleData, uuid } = data
-      const imageFormData = createImageFormData(articleData, uuid)
+    async add({ }, data) {
+      const formData = generateFormData(data)
       return new Promise((resolve, reject) => {
         axios({
           method: 'post',
-          url: 'article/add-image',
-          data: imageFormData,
+          url: 'article',
+          data: formData,
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -104,13 +94,10 @@ export default {
           })
       })
     },
-    // second, add article
-    async addArticle({ }, data) {
-      const { articleData, uuid } = data
-      const article = createArticleData(articleData, uuid)
+    async delete({ }, id) {
       return new Promise((resolve, reject) => {
         axios
-          .post('article', { article: article })
+          .delete(`article/${id}`)
           .then((response) => {
             resolve(response)
           })
@@ -131,10 +118,34 @@ export default {
           })
       })
     },
-    async addSingleText({ }, data) {
+    async addTextItem({ }, data) {
       return new Promise((resolve, reject) => {
         axios
-          .post('article/add-single-text', data)
+          .post('article/text-item', data)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+    },
+    async removeTextItem({ }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete('article/text-item', data)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+    },
+    async editTextItem({ }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put('article/text-item', data)
           .then((response) => {
             resolve(response)
           })
@@ -158,42 +169,6 @@ export default {
             'Content-Type': 'multipart/form-data',
           },
         })
-          .then((response) => {
-            resolve(response)
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
-    },
-    async editTextItem({ }, data) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post('article/edit-text-item', data)
-          .then((response) => {
-            resolve(response)
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
-    },
-    async removeTextItem({ }, data) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post('article/remove-text-item', data)
-          .then((response) => {
-            resolve(response)
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
-    },
-    async delete({ }, id) {
-      return new Promise((resolve, reject) => {
-        axios
-          .delete(`article/${id}`)
           .then((response) => {
             resolve(response)
           })

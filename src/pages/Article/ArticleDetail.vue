@@ -74,7 +74,13 @@ const getArticleDate = computed(() => {
 })
 
 const getThumbnail = computed(() => {
-   return `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
+   if (article.value.id) {
+      console.log('data sudah redi')
+      return `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
+   } else {
+      console.log('data belum difetch')
+      return ''
+   }
 })
 const getContentImage = computed(() => {
    return (value) => {
@@ -91,30 +97,23 @@ function editArticle() {
 
 async function removeArticle() {
    spinner('on')
-   Swal.fire(articleDialog.removeArticle)
-      .then(async (result) => {
+   Swal.fire(articleDialog.delete('Artikel akan dihapus.')).then(
+      async (result) => {
          if (result.isConfirmed) {
-            await store.dispatch('article/delete', article.value.id)
+            await store
+               .dispatch('article/delete', article.value.id)
+               .then(() => {
+                  Swal.fire(articleDialog.success('Artikel berhasil dihapus.'))
+                  router.push({
+                     name: 'article list',
+                  })
+               })
+               .catch(() => {
+                  Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+               })
          }
-      })
-      .then(() => {
-         Swal.fire({
-            icon: 'success',
-            text: 'Artikel berhasil di hapus.',
-            showConfirmButton: false,
-            timer: 1500,
-         })
-         router.push({
-            name: 'article list',
-         })
-      })
-      .catch(() => {
-         Swal.fire({
-            icon: 'warning',
-            text: 'Terjadi kesalahan',
-            confirmButtonText: 'tutup',
-         })
-      })
+      }
+   )
    spinner('off')
 }
 </script>
@@ -180,7 +179,10 @@ async function removeArticle() {
                               class="text-content"
                               v-html="item.content"
                            ></div>
-                           <div else class="image-content">
+                           <div
+                              v-if="item.type == 'image'"
+                              class="image-content"
+                           >
                               <div class="image-wrapper">
                                  <img
                                     crossorigin="anonymous"

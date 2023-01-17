@@ -14,6 +14,15 @@
       @apply bg-gray-500/60;
       animation: showOptions 300ms ease;
    }
+   &--empty {
+      @apply flex-1 flex flex-col items-center gap-2 justify-center;
+      @apply border-2 border-dashed border-gray-400;
+      @apply cursor-pointer;
+      @apply text-gray-400;
+      p {
+         @apply text-lg font-medium capitalize;
+      }
+   }
 }
 
 @keyframes showOptions {

@@ -59,7 +59,7 @@ onMounted(() => {
             class="article-add__preview-item"
          >
             <div v-if="item.type === 'text'" class="text-content">
-               <div class="text__wrapper" v-html="item.value"></div>
+               <div class="text__wrapper" v-html="item.content"></div>
                <div
                   class="text-content__nav"
                   @mouseenter="$emit('toggleShowOptions', index)"
@@ -89,9 +89,12 @@ onMounted(() => {
             </div>
             <div v-if="item.type === 'image'" class="image-content">
                <div class="image__wrapper">
-                  <img :src="item.value.preview" :alt="item.value.raw.name" />
+                  <img
+                     :src="item.content.preview"
+                     :alt="item.content.raw.name"
+                  />
                </div>
-               <p>{{ item.value.caption }}</p>
+               <p>{{ item.content.caption }}</p>
                <div
                   class="image-content__nav"
                   @mouseenter="$emit('toggleShowOptions', index)"

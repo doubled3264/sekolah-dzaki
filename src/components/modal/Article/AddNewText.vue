@@ -67,7 +67,7 @@ const tinyMceOptions = ref({
 
 function editorInit(editor) {
    if (props.purpose == 'edit') {
-      editor.target.setContent(props.textToEdit.value)
+      editor.target.setContent(props.textToEdit.content)
    }
 }
 
