@@ -18,6 +18,7 @@ import CustomIcon from '../../../components/CustomIcon.vue'
 import Spinner from '../../../components/modal/Spinner.vue'
 import ArticleEditItem from './ArticleEditItem.vue'
 import AddNewText from '../../../components/modal/Article/AddNewText.vue'
+import AddNewImage from '../../../components/modal/Article/AddNewImage.vue'
 import { articleDialog } from '../../../utils/sweetalert-object'
 
 const store = useStore()
@@ -90,8 +91,15 @@ const textToEdit = ref({
   value: '',
   index: 0,
 })
+const imageToEdit = ref({
+  raw: '',
+  preview: '',
+  caption: '',
+  index: 0,
+})
 /** @type {String} text editor purpose value, add | edit  */
 const editorPurpose = ref('add')
+const imageEditorPurpose = ref(null)
 onMounted(async () => {
   spinner('on')
   store.commit('sidebar/setAllToNormal')
@@ -166,11 +174,12 @@ const getCardTitle = computed(() => {
   }
 })
 
-function setNewThumbnail(value) {
-  articleInfo.value.thumbnailImage.fileName = value.name
-  articleInfo.value.thumbnailImage.raw = value
-  articleInfo.value.thumbnailImage.preview = URL.createObjectURL(value)
+function setNewThumbnail(imageValue) {
+  articleInfo.value.thumbnailImage.preview = URL.createObjectURL(imageValue)
   articleInfo.value.thumbnailImage.isEdited = true
+
+  articleInfo.value.thumbnailImage.new.raw = imageValue
+  articleInfo.value.thumbnailImage.new.thumbnail = imageValue.name
 }
 
 /**
@@ -190,7 +199,6 @@ function editText(textIndex) {
   textToEdit.value.content = article.value.ArticleDetails[textIndex].content
   textToEdit.value.index = textIndex
   //fix bug, tell form to edit text action
-  console.log(textToEdit)
   editorPurpose.value = 'edit'
   toggleModal('textEditor')
 }
@@ -206,6 +214,31 @@ function closeTextEditor() {
       toggleModal('textEditor')
     }
   })
+}
+/**
+ * prevent accidentally close add image modal
+ */
+function closeImageModal() {
+  Swal.fire(articleDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
+    if (result.isConfirmed) {
+      imageEditorPurpose.value = null
+      toggleModal('imageEditor')
+    }
+  })
+}
+function addNewImage() {
+  //fix bug, tell form to add new text action
+  imageEditorPurpose.value = 'add'
+  toggleModal('imageEditor')
+}
+
+function editImageItem(imageIndex) {
+  imageToEdit.value.raw = ''
+  imageToEdit.value.preview = `http://localhost:3000/files/article/${article.value.id}/${article.value.ArticleDetails[imageIndex].content}`
+  imageToEdit.value.caption = article.value.ArticleDetails[imageIndex].caption
+  imageToEdit.value.index = imageIndex
+  imageEditorPurpose.value = 'edit without raw'
+  toggleModal('imageEditor')
 }
 /**
  * replace exist text on article item
@@ -255,50 +288,65 @@ async function validateFormInfo() {
     confirmButtonColor: '#41c3a9',
   }).then((result) => {
     if (result.isConfirmed) {
-      spinner('on')
-      if (articleInfo.value.thumbnailImage.isEdited) {
-        processArticleInfoImage()
-      }
-      processArticleInfo()
+      /* if (articleInfo.value.thumbnailImage.isEdited) { */
+      /*   processArticleInfoImage() */
+      /* } */
+      /* processArticleInfo() */
+      pushEditedInfo()
     }
   })
 }
-async function processArticleInfo() {
-  await store.dispatch('article/editInfo', {
-    article: articleInfo.value
-  }).then(() => {
-    Swal.fire({
-      icon: 'success',
-      text: 'Artikel info berhasil diubah.',
-      showConfirmButton: false,
-      timer: 1500,
-    })
-    router.push({
-      name: 'article detail',
-      params: { id: article.value.id }
-    })
-    spinner('off')
-  })
-    .catch(() => {
-      Swal.fire({
-        icon: 'warning',
-        text: 'Terjadi kesalahan',
-        confirmButtonText: 'tutup',
-      })
-      spinner('off')
-    })
-}
+async function pushEditedInfo() {
+  console.log(articleInfo.value)
+  let infoItem = {
+    id: article.value.id,
+    category: articleInfo.value.category,
+    placement: articleInfo.value.placement
+  }
+  if (articleInfo.value.thumbnailImage.isEdited) {
+    infoItem.raw = articleInfo.value.thumbnailImage.new.raw
+    infoItem.itemToDelete = article.value.thumbnail
+    /* infoItem.isEdited */
+  }
 
-async function processArticleInfoImage() {
-  await store.dispatch('article/editInfoImage', { article: articleInfo.value }).catch(() => {
-    Swal.fire({
-      icon: 'warning',
-      text: 'Terjadi kesalahan',
-      confirmButtonText: 'tutup',
-    })
-    spinner('off')
-  })
+
 }
+/* async function processArticleInfo() { */
+/*   await store.dispatch('article/editInfo', { */
+/*     article: articleInfo.value */
+/*   }).then(() => { */
+/*     Swal.fire({ */
+/*       icon: 'success', */
+/*       text: 'Artikel info berhasil diubah.', */
+/*       showConfirmButton: false, */
+/*       timer: 1500, */
+/*     }) */
+/*     router.push({ */
+/*       name: 'article detail', */
+/*       params: { id: article.value.id } */
+/*     }) */
+/*     spinner('off') */
+/*   }) */
+/*     .catch(() => { */
+/*       Swal.fire({ */
+/*         icon: 'warning', */
+/*         text: 'Terjadi kesalahan', */
+/*         confirmButtonText: 'tutup', */
+/*       }) */
+/*       spinner('off') */
+/*     }) */
+/* } */
+
+/* async function processArticleInfoImage() { */
+/*   await store.dispatch('article/editInfoImage', { article: articleInfo.value }).catch(() => { */
+/*     Swal.fire({ */
+/*       icon: 'warning', */
+/*       text: 'Terjadi kesalahan', */
+/*       confirmButtonText: 'tutup', */
+/*     }) */
+/*     spinner('off') */
+/*   }) */
+/* } */
 async function pushNewText(textValue) {
   let textItem = {
     article_id: article.value.id,
@@ -357,7 +405,86 @@ async function pushEditedText(textValue, textIndex) {
         .then(async () => {
           Swal.fire(articleDialog.success('Teks berhasil diubah.'))
           await fetchArticle()
-          toggleModal('textEditor')
+        })
+        .catch(() => {
+          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+        })
+      toggleModal('textEditor')
+      spinner('off')
+    }
+  })
+}
+async function addImageItem(imageObject) {
+  let imageItem = {
+    articleId: article.value.id,
+    type: 'image',
+    raw: imageObject.raw,
+    caption: imageObject.caption,
+    position: article.value.ArticleDetails.length + 1
+  }
+
+  Swal.fire(articleDialog.confirm('Gambar akan ditambahkan pada artikel.')).then(async (result) => {
+    if (result.isConfirmed) {
+      spinner('on')
+      await store.dispatch('article/addImageItem', imageItem)
+        .then(() => {
+          Swal.fire(articleDialog.success('Gambar berhasil ditambahkan.'))
+          router.push({
+            name: 'article detail',
+            params: { id: article.value.id }
+          })
+        })
+        .catch(() => {
+          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+        })
+      imageEditorPurpose.value = null
+      toggleModal('imageEditor')
+      spinner('off')
+    }
+  })
+}
+async function pushEditImageItem(imageObject, imageIndex) {
+  let imageItem = {
+    id: article.value.ArticleDetails[imageIndex].id,
+    caption: imageObject.caption,
+    captionOnly: true
+  }
+  if (imageObject.raw != '') {
+    imageItem.articleId = article.value.id
+    imageItem.itemToDelete = article.value.ArticleDetails[imageIndex].content
+    imageItem.raw = imageObject.raw
+    imageItem.captionOnly = false
+  }
+
+  Swal.fire(articleDialog.confirm('Simpan perubahan.')).then(async (result) => {
+    if (result.isConfirmed) {
+      spinner('on')
+      await store.dispatch('article/editImageItem', imageItem)
+        .then(async () => {
+          Swal.fire(articleDialog.success('Gambar berhasil diubah.'))
+          await fetchArticle()
+        })
+        .catch(() => {
+          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+        })
+      toggleModal('imageEditor')
+      spinner('off')
+    }
+  })
+}
+async function removeImageItem(imageIndex) {
+  let imageItem = {
+    articleId: article.value.id,
+    itemId: article.value.ArticleDetails[imageIndex].id,
+    itemName: article.value.ArticleDetails[imageIndex].content,
+  }
+  Swal.fire(articleDialog.delete('Gambar akan dihapus')).then(async (result) => {
+    if (result.isConfirmed) {
+      spinner('on')
+      await store.dispatch('article/removeImageItem', { data: imageItem })
+        .then(async () => {
+          Swal.fire(articleDialog.success('Gambar berhasil dihapus.'))
+          await fetchArticle()
         })
         .catch(() => {
           Swal.fire(articleDialog.error('Terjadi kesalahan.'))
@@ -399,7 +526,7 @@ async function pushEditedText(textValue, textIndex) {
                   </div>
                 </CustomThreeDotOptionsItem>
                 <CustomThreeDotOptionsItem>
-                  <div class="flex gap-4" @click="validateFormInfo">
+                  <div class="flex gap-4" @click="addNewImage">
                     <CustomIcon :svg-icon="imageAdd" />
                     <p>tambah gambar</p>
                   </div>
@@ -435,7 +562,7 @@ async function pushEditedText(textValue, textIndex) {
             </div>
             <div v-if="section.second.isActive" class="section-second">
               <ArticleEditItem :article="article" @toggle-show-options="toggleShowOptions" @edit-text="editText"
-                @remove-text="removeTextItem" />
+                @remove-text="removeTextItem" @remove-image="removeImageItem" @edit-image="editImageItem" />
             </div>
           </div>
           <div class="card__footer">
@@ -459,6 +586,10 @@ async function pushEditedText(textValue, textIndex) {
     <CustomModalOverlay v-if="modal.textEditor" @close-modal="closeTextEditor">
       <AddNewText @process-text="pushNewText" @process-edit="pushEditedText" :text-to-edit="textToEdit"
         :purpose="editorPurpose" />
+    </CustomModalOverlay>
+    <CustomModalOverlay v-show="modal.imageEditor" @close-modal="closeImageModal">
+      <AddNewImage :image-to-edit="imageToEdit" :purpose="imageEditorPurpose" @cancel-action="closeImageModal"
+        @process-image="addImageItem" @process-edit="pushEditImageItem" />
     </CustomModalOverlay>
   </Teleport>
 </template>

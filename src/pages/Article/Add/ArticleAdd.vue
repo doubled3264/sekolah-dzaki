@@ -91,8 +91,15 @@ const textToEdit = ref({
   content: '',
   index: 0,
 })
+const imageToEdit = ref({
+  raw: null,
+  preview: null,
+  caption: null,
+  index: null,
+})
 /** @type {String} text editor purpose value, add | edit  */
-const editorPurpose = ref('add')
+const textEditorPurpose = ref('add')
+const imageEditorPurpose = ref(null)
 
 onMounted(() => {
   store.commit('sidebar/setAllToNormal')
@@ -160,7 +167,7 @@ const getCardTitle = computed(() => {
  */
 function addNewText() {
   //fix bug, tell form to add new text action
-  editorPurpose.value = 'add'
+  textEditorPurpose.value = 'add'
   toggleModal('textEditor')
 }
 /**
@@ -171,7 +178,7 @@ function editText(textIndex) {
   textToEdit.value.content = article.value.item[textIndex].content
   textToEdit.value.index = textIndex
   //fix bug, tell form to edit text action
-  editorPurpose.value = 'edit'
+  textEditorPurpose.value = 'edit'
   toggleModal('textEditor')
 }
 /**
@@ -223,12 +230,18 @@ function pushEditedText(textValue, textIndex) {
 /**
  * prevent accidentally close add image modal
  */
-function closeAddImageModal() {
+function closeImageModal() {
   Swal.fire(articleDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
     if (result.isConfirmed) {
+      imageEditorPurpose.value = null
       toggleModal('imageEditor')
     }
   })
+}
+function addNewImage() {
+  //fix bug, tell form to add new text action
+  imageEditorPurpose.value = 'add'
+  toggleModal('imageEditor')
 }
 /**
  * push new item to article
@@ -242,7 +255,23 @@ function pushNewImage(imageValue) {
     },
     showOptions: false,
   })
+  imageEditorPurpose.value = null
   toggleModal('imageEditor')
+}
+function editImage(imageIndex) {
+  imageToEdit.value.raw = article.value.item[imageIndex].content.raw
+  imageToEdit.value.preview = article.value.item[imageIndex].content.preview
+  imageToEdit.value.caption = article.value.item[imageIndex].content.caption
+  imageToEdit.value.index = imageIndex
+
+  imageEditorPurpose.value = 'edit'
+  toggleModal('imageEditor')
+}
+
+function pushEditedImage(imageObject, imageIndex) {
+  article.value.item[imageIndex].content = imageObject
+  toggleModal('imageEditor')
+  imageEditorPurpose.value = null
 }
 /**
  * reordering image to go up or go down
@@ -359,7 +388,7 @@ async function createArticleData() {
                   </div>
                 </CustomThreeDotOptionsItem>
                 <CustomThreeDotOptionsItem>
-                  <div class="flex gap-4" @click="toggleModal('imageEditor')">
+                  <div class="flex gap-4" @click="addNewImage">
                     <CustomIcon :svg-icon="imageAdd" />
                     <p>tambah gambar</p>
                   </div>
@@ -398,9 +427,9 @@ async function createArticleData() {
               </div>
             </div>
             <div v-show="section.second.isActive" class="section-second">
-              <ArticleAddPreviewList v-show="section.second" :article="article" @edit-text="editText"
-                @remove-text="removeText" @reordering-image="reorderingImage" @remove-image="removeImage"
-                @toggle-show-options="toggleShowOptions" />
+              <ArticleAddPreviewList v-show="section.second" :article="article" @edit-image="editImage"
+                @edit-text="editText" @remove-text="removeText" @reordering-image="reorderingImage"
+                @remove-image="removeImage" @toggle-show-options="toggleShowOptions" />
             </div>
           </div>
           <div class="card__footer">
@@ -422,8 +451,9 @@ async function createArticleData() {
       <AddNewText @process-text="pushNewText" @process-edit="pushEditedText" :text-to-edit="textToEdit"
         :purpose="editorPurpose" />
     </CustomModalOverlay>
-    <CustomModalOverlay v-if="modal.imageEditor" @close-modal="closeAddImageModal">
-      <AddNewImage @cancel-action="toggleModal('imageEditor')" @process-image="pushNewImage" />
+    <CustomModalOverlay v-show="modal.imageEditor" @close-modal="closeImageModal">
+      <AddNewImage :image-to-edit="imageToEdit" :purpose="imageEditorPurpose"
+        @cancel-action="closeImageModal" @process-image="pushNewImage" @process-edit="pushEditedImage" />
     </CustomModalOverlay>
     <CustomModalOverlay v-if="spinnerState">
       <Spinner :is-active="spinnerState" />

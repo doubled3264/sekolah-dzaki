@@ -72,7 +72,6 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-          reject(error)
         })
     },
     async add({ }, data) {
@@ -107,9 +106,14 @@ export default {
       })
     },
     async editInfo({ }, data) {
+      let formData = new FormData()
+      formData.append('id', data.id)
+      formData.append('category', data.category)
+      formData.append('placement', data.placement)
+
       return new Promise((resolve, reject) => {
         axios
-          .post('article/edit-info', data)
+          .put('article/info')
           .then((response) => {
             resolve(response)
           })
@@ -146,6 +150,75 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .put('article/text-item', data)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+    },
+    async addImageItem({ }, data) {
+      let formData = new FormData()
+      formData.append('article_id', data.articleId)
+      formData.append('type', data.type)
+      formData.append('content', data.raw.name)
+      formData.append('caption', data.caption)
+      formData.append('position', data.position)
+      formData.append('image', data.raw)
+
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'post',
+          url: 'article/image-item',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
+    async editImageItem({ }, data) {
+      let formData = new FormData()
+      formData.append('id', data.id)
+      formData.append('caption', data.caption)
+      formData.append('captionOnly', data.captionOnly)
+      if (!data.captionOnly) {
+        formData.append('article_id', data.articleId)
+        formData.append('itemToDelete', data.itemToDelete)
+        formData.append('content', data.raw.name)
+        formData.append('image', data.raw)
+      }
+
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'put',
+          url: 'article/image-item',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
+    async removeImageItem({ }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete('article/image-item', data)
           .then((response) => {
             resolve(response)
           })
