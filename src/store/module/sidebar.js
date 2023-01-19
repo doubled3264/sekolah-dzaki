@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { note, power, user } from '../../utils/svg-vars'
+import { megaphone, note, power, user } from '../../utils/svg-vars'
 export default {
    namespaced: true,
    state: {
@@ -99,6 +99,29 @@ export default {
                {
                   title: 'daftar artikel',
                   path: '/artikel',
+                  isActive: false,
+               },
+            ],
+         },
+         {
+            title: 'banner',
+            svgIcon: megaphone,
+            path: '/banner',
+            isActive: false,
+            subItem: [
+               {
+                  title: 'banner yayasan',
+                  path: '/banner/yayasan',
+                  isActive: false,
+               },
+               {
+                  title: 'banner sd',
+                  path: '/banner/sd',
+                  isActive: false,
+               },
+               {
+                  title: 'banner smp',
+                  path: '/banner/smp',
                   isActive: false,
                },
             ],

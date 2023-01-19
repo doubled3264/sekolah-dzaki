@@ -1,0 +1,27 @@
+.card.banner__image-editor {
+   @apply w-2/5 mx-auto mt-20;
+}
+
+.banner {
+   &__image-editor {
+      &.upload {
+         @apply relative;
+         @apply flex-1 flex flex-col;
+         @apply rounded-xl overflow-hidden;
+         min-height: 250px;
+      }
+
+      &.link-item {
+         @apply mt-4;
+      }
+   }
+
+   &__image-list {
+      @apply w-3/12 mx-auto;
+   }
+
+   &__image-item {
+      @apply mt-6;
+      @apply rounded-xl overflow-hidden;
+   }
+}

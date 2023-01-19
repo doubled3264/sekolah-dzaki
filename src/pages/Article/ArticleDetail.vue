@@ -12,7 +12,7 @@ import CustomThreeDotOptionsList from '../../components/CustomThreeDotOpions/Opt
 import CustomThreeDotOptionsItem from '../../components/CustomThreeDotOpions/OptionsItem.vue'
 import Spinner from '../../components/modal/Spinner.vue'
 import Swal from 'sweetalert2'
-import { articleDialog } from '../../utils/sweetalert-object'
+import { swalDialog } from '../../utils/sweetalert-object'
 
 const store = useStore()
 const route = useRoute()
@@ -97,19 +97,19 @@ function editArticle() {
 
 async function removeArticle() {
    spinner('on')
-   Swal.fire(articleDialog.delete('Artikel akan dihapus.')).then(
+   Swal.fire(swalDialog.delete('Artikel akan dihapus.')).then(
       async (result) => {
          if (result.isConfirmed) {
             await store
                .dispatch('article/delete', article.value.id)
                .then(() => {
-                  Swal.fire(articleDialog.success('Artikel berhasil dihapus.'))
+                  Swal.fire(swalDialog.success('Artikel berhasil dihapus.'))
                   router.push({
                      name: 'article list',
                   })
                })
                .catch(() => {
-                  Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+                  Swal.fire(swalDialog.error('Terjadi kesalahan.'))
                })
          }
       }

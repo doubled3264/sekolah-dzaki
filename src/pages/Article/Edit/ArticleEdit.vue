@@ -19,7 +19,7 @@ import Spinner from '../../../components/modal/Spinner.vue'
 import ArticleEditItem from './ArticleEditItem.vue'
 import AddNewText from '../../../components/modal/Article/AddNewText.vue'
 import AddNewImage from '../../../components/modal/Article/AddNewImage.vue'
-import { articleDialog } from '../../../utils/sweetalert-object'
+import { swalDialog } from '../../../utils/sweetalert-object'
 
 const store = useStore()
 const route = useRoute()
@@ -60,6 +60,7 @@ const articleInfo = ref({
     isEdited: false,
     showOptions: false,
     fileName: '',
+    new: {}
   },
 })
 /** @type {Object} error state of each field  */
@@ -180,6 +181,8 @@ function setNewThumbnail(imageValue) {
 
   articleInfo.value.thumbnailImage.new.raw = imageValue
   articleInfo.value.thumbnailImage.new.thumbnail = imageValue.name
+
+  console.log(articleInfo.value)
 }
 
 /**
@@ -206,7 +209,7 @@ function editText(textIndex) {
  * prevent accidentally close text editor modal
  */
 function closeTextEditor() {
-  Swal.fire(articleDialog.preventClose('Artikel yang sudah diketik akan terhapus.')).then(async (result) => {
+  Swal.fire(swalDialog.preventClose('Artikel yang sudah diketik akan terhapus.')).then(async (result) => {
     if (result.isConfirmed) {
       /* if agree to close */
       textToEdit.value.value = ''
@@ -219,7 +222,7 @@ function closeTextEditor() {
  * prevent accidentally close add image modal
  */
 function closeImageModal() {
-  Swal.fire(articleDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
+  Swal.fire(swalDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
     if (result.isConfirmed) {
       imageEditorPurpose.value = null
       toggleModal('imageEditor')
@@ -240,16 +243,6 @@ function editImageItem(imageIndex) {
   imageEditorPurpose.value = 'edit without raw'
   toggleModal('imageEditor')
 }
-/**
- * replace exist text on article item
- * @param {String} text editor value
- * @param {Number} index of text to replace
- */
-/* function pushEditedText(textValue, textIndex) { */
-/*   article.value.ArticleDetails[textIndex].content = textValue */
-/*   toggleModal('textEditor') */
-/* } */
-
 /**
  * validate input when event triggered
  * @param {String} article field
@@ -278,75 +271,36 @@ async function validateFormInfo() {
     }
   }
 
-  Swal.fire({
-    title: 'Anda yakin ?',
-    text: 'Info artikel akan disimpan.',
-    icon: 'question',
-    showCancelButton: true,
-    cancelButtonColor: '#c82333',
-    confirmButtonText: 'Ya, simpan !',
-    confirmButtonColor: '#41c3a9',
-  }).then((result) => {
+  Swal.fire(swalDialog.confirm('Info artikel akan disimpan.')).then((result) => {
     if (result.isConfirmed) {
-      /* if (articleInfo.value.thumbnailImage.isEdited) { */
-      /*   processArticleInfoImage() */
-      /* } */
-      /* processArticleInfo() */
       pushEditedInfo()
     }
   })
 }
 async function pushEditedInfo() {
-  console.log(articleInfo.value)
   let infoItem = {
     id: article.value.id,
+    title: articleInfo.value.title,
     category: articleInfo.value.category,
-    placement: articleInfo.value.placement
+    placement: articleInfo.value.placement,
+    imageIsEdited: articleInfo.value.thumbnailImage.isEdited
   }
   if (articleInfo.value.thumbnailImage.isEdited) {
     infoItem.raw = articleInfo.value.thumbnailImage.new.raw
     infoItem.itemToDelete = article.value.thumbnail
-    /* infoItem.isEdited */
+    infoItem.imageIsEdited = articleInfo.value.thumbnailImage.isEdited
   }
-
-
+  spinner('on')
+  await store.dispatch('article/editInfo', infoItem)
+    .then(async () => {
+      Swal.fire(swalDialog.success('Info artikel berhasil diubah.'))
+      await fetchArticle()
+    })
+    .catch(() => {
+      Swal.fire(swalDialog.error('Terjadi kesalahan.'))
+    })
+  spinner('off')
 }
-/* async function processArticleInfo() { */
-/*   await store.dispatch('article/editInfo', { */
-/*     article: articleInfo.value */
-/*   }).then(() => { */
-/*     Swal.fire({ */
-/*       icon: 'success', */
-/*       text: 'Artikel info berhasil diubah.', */
-/*       showConfirmButton: false, */
-/*       timer: 1500, */
-/*     }) */
-/*     router.push({ */
-/*       name: 'article detail', */
-/*       params: { id: article.value.id } */
-/*     }) */
-/*     spinner('off') */
-/*   }) */
-/*     .catch(() => { */
-/*       Swal.fire({ */
-/*         icon: 'warning', */
-/*         text: 'Terjadi kesalahan', */
-/*         confirmButtonText: 'tutup', */
-/*       }) */
-/*       spinner('off') */
-/*     }) */
-/* } */
-
-/* async function processArticleInfoImage() { */
-/*   await store.dispatch('article/editInfoImage', { article: articleInfo.value }).catch(() => { */
-/*     Swal.fire({ */
-/*       icon: 'warning', */
-/*       text: 'Terjadi kesalahan', */
-/*       confirmButtonText: 'tutup', */
-/*     }) */
-/*     spinner('off') */
-/*   }) */
-/* } */
 async function pushNewText(textValue) {
   let textItem = {
     article_id: article.value.id,
@@ -354,19 +308,19 @@ async function pushNewText(textValue) {
     content: textValue,
     position: article.value.ArticleDetails.length + 1
   }
-  Swal.fire(articleDialog.confirm('Teks akan ditambahkan pada artikel.')).then(async (result) => {
+  Swal.fire(swalDialog.confirm('Teks akan ditambahkan pada artikel.')).then(async (result) => {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/addTextItem', textItem)
         .then(() => {
-          Swal.fire(articleDialog.success('Teks berhasil ditambahkan.'))
+          Swal.fire(swalDialog.success('Teks berhasil ditambahkan.'))
           router.push({
             name: 'article detail',
             params: { id: article.value.id }
           })
         })
         .catch(() => {
-          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
         })
       toggleModal('textEditor')
       spinner('off')
@@ -378,16 +332,16 @@ async function removeTextItem(textIndex) {
     articleId: article.value.id,
     itemId: article.value.ArticleDetails[textIndex].id,
   }
-  Swal.fire(articleDialog.delete('Teks akan dihapus')).then(async (result) => {
+  Swal.fire(swalDialog.delete('Teks akan dihapus')).then(async (result) => {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/removeTextItem', { data: textItem })
         .then(async () => {
-          Swal.fire(articleDialog.success('Teks berhasil dihapus.'))
+          Swal.fire(swalDialog.success('Teks berhasil dihapus.'))
           await fetchArticle()
         })
         .catch(() => {
-          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
         })
       spinner('off')
     }
@@ -398,16 +352,16 @@ async function pushEditedText(textValue, textIndex) {
     id: article.value.ArticleDetails[textIndex].id,
     content: textValue,
   }
-  Swal.fire(articleDialog.confirm('Simpan perubahan.')).then(async (result) => {
+  Swal.fire(swalDialog.confirm('Simpan perubahan.')).then(async (result) => {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/editTextItem', textItem)
         .then(async () => {
-          Swal.fire(articleDialog.success('Teks berhasil diubah.'))
+          Swal.fire(swalDialog.success('Teks berhasil diubah.'))
           await fetchArticle()
         })
         .catch(() => {
-          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
         })
       toggleModal('textEditor')
       spinner('off')
@@ -423,19 +377,19 @@ async function addImageItem(imageObject) {
     position: article.value.ArticleDetails.length + 1
   }
 
-  Swal.fire(articleDialog.confirm('Gambar akan ditambahkan pada artikel.')).then(async (result) => {
+  Swal.fire(swalDialog.confirm('Gambar akan ditambahkan pada artikel.')).then(async (result) => {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/addImageItem', imageItem)
         .then(() => {
-          Swal.fire(articleDialog.success('Gambar berhasil ditambahkan.'))
+          Swal.fire(swalDialog.success('Gambar berhasil ditambahkan.'))
           router.push({
             name: 'article detail',
             params: { id: article.value.id }
           })
         })
         .catch(() => {
-          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
         })
       imageEditorPurpose.value = null
       toggleModal('imageEditor')
@@ -456,18 +410,45 @@ async function pushEditImageItem(imageObject, imageIndex) {
     imageItem.captionOnly = false
   }
 
-  Swal.fire(articleDialog.confirm('Simpan perubahan.')).then(async (result) => {
+  Swal.fire(swalDialog.confirm('Simpan perubahan.')).then(async (result) => {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/editImageItem', imageItem)
         .then(async () => {
-          Swal.fire(articleDialog.success('Gambar berhasil diubah.'))
+          Swal.fire(swalDialog.success('Gambar berhasil diubah.'))
           await fetchArticle()
         })
         .catch(() => {
-          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
         })
       toggleModal('imageEditor')
+      spinner('off')
+    }
+  })
+}
+
+/**
+ * open text editor for edit text
+ * @param {String} index | index of item
+ * @param {String} order | go up | go down
+ */
+async function reorderingImage(imageIndex, order) {
+  let imageItem = {
+    id: article.value.ArticleDetails[imageIndex].id,
+    article_id: article.value.id,
+    order: order
+  }
+  Swal.fire(swalDialog.confirm('Pindahkan urutan gambar.')).then(async (result) => {
+    if (result.isConfirmed) {
+      spinner('on')
+      await store.dispatch('article/reorderingImageItem', imageItem)
+        .then(async () => {
+          Swal.fire(swalDialog.success('Urutan gambar berhasil diubah.'))
+          await fetchArticle()
+        })
+        .catch(() => {
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
+        })
       spinner('off')
     }
   })
@@ -478,16 +459,16 @@ async function removeImageItem(imageIndex) {
     itemId: article.value.ArticleDetails[imageIndex].id,
     itemName: article.value.ArticleDetails[imageIndex].content,
   }
-  Swal.fire(articleDialog.delete('Gambar akan dihapus')).then(async (result) => {
+  Swal.fire(swalDialog.delete('Gambar akan dihapus')).then(async (result) => {
     if (result.isConfirmed) {
       spinner('on')
       await store.dispatch('article/removeImageItem', { data: imageItem })
         .then(async () => {
-          Swal.fire(articleDialog.success('Gambar berhasil dihapus.'))
+          Swal.fire(swalDialog.success('Gambar berhasil dihapus.'))
           await fetchArticle()
         })
         .catch(() => {
-          Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+          Swal.fire(swalDialog.error('Terjadi kesalahan.'))
         })
       spinner('off')
     }
@@ -562,7 +543,8 @@ async function removeImageItem(imageIndex) {
             </div>
             <div v-if="section.second.isActive" class="section-second">
               <ArticleEditItem :article="article" @toggle-show-options="toggleShowOptions" @edit-text="editText"
-                @remove-text="removeTextItem" @remove-image="removeImageItem" @edit-image="editImageItem" />
+                @remove-text="removeTextItem" @remove-image="removeImageItem" @edit-image="editImageItem"
+                @reordering-image="reorderingImage" />
             </div>
           </div>
           <div class="card__footer">

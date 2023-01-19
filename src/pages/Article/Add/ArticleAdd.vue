@@ -12,7 +12,7 @@ import {
   arrowPrev,
 } from '../../../utils/svg-vars'
 import { articleSchema } from '../../../utils/validation/article.schema'
-import { articleDialog } from '../../../utils/sweetalert-object'
+import { swalDialog } from '../../../utils/sweetalert-object'
 import Swal from 'sweetalert2'
 import ContentHead from '../../../components/Content/ContentHead.vue'
 import CustomIcon from '../../../components/CustomIcon.vue'
@@ -185,7 +185,7 @@ function editText(textIndex) {
  * prevent accidentally close text editor modal
  */
 function closeTextEditor() {
-  Swal.fire(articleDialog.preventClose('Artikel yang sudah diketik akan terhapus.')).then(async (result) => {
+  Swal.fire(swalDialog.preventClose('Artikel yang sudah diketik akan terhapus.')).then(async (result) => {
     if (result.isConfirmed) {
       /* if agree to close */
       textToEdit.value.content = ''
@@ -211,7 +211,7 @@ function pushNewText(textValue) {
  * @param {Number} index of text to remove
  */
 function removeText(textIndex) {
-  Swal.fire(articleDialog.delete('Teks akan dihapus.')).then(async (result) => {
+  Swal.fire(swalDialog.delete('Teks akan dihapus.')).then(async (result) => {
     if (result.isConfirmed) {
       article.value.item.splice(textIndex, 1)
     }
@@ -231,7 +231,7 @@ function pushEditedText(textValue, textIndex) {
  * prevent accidentally close add image modal
  */
 function closeImageModal() {
-  Swal.fire(articleDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
+  Swal.fire(swalDialog.preventClose('Gambar yang dipilih akan terhapus')).then(async (result) => {
     if (result.isConfirmed) {
       imageEditorPurpose.value = null
       toggleModal('imageEditor')
@@ -295,7 +295,7 @@ function reorderingImage(imageIndex, to) {
  * @param {Number} infex of image to remove
  */
 function removeImage(imageIndex) {
-  Swal.fire(articleDialog.delete('Gambar akan dihapus.')).then(async (result) => {
+  Swal.fire(swalDialog.delete('Gambar akan dihapus.')).then(async (result) => {
     if (result.isConfirmed) {
       article.value.item.splice(imageIndex, 1)
     }
@@ -324,22 +324,22 @@ async function validateForm() {
   /* validate input component */
   for (const item in errorState.value) {
     if (errorState.value[item].isError) {
-      Swal.fire(articleDialog.error('terdapat form yang belum terisi'))
+      Swal.fire(swalDialog.error('terdapat form yang belum terisi'))
       return ''
     }
   }
   /* validate thumbnail input */
   if (!article.value.thumbnailImage) {
-    Swal.fire(articleDialog.error('Thumbnail belum dipilih'))
+    Swal.fire(swalDialog.error('Thumbnail belum dipilih'))
     return ''
   }
   /* validate article length */
   if (article.value.item.length == 0) {
-    Swal.fire(articleDialog.error('Tambahkan minimal 2 artikel'))
+    Swal.fire(swalDialog.error('Tambahkan minimal 2 artikel'))
     return ''
   }
 
-  Swal.fire(articleDialog.confirm('Simpan artikel.')).then((result) => {
+  Swal.fire(swalDialog.confirm('Simpan artikel.')).then((result) => {
     if (result.isConfirmed) {
       createArticleData()
     }
@@ -356,14 +356,14 @@ async function createArticleData() {
     uuid: uuid,
   })
     .then(() => {
-      Swal.fire(articleDialog.success('Artikel berhasil di simpan.'))
+      Swal.fire(swalDialog.success('Artikel berhasil di simpan.'))
       router.push({
         name: 'article detail',
         params: { id: uuid }
       })
     })
     .catch(() => {
-      Swal.fire(articleDialog.error('Terjadi kesalahan.'))
+      Swal.fire(swalDialog.error('Terjadi kesalahan.'))
     })
   spinner('off')
 }
@@ -452,8 +452,8 @@ async function createArticleData() {
         :purpose="editorPurpose" />
     </CustomModalOverlay>
     <CustomModalOverlay v-show="modal.imageEditor" @close-modal="closeImageModal">
-      <AddNewImage :image-to-edit="imageToEdit" :purpose="imageEditorPurpose"
-        @cancel-action="closeImageModal" @process-image="pushNewImage" @process-edit="pushEditedImage" />
+      <AddNewImage :image-to-edit="imageToEdit" :purpose="imageEditorPurpose" @cancel-action="closeImageModal"
+        @process-image="pushNewImage" @process-edit="pushEditedImage" />
     </CustomModalOverlay>
     <CustomModalOverlay v-if="spinnerState">
       <Spinner :is-active="spinnerState" />
