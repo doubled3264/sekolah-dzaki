@@ -1,27 +1,66 @@
-.card.banner__image-editor {
-   @apply w-2/5 mx-auto mt-20;
-}
-
 .banner {
-   &__image-editor {
-      &.upload {
+   &__wrapper {
+      .card__nav {
+         @apply relative;
+         @apply pl-5 pb-2;
+      }
+
+      .card__body {
+         @apply overflow-scroll;
+      }
+   }
+
+   &__image-list {
+      @apply w-6/12 mx-auto;
+   }
+
+   &__image-item {
+      @apply relative;
+      @apply my-6;
+      @apply text-gray-500;
+      .image-content {
+         @apply rounded-xl overflow-hidden;
+         &__nav {
+            @apply absolute top-0 -right-10;
+            @apply pb-2 pl-5;
+         }
+      }
+   }
+
+   &__modal-image-editor {
+      @apply w-6/12 mx-auto mt-20;
+      .upload {
          @apply relative;
          @apply flex-1 flex flex-col;
          @apply rounded-xl overflow-hidden;
          min-height: 250px;
       }
-
-      &.link-item {
+      .link-item {
          @apply mt-4;
       }
    }
+}
 
-   &__image-list {
-      @apply w-3/12 mx-auto;
-   }
+.banner {
+   // &__image-editor {
+   //    &.upload {
+   //       @apply relative;
+   //       @apply flex-1 flex flex-col;
+   //       @apply rounded-xl overflow-hidden;
+   //       min-height: 250px;
+   //    }
 
-   &__image-item {
-      @apply mt-6;
-      @apply rounded-xl overflow-hidden;
-   }
+   //    &.link-item {
+   //       @apply mt-4;
+   //    }
+   // }
+
+   // &__image-list {
+   //    @apply w-3/12 mx-auto;
+   // }
+
+   // &__image-item {
+   //    @apply mt-6;
+   //    @apply rounded-xl overflow-hidden;
+   // }
 }

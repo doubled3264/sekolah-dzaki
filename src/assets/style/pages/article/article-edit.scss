@@ -1,0 +1,43 @@
+.article-edit {
+   &__wrapper {
+      .card__nav {
+         @apply relative;
+         @apply pb-2 pl-5;
+      }
+      .second-section {
+         @apply overflow-scroll;
+         .preview {
+            &__wrapper {
+               @apply w-6/12 mx-auto;
+            }
+            &__title {
+               h2 {
+                  @apply text-xl font-semibold text-gray-500;
+               }
+            }
+            &__thumbnail {
+               @apply my-4;
+               @apply rounded-xl overflow-hidden;
+            }
+            &__item {
+               @apply relative;
+               @apply py-4;
+               @apply text-gray-500;
+               &-nav {
+                  @apply absolute top-4 -right-10;
+                  @apply pb-2 pl-5;
+               }
+               .image-content {
+                  &__wrapper {
+                     @apply w-10/12  mx-auto;
+                     @apply rounded-lg overflow-hidden;
+                  }
+                  p {
+                     @apply capitalize text-center;
+                  }
+               }
+            }
+         }
+      }
+   }
+}

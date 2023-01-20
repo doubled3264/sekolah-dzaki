@@ -17,8 +17,6 @@ import Swal from 'sweetalert2'
 import ContentHead from '../../../components/Content/ContentHead.vue'
 import CustomIcon from '../../../components/CustomIcon.vue'
 import CustomSelectBox from '../../../components/form/CustomSelectBox.vue'
-import CustomThreeDotOptionsList from '../../../components/CustomThreeDotOpions/OptionsList.vue'
-import CustomThreeDotOptionsItem from '../../../components/CustomThreeDotOpions/OptionsItem.vue'
 import CustomModalOverlay from '../../../components/CustomModalOverlay.vue'
 import CustomImagePicker from '../../../components/form/CustomImagePicker.vue'
 import ArticleAddPreviewList from './ArticleAddPreviewList.vue'
@@ -27,6 +25,8 @@ import Spinner from '../../../components/modal/Spinner.vue'
 import AddNewImage from '../../../components/modal/Article/AddNewImage.vue'
 import AddNewText from '../../../components/modal/Article/AddNewText.vue'
 import CustomTextArea from '../../../components/form/CustomTextArea.vue'
+import CustomKebabMenuList from '../../../components/CustomKebabMenu/CustomKebabMenuList.vue'
+import CustomKebabMenuItem from '../../../components/CustomKebabMenu/CustomKebabMenuItem.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -85,7 +85,7 @@ const section = ref({
   },
 })
 /** @type {Boolean} main menu state, only true if second section active  */
-const mainMenu = ref(false)
+const cardMenu = ref(false)
 /** @type {Object} state for edit text  */
 const textToEdit = ref({
   content: '',
@@ -98,7 +98,7 @@ const imageToEdit = ref({
   index: null,
 })
 /** @type {String} text editor purpose value, add | edit  */
-const textEditorPurpose = ref('add')
+const textEditorPurpose = ref(null)
 const imageEditorPurpose = ref(null)
 
 onMounted(() => {
@@ -139,6 +139,9 @@ function toggleSection() {
 function toggleShowOptions(index) {
   article.value.item[index].showOptions =
     !article.value.item[index].showOptions
+}
+function toggleCardMenu() {
+  cardMenu.value = !cardMenu.value
 }
 /**
  * set thumbnailImage value
@@ -190,6 +193,7 @@ function closeTextEditor() {
       /* if agree to close */
       textToEdit.value.content = ''
       textToEdit.value.index = 0
+      textEditorPurpose.value = null
       toggleModal('textEditor')
     }
   })
@@ -204,6 +208,7 @@ function pushNewText(textValue) {
     content: textValue,
     showOptions: false,
   })
+  textEditorPurpose.value = null
   toggleModal('textEditor')
 }
 /**
@@ -373,73 +378,75 @@ async function createArticleData() {
     <div class="content__inner">
       <ContentHead :items="contentHeadItem" />
       <div class="content__body">
-        <div class="card artikel-add">
-          <div class="card__head">
-            <div class="card__title">
-              <h3>{{ getCardTitle }}</h3>
-            </div>
-            <div v-show="section.second.isActive" class="card__nav article-add" @mouseenter="mainMenu = !mainMenu"
-              @mouseleave="mainMenu = !mainMenu">
-              <CustomThreeDotOptionsList :is-show="mainMenu">
-                <CustomThreeDotOptionsItem>
-                  <div class="flex gap-4" @click="addNewText">
-                    <CustomIcon :svg-icon="textAdd" />
-                    <p>tambah teks</p>
-                  </div>
-                </CustomThreeDotOptionsItem>
-                <CustomThreeDotOptionsItem>
-                  <div class="flex gap-4" @click="addNewImage">
-                    <CustomIcon :svg-icon="imageAdd" />
-                    <p>tambah gambar</p>
-                  </div>
-                </CustomThreeDotOptionsItem>
-                <CustomThreeDotOptionsItem>
-                  <div class="flex gap-4" @click="validateForm">
-                    <CustomIcon :svg-icon="disket" />
-                    <p>simpan artikel</p>
-                  </div>
-                </CustomThreeDotOptionsItem>
-              </CustomThreeDotOptionsList>
-            </div>
-          </div>
-          <div class="card__body article-add">
-            <div v-show="section.first.isActive" class="section-first">
-              <div class="w-1/2">
-                <CustomTextArea type="text" label="Judul" placeholder="Masukan judul artikel.."
-                  v-model:input-value="article.title" :error-state="errorState.title"
-                  @validate-input="validateInput('title')" />
-                <CustomSelectBox label="kategori" placeholder="pilih kategori" :options="categoryOptions"
-                  v-model:input-value="article.category" :error-state="errorState.category"
-                  @validate-input="validateInput('category')" />
-                <CustomSelectBox label="penempatan" placeholder="pilih penempatan" :options="placementOptions"
-                  v-model:input-value="article.placement" :error-state="errorState.placement"
-                  @validate-input="validateInput('placement')" />
+        <div class="article-add__wrapper">
+          <div class="card">
+            <div class="card__head">
+              <div class="card__title">
+                <h3>{{ getCardTitle }}</h3>
               </div>
-              <div class="w-1/2 flex flex-col">
-                <h3>thumbnail</h3>
-                <div class="thumbnail-image">
-                  <CustomImagePicker :title="[' tambahkan gambar', 'ubah gambar']" @on-select-file="setThumbnailImage"
-                    :image-is-exist="article.thumbnailImage" />
-                  <div class="thumbnail-image__content">
-                    <img v-if="article.thumbnailImage" :src="getThumbnailImage" alt="" />
+              <div v-show="section.second.isActive" class="card__nav" @mouseenter="toggleCardMenu"
+                @mouseleave="toggleCardMenu">
+                <CustomKebabMenuList :is-show="cardMenu">
+                  <CustomKebabMenuItem>
+                    <div class="flex gap-4" @click="addNewText">
+                      <CustomIcon :svg-icon="textAdd" />
+                      <p>tambah teks</p>
+                    </div>
+                  </CustomKebabMenuItem>
+                  <CustomKebabMenuItem>
+                    <div class="flex gap-4" @click="addNewImage">
+                      <CustomIcon :svg-icon="imageAdd" />
+                      <p>tambah gambar</p>
+                    </div>
+                  </CustomKebabMenuItem>
+                  <CustomKebabMenuItem>
+                    <div class="flex gap-4" @click="validateForm">
+                      <CustomIcon :svg-icon="disket" />
+                      <p>simpan artikel</p>
+                    </div>
+                  </CustomKebabMenuItem>
+                </CustomKebabMenuList>
+              </div>
+            </div>
+            <div class="card__body">
+              <div v-show="section.first.isActive" class="first-section">
+                <div class="w-5/12 flex flex-col">
+                  <h3>thumbnail</h3>
+                  <div class="thumbnail-image">
+                    <CustomImagePicker :title="[' tambahkan gambar', 'ubah gambar']" @on-select-file="setThumbnailImage"
+                      :image-is-exist="article.thumbnailImage" />
+                    <div class="thumbnail-image__content">
+                      <img v-if="article.thumbnailImage" :src="getThumbnailImage" alt="" />
+                    </div>
                   </div>
                 </div>
+                <div class="w-7/12">
+                  <CustomTextArea type="text" label="Judul" placeholder="Masukan judul artikel.."
+                    v-model:input-value="article.title" :error-state="errorState.title"
+                    @validate-input="validateInput('title')" />
+                  <CustomSelectBox label="kategori" placeholder="pilih kategori" :options="categoryOptions"
+                    v-model:input-value="article.category" :error-state="errorState.category"
+                    @validate-input="validateInput('category')" />
+                  <CustomSelectBox label="penempatan" placeholder="pilih penempatan" :options="placementOptions"
+                    v-model:input-value="article.placement" :error-state="errorState.placement"
+                    @validate-input="validateInput('placement')" />
+                </div>
+              </div>
+              <div v-show="section.second.isActive" class="second-section">
+                <ArticleAddPreviewList v-show="section.second" :article="article" @edit-image="editImage"
+                  @edit-text="editText" @remove-text="removeText" @reordering-image="reorderingImage"
+                  @remove-image="removeImage" @toggle-show-options="toggleShowOptions" />
               </div>
             </div>
-            <div v-show="section.second.isActive" class="section-second">
-              <ArticleAddPreviewList v-show="section.second" :article="article" @edit-image="editImage"
-                @edit-text="editText" @remove-text="removeText" @reordering-image="reorderingImage"
-                @remove-image="removeImage" @toggle-show-options="toggleShowOptions" />
-            </div>
-          </div>
-          <div class="card__footer">
-            <div v-show="section.second.isActive" class="flex justify-start">
-              <CustomButton :title="section.first.title" :start-icon="{ value: arrowPrev, width: '18' }" variant="link"
-                color="verdigris" @button-action="toggleSection" />
-            </div>
-            <div v-show="section.first.isActive" class="flex justify-end">
-              <CustomButton :title="section.second.title" :end-icon="{ value: arrowNext, width: '18' }" variant="link"
-                color="verdigris" @button-action="toggleSection" />
+            <div class="card__footer">
+              <div v-show="section.second.isActive" class="flex justify-start">
+                <CustomButton :title="section.first.title" :start-icon="{ value: arrowPrev, width: '18' }"
+                  variant="link" color="verdigris" @button-action="toggleSection" />
+              </div>
+              <div v-show="section.first.isActive" class="flex justify-end">
+                <CustomButton :title="section.second.title" :end-icon="{ value: arrowNext, width: '18' }" variant="link"
+                  color="verdigris" @button-action="toggleSection" />
+              </div>
             </div>
           </div>
         </div>
@@ -447,9 +454,9 @@ async function createArticleData() {
     </div>
   </div>
   <teleport to="#modal">
-    <CustomModalOverlay v-if="modal.textEditor" @close-modal="closeTextEditor">
+    <CustomModalOverlay v-show="modal.textEditor" @close-modal="closeTextEditor">
       <AddNewText @process-text="pushNewText" @process-edit="pushEditedText" :text-to-edit="textToEdit"
-        :purpose="editorPurpose" />
+        :purpose="textEditorPurpose" />
     </CustomModalOverlay>
     <CustomModalOverlay v-show="modal.imageEditor" @close-modal="closeImageModal">
       <AddNewImage :image-to-edit="imageToEdit" :purpose="imageEditorPurpose" @cancel-action="closeImageModal"

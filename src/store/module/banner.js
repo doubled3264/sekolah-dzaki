@@ -7,7 +7,6 @@ export default {
   },
   getters: {
     get: (state) => (placement) => {
-      console.log(placement)
       return filter(state.banner, { placement: placement })
     },
   },
@@ -44,7 +43,52 @@ export default {
             resolve(response)
           })
           .catch((error) => {
+            console.log(error)
             reject(error)
+          })
+      })
+    },
+    async edit({ }, data) {
+      let formData = new FormData()
+      formData.append('id', data.id)
+      formData.append('link', data.link)
+      formData.append('placement', data.placement)
+      formData.append('withImage', data.withImage)
+      if (data.withImage) {
+        formData.append('banner', data.raw.name)
+        formData.append('itemToDelete', data.itemToDelete)
+        formData.append('bannerImage', data.raw)
+      }
+
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'put',
+          url: `banner/${data.id}`,
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((error) => {
+            console.log(error)
+            reject(error)
+          })
+      })
+    },
+    async remove({ }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(`banner/${data.id}`, {
+            data: data,
+          })
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((err) => {
+            reject(err)
           })
       })
     },

@@ -31,6 +31,10 @@
 
 // pages
 @import './pages/article.scss';
+@import './pages/article/article-list.scss';
+@import './pages/article/article-add.scss';
+@import './pages/article/article-detail.scss';
+@import './pages/article/article-edit.scss';
 @import './pages/banner.scss';
 
 @tailwind base;

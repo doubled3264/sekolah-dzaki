@@ -1,4 +1,4 @@
-.custom-three-dots-options {
+.custom-kebab-menu {
    &__list {
       @apply hidden opacity-0;
       @apply absolute top-10 right-2.5;
@@ -15,7 +15,7 @@
    }
 
    &__item {
-      // @apply flex gap-4;
+      @apply flex gap-4;
       @apply py-1.5 px-4;
       @apply font-medium capitalize;
       @apply cursor-pointer;

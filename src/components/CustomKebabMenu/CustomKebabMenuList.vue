@@ -8,8 +8,8 @@ defineProps(['isShow'])
    <CustomIcon :svg-icon="threeDots" />
    <ul
       :class="[
-         ' custom-three-dots-options__list',
-         { 'custom-three-dots-options__list--show': isShow },
+         ' custom-kebab-menu__list',
+         { 'custom-kebab-menu__list--show': isShow },
       ]"
    >
       <slot></slot>

@@ -33,9 +33,6 @@ const getTitle = computed(() => {
         <CustomIcon v-if="item.path != ''" :svg-icon="arrowRight" width="10" />
       </li>
     </ul>
-    <div class="content__title">
-      <h3>{{ getTitle }}</h3>
-      <slot name="rightNav"></slot>
-    </div>
+    <div class="content__title"></div>
   </div>
 </template>

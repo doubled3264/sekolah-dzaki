@@ -1,0 +1,12 @@
+.article-list {
+   &__wrapper {
+      .card__nav {
+         @apply relative;
+         @apply pb-2 pl-5;
+      }
+
+      .empty-list {
+         @apply text-center text-gray-500;
+      }
+   }
+}

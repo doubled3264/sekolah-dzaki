@@ -9,6 +9,8 @@ import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
 import ContentHead from '../../components/Content/ContentHead.vue'
 import Spinner from '../../components/modal/Spinner.vue'
 import CustomIcon from '../../components/CustomIcon.vue'
+import CustomKebabMenuList from '../../components/CustomKebabMenu/CustomKebabMenuList.vue'
+import CustomKebabMenuItem from '../../components/CustomKebabMenu/CustomKebabMenuItem.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -28,6 +30,7 @@ const contentHeadItem = [
    { title: 'daftar artikel', path: '' },
 ]
 const spinnerState = ref(false)
+const cardMenu = ref(false)
 onMounted(() => {
    spinnerState.value = true
    store.commit('sidebar/setAllToNormal')
@@ -53,6 +56,10 @@ async function fetchArticle() {
    tableData.value.rows = store.getters['article/getSimple']
 }
 
+function toggleCardMenu() {
+   cardMenu.value = !cardMenu.value
+}
+
 function selectRow(param) {
    const { id } = param.row
    router.push({
@@ -70,23 +77,40 @@ function goToAddForm() {
 <template>
    <div class="content">
       <div class="content__inner">
-         <ContentHead :items="contentHeadItem">
-            <template #rightNav>
-               <div class="icon__wrapper">
-                  <CustomIcon :svg-icon="textAdd" @click="goToAddForm" />
-               </div>
-            </template>
-         </ContentHead>
+         <ContentHead :items="contentHeadItem"> </ContentHead>
          <div class="content__body">
-            <vue-good-table
-               v-if="
-                  !tableData.columns.length == 0 && !tableData.rows.length == 0
-               "
-               :columns="tableData.columns"
-               :rows="tableData.rows"
-               styleClass="vgt-table striped"
-               v-on:row-dblclick="selectRow"
-            />
+            <div class="article-list__wrapper">
+               <div class="card">
+                  <div class="card__head">
+                     <div class="card__title">daftar artikel</div>
+                     <div
+                        class="card__nav"
+                        @mouseenter="toggleCardMenu"
+                        @mouseleave="toggleCardMenu"
+                     >
+                        <CustomKebabMenuList :is-show="cardMenu">
+                           <CustomKebabMenuItem @on-click="goToAddForm">
+                              <CustomIcon :svg-icon="textAdd" />
+                              <p>tambah artikel</p>
+                           </CustomKebabMenuItem>
+                        </CustomKebabMenuList>
+                     </div>
+                  </div>
+                  <div class="card__body">
+                     <vue-good-table
+                        v-if="
+                           !tableData.columns.length == 0 &&
+                           !tableData.rows.length == 0
+                        "
+                        :columns="tableData.columns"
+                        :rows="tableData.rows"
+                        styleClass="vgt-table striped"
+                        v-on:row-dblclick="selectRow"
+                     />
+                     <p v-else class="empty-list">Artikel tidak tersedia</p>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
    </div>

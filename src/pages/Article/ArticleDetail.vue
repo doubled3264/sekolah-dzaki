@@ -8,8 +8,8 @@ import { pencil, trash } from '../../utils/svg-vars'
 import ContentHead from '../../components/Content/ContentHead.vue'
 import CustomIcon from '../../components/CustomIcon.vue'
 import CustomModalOverlay from '../../components/CustomModalOverlay.vue'
-import CustomThreeDotOptionsList from '../../components/CustomThreeDotOpions/OptionsList.vue'
-import CustomThreeDotOptionsItem from '../../components/CustomThreeDotOpions/OptionsItem.vue'
+import CustomKebabMenuList from '../../components/CustomKebabMenu/CustomKebabMenuList.vue'
+import CustomKebabMenuItem from '../../components/CustomKebabMenu/CustomKebabMenuItem.vue'
 import Spinner from '../../components/modal/Spinner.vue'
 import Swal from 'sweetalert2'
 import { swalDialog } from '../../utils/sweetalert-object'
@@ -24,12 +24,12 @@ const props = defineProps({
 })
 /** @type {Object} content head value */
 const contentHeadItem = [
-   { title: 'artikel', path: '#' },
-   { title: 'daftar artikel', path: '/artikel' },
+   { title: 'artikel', path: '/artikel' },
    { title: 'detail artikel', path: '' },
 ]
 const spinnerState = ref(false)
 const mainMenuState = ref(false)
+const cardMenu = ref(false)
 const availHeight = ref(0)
 const article = ref({})
 
@@ -59,6 +59,9 @@ async function fetchArticle() {
    await store.dispatch('article/getSingle', route.params.id)
    article.value = store.getters['article/getSingle']
 }
+function toggleCardMenu() {
+   cardMenu.value = !cardMenu.value
+}
 
 const getAuthor = computed(() => {
    if (article.value.Admin) {
@@ -75,10 +78,8 @@ const getArticleDate = computed(() => {
 
 const getThumbnail = computed(() => {
    if (article.value.id) {
-      console.log('data sudah redi')
       return `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
    } else {
-      console.log('data belum difetch')
       return ''
    }
 })
@@ -122,78 +123,80 @@ async function removeArticle() {
       <div class="content__inner">
          <ContentHead :items="contentHeadItem" />
          <div class="content__body">
-            <div class="card article-detail">
-               <div class="card__head">
-                  <div class="card__title">
-                     <h3>detail artikel</h3>
-                  </div>
-                  <div
-                     class="card__nav article-detail"
-                     @mouseenter="mainMenuState = !mainMenuState"
-                     @mouseleave="mainMenuState = !mainMenuState"
-                  >
-                     <CustomThreeDotOptionsList :is-show="mainMenuState">
-                        <CustomThreeDotOptionsItem>
-                           <div class="flex gap-4" @click="editArticle">
-                              <CustomIcon :svg-icon="pencil" />
-                              <p>edit artikel</p>
-                           </div>
-                        </CustomThreeDotOptionsItem>
-                        <CustomThreeDotOptionsItem>
-                           <div class="flex gap-4" @click="removeArticle">
-                              <CustomIcon :svg-icon="trash" />
-                              <p>hapus artikel</p>
-                           </div>
-                        </CustomThreeDotOptionsItem>
-                     </CustomThreeDotOptionsList>
-                  </div>
-               </div>
-               <div class="card__body">
-                  <div
-                     :style="{ maxHeight: availHeight + 'px' }"
-                     class="article-detail__wrapper"
-                  >
-                     <div class="article-detail__title">
-                        <h2>{{ article.title }}</h2>
+            <div class="article-detail__wrapper">
+               <div class="card">
+                  <div class="card__head">
+                     <div class="card__title">
+                        <h3>detail artikel</h3>
                      </div>
-                     <div class="article-detail__info">
-                        <p>
-                           oleh <span>{{ getAuthor }}</span>
-                        </p>
-                        <p>{{ getArticleDate }}</p>
-                     </div>
-                     <div class="article-detail__thumbnail">
-                        <img
-                           crossorigin="anonymous"
-                           :src="getThumbnail"
-                           alt=""
-                        />
-                     </div>
-                     <ul class="article-detail__list">
-                        <li
-                           v-for="(item, index) in article.ArticleDetails"
-                           class="article-detail__item"
-                        >
-                           <div
-                              v-if="item.type == 'text'"
-                              class="text-content"
-                              v-html="item.content"
-                           ></div>
-                           <div
-                              v-if="item.type == 'image'"
-                              class="image-content"
-                           >
-                              <div class="image-wrapper">
-                                 <img
-                                    crossorigin="anonymous"
-                                    :src="getContentImage(item.content)"
-                                    alt=""
-                                 />
+                     <div
+                        class="card__nav"
+                        @mouseenter="toggleCardMenu"
+                        @mouseleave="toggleCardMenu"
+                     >
+                        <CustomKebabMenuList :is-show="cardMenu">
+                           <CustomKebabMenuItem>
+                              <div class="flex gap-4" @click="editArticle">
+                                 <CustomIcon :svg-icon="pencil" />
+                                 <p>edit artikel</p>
                               </div>
-                              <p>{{ item.caption }}</p>
-                           </div>
-                        </li>
-                     </ul>
+                           </CustomKebabMenuItem>
+                           <CustomKebabMenuItem>
+                              <div class="flex gap-4" @click="removeArticle">
+                                 <CustomIcon :svg-icon="trash" />
+                                 <p>hapus artikel</p>
+                              </div>
+                           </CustomKebabMenuItem>
+                        </CustomKebabMenuList>
+                     </div>
+                  </div>
+                  <div class="card__body">
+                     <div
+                        :style="{ maxHeight: availHeight + 'px' }"
+                        class="article-detail__content"
+                     >
+                        <div class="article-detail__title">
+                           <h2>{{ article.title }}</h2>
+                        </div>
+                        <div class="article-detail__info">
+                           <p>
+                              oleh <span>{{ getAuthor }}</span>
+                           </p>
+                           <p>{{ getArticleDate }}</p>
+                        </div>
+                        <div class="article-detail__thumbnail">
+                           <img
+                              crossorigin="anonymous"
+                              :src="getThumbnail"
+                              alt=""
+                           />
+                        </div>
+                        <ul class="article-detail__list">
+                           <li
+                              v-for="(item, index) in article.ArticleDetails"
+                              class="article-detail__item"
+                           >
+                              <div
+                                 v-if="item.type == 'text'"
+                                 class="text-content"
+                                 v-html="item.content"
+                              ></div>
+                              <div
+                                 v-if="item.type == 'image'"
+                                 class="image-content"
+                              >
+                                 <div class="image-wrapper">
+                                    <img
+                                       crossorigin="anonymous"
+                                       :src="getContentImage(item.content)"
+                                       alt=""
+                                    />
+                                 </div>
+                                 <p>{{ item.caption }}</p>
+                              </div>
+                           </li>
+                        </ul>
+                     </div>
                   </div>
                </div>
             </div>
