@@ -78,6 +78,18 @@ export default {
           })
       })
     },
+    async reordering({ }, data) {
+      return new Promise((resolve, reject) => {
+        axios.put('banner', data)
+          .then((response) => {
+            resolve(response)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+      })
+    },
     async remove({ }, data) {
       return new Promise((resolve, reject) => {
         axios

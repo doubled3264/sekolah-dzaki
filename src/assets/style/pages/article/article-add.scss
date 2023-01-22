@@ -42,6 +42,10 @@
                   @apply pb-2 pl-5;
                }
                .text-content {
+                  & > div > p {
+                     @apply text-justify;
+                     @apply indent-12;
+                  }
                }
 
                .image-content {

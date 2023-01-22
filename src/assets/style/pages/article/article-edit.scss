@@ -4,6 +4,19 @@
          @apply relative;
          @apply pb-2 pl-5;
       }
+      .first-section {
+         @apply flex gap-8;
+         @apply w-10/12 mx-auto;
+         h3 {
+            @apply mb-2;
+            @apply text-sm font-medium capitalize text-gray-500;
+         }
+         .thumbnail-image {
+            @apply flex-1 relative;
+            @apply flex flex-col;
+            @apply rounded-xl overflow-hidden;
+         }
+      }
       .second-section {
          @apply overflow-scroll;
          .preview {

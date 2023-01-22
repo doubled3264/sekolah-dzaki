@@ -22,9 +22,7 @@ import ArticleDetail from './pages/Article/ArticleDetail.vue'
 import ArticleEdit from './pages/Article/Edit/ArticleEdit.vue'
 
 import BaseBanner from './pages/Banner/BaseBanner.vue'
-import YayasanBanner from './pages/Banner/BannerYayasan.vue'
-import SdBanner from './pages/Banner/BannerSd.vue'
-import SmpBanner from './pages/Banner/BannerSmp.vue'
+import BannerAllPlacement from './pages/Banner/BannerAllPlacement.vue'
 
 import BaseSiswa from './pages/Siswa/BaseSiswa.vue'
 import BaseCalonSiswa from './pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
@@ -32,205 +30,229 @@ import CalonSiswaList from './pages/Siswa/CalonSiswa/CalonSiswaList.vue'
 import BiodataCalonSiswa from './pages/Siswa/CalonSiswa/Biodata.vue'
 import CalonSiswaEdit from './pages/Siswa/CalonSiswa/CalonSiswaEdit.vue'
 const routes = [
-   {
-      path: '/',
-      redirect: (to) => {
-         return 'login'
-      },
-      meta: {
-         hideForAuth: true,
-      },
-   },
-   {
-      path: '/login',
-      name: 'login',
-      component: BaseLogin,
-      meta: {
-         hideForAuth: true,
-      },
-   },
-   // {
-   //   path: '/pegawai',
-   //   name: 'pegawai',
-   //   component: BasePegawai,
-   //   meta: { requiresAuth: true },
-   // },
-   {
-      path: '/siswa',
-      name: 'siswa',
-      component: BaseSiswa,
-      meta: { requiresAuth: true },
-      children: [
-         {
-            path: 'calon-siswa',
-            name: 'calon siswa',
-            component: BaseCalonSiswa,
-            children: [
-               {
-                  path: '',
-                  name: 'daftar calon siswa',
-                  component: CalonSiswaList,
-                  props: {
-                     parentItem: 'siswa',
-                     childItem: 'daftar calon siswa',
-                  },
-               },
-               {
-                  path: 'biodata/:id',
-                  name: 'biodata calon siswa',
-                  component: BiodataCalonSiswa,
-                  props: {
-                     parentItem: 'siswa',
-                     childItem: 'daftar calon siswa',
-                  },
-               },
-               {
-                  path: 'edit/:id',
-                  name: 'edit calon siswa',
-                  component: CalonSiswaEdit,
-                  props: {
-                     parentItem: 'siswa',
-                     childItem: 'daftar calon siswa',
-                  },
-               },
-            ],
-         },
-      ],
-   },
-   // {
-   //   path: '/pembayaran',
-   //   name: 'pembayaran',
-   //   component: BasePembayaran,
-   //   meta: { requiresAuth: true },
-   // },
-   {
-      path: '/banner',
-      name: 'banner',
-      component: BaseBanner,
-      meta: { requiresAuth: true },
-      children: [
-         {
-            path: 'yayasan',
-            name: 'yayasan banner',
-            component: YayasanBanner,
-            props: { parentItem: 'banner', childItem: 'banner yayasan' },
-         },
-         {
-            path: 'sd',
-            name: 'sd banner',
-            component: SdBanner,
-            props: { parentItem: 'banner', childItem: 'banner sd' },
-         },
-         {
-            path: 'smp',
-            name: 'smp banner',
-            component: SmpBanner,
-            props: { parentItem: 'banner', childItem: 'banner smp' },
-         },
-      ],
-   },
-   {
-      path: '/artikel',
-      name: 'article',
-      component: BaseArticle,
-      meta: { requiresAuth: true },
-      children: [
-         {
+  {
+    path: '/',
+    redirect: (to) => {
+      return 'login'
+    },
+    meta: {
+      hideForAuth: true,
+    },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: BaseLogin,
+    meta: {
+      hideForAuth: true,
+    },
+  },
+  // {
+  //   path: '/pegawai',
+  //   name: 'pegawai',
+  //   component: BasePegawai,
+  //   meta: { requiresAuth: true },
+  // },
+  {
+    path: '/siswa',
+    name: 'siswa',
+    component: BaseSiswa,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'calon-siswa',
+        name: 'calon siswa',
+        component: BaseCalonSiswa,
+        children: [
+          {
             path: '',
-            name: 'article list',
-            component: ArticleList,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
-         },
-         {
-            path: 'tambah-data',
-            component: ArticleAdd,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
-         },
-         {
-            path: ':id',
-            name: 'article detail',
-            component: ArticleDetail,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
-         },
-         {
+            name: 'daftar calon siswa',
+            component: CalonSiswaList,
+            props: {
+              parentItem: 'siswa',
+              childItem: 'daftar calon siswa',
+            },
+          },
+          {
+            path: 'biodata/:id',
+            name: 'biodata calon siswa',
+            component: BiodataCalonSiswa,
+            props: {
+              parentItem: 'siswa',
+              childItem: 'daftar calon siswa',
+            },
+          },
+          {
             path: 'edit/:id',
-            name: 'article change',
-            component: ArticleEdit,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
-         },
-      ],
-   },
-   {
-      path: '/iuran',
-      name: 'iuran',
-      component: BaseIuran,
-      meta: { requiresAuth: true },
-      children: [
-         {
-            path: '',
-            name: 'daftar iuran',
-            component: IuranList,
-            props: { parentItem: 'iuran', childItem: 'daftar iuran' },
-         },
-         {
-            path: ':id',
-            name: 'info iuran',
-            component: IuranInfo,
-            props: { parentItem: 'iuran', childItem: 'daftar iuran' },
-         },
-         {
-            path: 'potongan-biaya',
-            name: 'potongan biaya',
-            component: IuranDiscount,
-            props: { parentItem: 'iuran', childItem: 'daftar potongan' },
-         },
-         {
-            path: 'tambah-data',
-            component: IuranAdd,
-            props: { parentItem: 'iuran', childItem: 'daftar iuran' },
-         },
-      ],
-   },
-   // {
-   //   path: '/iuran-inklusi',
-   //   name: 'iuran-inklusi',
-   //   component: BaseIuranInklusi,
-   //   meta: { requiresAuth: true },
-   // },
-   // {
-   //   path: '/test-area',
-   //   component: BaseTestArea,
-   //   meta: { requiresAuth: true },
-   // },
+            name: 'edit calon siswa',
+            component: CalonSiswaEdit,
+            props: {
+              parentItem: 'siswa',
+              childItem: 'daftar calon siswa',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  // {
+  //   path: '/pembayaran',
+  //   name: 'pembayaran',
+  //   component: BasePembayaran,
+  //   meta: { requiresAuth: true },
+  // },
+  {
+    path: '/banner',
+    name: 'banner',
+    component: BaseBanner,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'yayasan',
+        name: 'yayasan banner',
+        component: BannerAllPlacement,
+        props: {
+          parentItem: 'banner',
+          childItem: 'banner yayasan',
+          placement: 'yayasan',
+          contentHeadItem: [
+            { title: 'banner', path: '#' },
+            { title: 'banner yayasan', path: '' },
+          ],
+        },
+      },
+      {
+        path: 'sd',
+        name: 'sd banner',
+        component: BannerAllPlacement,
+        props: {
+          parentItem: 'banner',
+          childItem: 'banner sd',
+          placement: 'sd',
+          contentHeadItem: [
+            { title: 'banner', path: '#' },
+            { title: 'banner sd', path: '' },
+          ],
+        },
+      },
+      {
+        path: 'smp',
+        name: 'smp banner',
+        component: BannerAllPlacement,
+        props: {
+          parentItem: 'banner',
+          childItem: 'banner smp',
+          placement: 'smp',
+          contentHeadItem: [
+            { title: 'banner', path: '#' },
+            { title: 'banner smp', path: '' },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    path: '/artikel',
+    name: 'article',
+    component: BaseArticle,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'article list',
+        component: ArticleList,
+        props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+      },
+      {
+        path: 'tambah-data',
+        component: ArticleAdd,
+        props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+      },
+      {
+        path: ':id',
+        name: 'article detail',
+        component: ArticleDetail,
+        props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+      },
+      {
+        path: 'edit/:id',
+        name: 'article change',
+        component: ArticleEdit,
+        props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+      },
+    ],
+  },
+  {
+    path: '/iuran',
+    name: 'iuran',
+    component: BaseIuran,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        name: 'daftar iuran',
+        component: IuranList,
+        props: { parentItem: 'iuran', childItem: 'daftar iuran' },
+      },
+      {
+        path: ':id',
+        name: 'info iuran',
+        component: IuranInfo,
+        props: { parentItem: 'iuran', childItem: 'daftar iuran' },
+      },
+      {
+        path: 'potongan-biaya',
+        name: 'potongan biaya',
+        component: IuranDiscount,
+        props: { parentItem: 'iuran', childItem: 'daftar potongan' },
+      },
+      {
+        path: 'tambah-data',
+        component: IuranAdd,
+        props: { parentItem: 'iuran', childItem: 'daftar iuran' },
+      },
+    ],
+  },
+  // {
+  //   path: '/iuran-inklusi',
+  //   name: 'iuran-inklusi',
+  //   component: BaseIuranInklusi,
+  //   meta: { requiresAuth: true },
+  // },
+  // {
+  //   path: '/test-area',
+  //   component: BaseTestArea,
+  //   meta: { requiresAuth: true },
+  // },
 ]
 
 const router = createRouter({
-   history: createWebHistory(),
-   routes,
+  history: createWebHistory(),
+  routes,
 })
 
 router.beforeEach((to, from, next) => {
-   if (to.matched.some((record) => record.meta.requiresAuth)) {
-      if (!store.getters['auth/authenticated']) {
-         next({
-            name: 'login',
-         })
-      } else {
-         next()
-      }
-   } else {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.getters['auth/authenticated']) {
+      next({
+        name: 'login',
+      })
+    } else {
       next()
-   }
-   // if (to.matched.some((record) => record.meta.hideForAuth)) {
-   //    if (store.getters['auth/authenticated']) {
-   //       router.push({
-   //          name: 'siswa',
-   //       })
-   //    } else {
-   //       router.push({
-   //          name: 'login',
-   //       })
-   //    }
-   // }
+    }
+  } else {
+    next()
+  }
+  // if (to.matched.some((record) => record.meta.hideForAuth)) {
+  //    if (store.getters['auth/authenticated']) {
+  //       router.push({
+  //          name: 'siswa',
+  //       })
+  //    } else {
+  //       router.push({
+  //          name: 'login',
+  //       })
+  //    }
+  // }
 })
 export default router

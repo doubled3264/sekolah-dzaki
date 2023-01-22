@@ -517,19 +517,8 @@ async function removeImageItem(imageIndex) {
               </div>
             </div>
             <div class="card__body">
-              <div v-show="section.first.isActive" class="section-first">
-                <div class="w-2/3">
-                  <CustomTextArea type="text" label="Judul" placeholder="Masukan judul artikel.."
-                    v-model:input-value="articleInfo.title" :error-state="errorState.title"
-                    @validate-input="validateInput('title')" />
-                  <CustomSelectBox label="kategori" placeholder="pilih kategori" :options="categoryOptions"
-                    v-model:input-value="articleInfo.category" :error-state="errorState.category"
-                    @validate-input="validateInput('category')" />
-                  <CustomSelectBox label="penempatan" placeholder="pilih penempatan" :options="placementOptions"
-                    v-model:input-value="articleInfo.placement" :error-state="errorState.placement"
-                    @validate-input="validateInput('placement')" />
-                </div>
-                <div class="w-1/3 flex flex-col">
+              <div v-show="section.first.isActive" class="first-section">
+                <div class="w-5/12 flex flex-col">
                   <h3>thumbnail</h3>
                   <div class="thumbnail-image">
                     <CustomImagePicker :title="[' tambahkan gambar', 'ubah gambar']" @on-select-file="setNewThumbnail"
@@ -539,7 +528,17 @@ async function removeImageItem(imageIndex) {
                         :src="articleInfo.thumbnailImage.preview" alt="" />
                     </div>
                   </div>
-
+                </div>
+                <div class="w-7/12">
+                  <CustomTextArea type="text" label="Judul" placeholder="Masukan judul artikel.."
+                    v-model:input-value="articleInfo.title" :error-state="errorState.title"
+                    @validate-input="validateInput('title')" />
+                  <CustomSelectBox label="kategori" placeholder="pilih kategori" :options="categoryOptions"
+                    v-model:input-value="articleInfo.category" :error-state="errorState.category"
+                    @validate-input="validateInput('category')" />
+                  <CustomSelectBox label="penempatan" placeholder="pilih penempatan" :options="placementOptions"
+                    v-model:input-value="articleInfo.placement" :error-state="errorState.placement"
+                    @validate-input="validateInput('placement')" />
                 </div>
               </div>
               <div v-if="section.second.isActive" class="second-section">
