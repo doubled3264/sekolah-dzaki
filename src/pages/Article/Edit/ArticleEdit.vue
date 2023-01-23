@@ -563,10 +563,10 @@ async function removeImageItem(imageIndex) {
     </div>
   </div>
   <Teleport to="#modal">
-    <CustomModalOverlay v-if="spinnerState">
+    <CustomModalOverlay v-show="spinnerState">
       <Spinner :is-active="spinnerState" />
     </CustomModalOverlay>
-    <CustomModalOverlay v-if="modal.textEditor" @close-modal="closeTextEditor">
+    <CustomModalOverlay v-show="modal.textEditor" @close-modal="closeTextEditor">
       <AddNewText @process-text="pushNewText" @process-edit="pushEditedText" :text-to-edit="textToEdit"
         :purpose="editorPurpose" />
     </CustomModalOverlay>
