@@ -5,8 +5,8 @@ import { useRouter } from 'vue-router'
 import { loginScheme } from '../../utils/validation/login.scheme'
 import { swalDialog } from '../../utils/sweetalert-object'
 import Swal from 'sweetalert2'
-import CustomInput from '../../components/form/CustomInput.vue'
-import CustomButton from '../../components/CustomButton.vue'
+import CustomInput from '@components/form/CustomInput.vue'
+import CustomButton from '@components/CustomButton.vue'
 
 const store = useStore()
 const router = useRouter()
