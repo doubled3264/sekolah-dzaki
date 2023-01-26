@@ -32,7 +32,6 @@ import BiodataCalonSiswa from './pages/Siswa/CalonSiswa/Biodata.vue'
 import CalonSiswaEdit from './pages/Siswa/CalonSiswa/CalonSiswaEdit.vue'
 
 import Page404 from './pages/Page404.vue'
-import auth from './store/module/auth'
 const routes = [
    {
       path: '/',
@@ -63,17 +62,19 @@ const routes = [
       path: '/siswa',
       name: 'siswa',
       component: BaseSiswa,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, role: ['super', 'admin'] },
       children: [
          {
             path: 'calon-siswa',
             name: 'calon siswa',
             component: BaseCalonSiswa,
+            meta: { requiresAuth: true, role: ['super', 'admin'] },
             children: [
                {
                   path: '',
                   name: 'daftar calon siswa',
                   component: CalonSiswaList,
+                  meta: { requiresAuth: true, role: ['super', 'admin'] },
                   props: {
                      parentItem: 'siswa',
                      childItem: 'daftar calon siswa',
@@ -83,6 +84,7 @@ const routes = [
                   path: 'biodata/:id',
                   name: 'biodata calon siswa',
                   component: BiodataCalonSiswa,
+                  meta: { requiresAuth: true, role: ['super', 'admin'] },
                   props: {
                      parentItem: 'siswa',
                      childItem: 'daftar calon siswa',
@@ -92,6 +94,7 @@ const routes = [
                   path: 'edit/:id',
                   name: 'edit calon siswa',
                   component: CalonSiswaEdit,
+                  meta: { requiresAuth: true, role: ['super', 'admin'] },
                   props: {
                      parentItem: 'siswa',
                      childItem: 'daftar calon siswa',
@@ -111,12 +114,16 @@ const routes = [
       path: '/banner',
       name: 'banner',
       component: BaseBanner,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, role: ['super', 'admin', 'content writer'] },
       children: [
          {
             path: 'yayasan',
             name: 'yayasan banner',
             component: BannerAllPlacement,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: {
                parentItem: 'banner',
                childItem: 'banner yayasan',
@@ -131,6 +138,10 @@ const routes = [
             path: 'sd',
             name: 'sd banner',
             component: BannerAllPlacement,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: {
                parentItem: 'banner',
                childItem: 'banner sd',
@@ -145,6 +156,10 @@ const routes = [
             path: 'smp',
             name: 'smp banner',
             component: BannerAllPlacement,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: {
                parentItem: 'banner',
                childItem: 'banner smp',
@@ -161,29 +176,45 @@ const routes = [
       path: '/artikel',
       name: 'article',
       component: BaseArticle,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, role: ['super', 'admin', 'content writer'] },
       children: [
          {
             path: '',
             name: 'article list',
             component: ArticleList,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
          {
             path: 'tambah-data',
             component: ArticleAdd,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
          {
             path: ':id',
             name: 'article detail',
             component: ArticleDetail,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
          {
             path: 'edit/:id',
             name: 'article change',
             component: ArticleEdit,
+            meta: {
+               requiresAuth: true,
+               role: ['super', 'admin', 'content writer'],
+            },
             props: { parentItem: 'artikel', childItem: 'daftar artikel' },
          },
       ],
@@ -192,29 +223,33 @@ const routes = [
       path: '/iuran',
       name: 'iuran',
       component: BaseIuran,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, role: ['super', 'admin'] },
       children: [
          {
             path: '',
             name: 'daftar iuran',
             component: IuranList,
+            meta: { requiresAuth: true, role: ['super', 'admin'] },
             props: { parentItem: 'iuran', childItem: 'daftar iuran' },
          },
          {
             path: ':id',
             name: 'info iuran',
             component: IuranInfo,
+            meta: { requiresAuth: true, role: ['super', 'admin'] },
             props: { parentItem: 'iuran', childItem: 'daftar iuran' },
          },
          {
             path: 'potongan-biaya',
             name: 'potongan biaya',
             component: IuranDiscount,
+            meta: { requiresAuth: true, role: ['super', 'admin'] },
             props: { parentItem: 'iuran', childItem: 'daftar potongan' },
          },
          {
             path: 'tambah-data',
             component: IuranAdd,
+            meta: { requiresAuth: true, role: ['super', 'admin'] },
             props: { parentItem: 'iuran', childItem: 'daftar iuran' },
          },
       ],
@@ -237,30 +272,63 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-   console.log('getter :')
-   console.log(store.getters['auth/authenticated'])
+   let authenticated = false
+   const token = localStorage.getItem('token')
+  let allowedRoles =  to.matched.pop()
+   let role = ''
+
+   await store
+      .dispatch('auth/getAccess', token)
+      .then(() => {
+         authenticated = true
+         role = store.getters['auth/user'].role
+      })
+      .catch(() => {
+         authenticated = false
+      })
+
+  console.log(allowedRoles)
+
+   //check if route require auth
    if (to.matched.some((record) => record.meta.requiresAuth)) {
-      console.log(localStorage.getItem('token'))
-      await store.dispatch('auth/getAccess', localStorage.getItem('token'))
-      if (!store.getters['auth/authenticated']) {
-         console.log('gagal masuk private route')
-         next({ name: 'login' })
+      if (!authenticated) {
+         next({ path: '/login' })
       } else {
-         console.log('berhasil masuk private route')
          next()
       }
+      //check if authenticated, direct to private route
    } else if (to.matched.some((record) => record.meta.hideForAuth)) {
-      console.log('on login')
-      if (store.getters['auth/authenticated']) {
+      if (authenticated) {
          next({ path: '/artikel' })
       } else {
          next()
       }
-   } else if (to.path == '/') {
-      next({ name: 'login' })
-   } else {
-      next()
    }
+   // console.log('getter :')
+   // console.log(store.getters['auth/authenticated'])
+   // if (to.matched.some((record) => record.meta.requiresAuth)) {
+   //    console.log(localStorage.getItem('token'))
+   //    await store.dispatch('auth/getAccess', localStorage.getItem('token'))
+   //    if (!store.getters['auth/authenticated']) {
+   //       console.log('gagal masuk private route')
+   //       next({ name: 'login' })
+   //    } else {
+   //       console.log('berhasil masuk private route')
+   //       next()
+   //    }
+   // } else if (to.matched.some((record) => record.meta.hideForAuth)) {
+   //    console.log('on login')
+   //    if (store.getters['auth/authenticated']) {
+   //       next({ path: '/artikel' })
+   //    } else {
+   //       next()
+   //    }
+   // } else if (to.path == '/') {
+   //    next({ name: 'login' })
+   // } else {
+   //    next()
+   // }
+
    // if (to.matched.some((record) => record.meta.requiresAuth)) {
    //    if (!store.getters['auth/authenticated']) {
    //       next({
