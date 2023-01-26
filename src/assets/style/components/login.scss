@@ -1,96 +1,96 @@
-.login {
-   @apply w-full h-screen pt-20;
-   @apply bg-verdigris;
+// .login {
+//    @apply w-full h-screen pt-20;
+/    @apply bg-verdigris;
 
-   &__content {
-      @apply h-fit mx-auto py-6;
-      @apply rounded-lg;
-      @apply shadow-xl;
-      background-color: #def2f0;
+//    &__content {
+//       @apply h-fit mx-auto py-6;
+//       @apply rounded-lg;
+//       @apply shadow-xl;
+//       background-color: #def2f0;
 
-      h2 {
-         @apply text-xl font-semibold capitalize;
-      }
+//       h2 {
+//          @apply text-xl font-semibold capitalize;
+//       }
 
-      form {
-         @apply w-full my-6;
-      }
+//       form {
+//          @apply w-full my-6;
+//       }
 
-      &-notif {
-         @apply flex;
-         @apply mb-4 p-3;
-         @apply rounded-lg bg-red-500;
-         @apply font-semibold text-white;
+//       &-notif {
+//          @apply flex;
+//          @apply mb-4 p-3;
+//          @apply rounded-lg bg-red-500;
+//          @apply font-semibold text-white;
 
-         svg {
-            @apply w-6 h-full mr-2;
-            padding: 5px;
-            @apply border-2 border-white rounded-full;
-         }
+//          svg {
+//             @apply w-6 h-full mr-2;
+//             padding: 5px;
+//             @apply border-2 border-white rounded-full;
+//          }
 
-         &--show {
-            animation: fadeIn;
-            animation-duration: 1s;
-         }
-         &--hide {
-            animation: fadeOut;
-            animation-duration: 1s;
-            @apply hidden;
-         }
-      }
-   }
-}
+//          &--show {
+//             animation: fadeIn;
+//             animation-duration: 1s;
+//          }
+//          &--hide {
+//             animation: fadeOut;
+//             animation-duration: 1s;
+//             @apply hidden;
+//          }
+//       }
+//    }
+// }
 
-.form-nav {
-   @apply mt-4;
+// .form-nav {
+//    @apply mt-4;
 
-   p {
-      @apply mt-6;
-      @apply text-center text-xs;
+//    p {
+//       @apply mt-6;
+//       @apply text-center text-xs;
 
-      span {
-         @apply font-normal underline;
-         color: #41c3a9;
-      }
-   }
-}
+//       span {
+//          @apply font-normal underline;
+//          color: #41c3a9;
+//       }
+//    }
+// }
 
-@screen md {
-   .login {
-      &__content {
-         @apply w-3/5;
-      }
-   }
-}
+// @screen md {
+//    .login {
+//       &__content {
+//          @apply w-3/5;
+//       }
+//    }
+// }
 
-@screen lg {
-   .login {
-     @apply pt-10;
-      &__content {
-        @apply w-4/12;
+// @screen lg {
+//    .login {
+//      @apply pt-10;
+//       &__content {
+//         @apply w-4/12;
 
-        h2{
-@apply text-base;
-        }
-      }
-   }
-}
+//         h2{
+// @apply text-base;
+//         }
+//       }
+//    }
+// }
 
-@screen xl {
-   .login {
-     @apply pt-10;
-      &__content {
-         @apply w-3/12;
+// @screen xl {
+//    .login {
+//      @apply pt-10;
+//       &__content {
+//          @apply w-3/12;
 
-         h2 {
-           @apply text-base;
-         }
-      }
-   }
+//          h2 {
+//            @apply text-base;
+//          }
+//       }
+//    }
 
-   .form-nav {
-     p {
+//    .form-nav {
+//      p {
 
-     }
-   }
-}
+//      }
+//    }
+// }

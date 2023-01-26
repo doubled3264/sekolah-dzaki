@@ -56,7 +56,8 @@ export const swalDialog = {
       return {
          icon: 'warning',
          text: text,
-         confirmButtonText: 'tutup',
+         showConfirmButton: false,
+         timer: 1500,
       }
    },
 }

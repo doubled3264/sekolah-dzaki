@@ -5,7 +5,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import App from './App.vue'
 import router from './routes'
 import { store } from './store'
-import './store/module/subscribe'
+// import './store/module/subscribe'
 import 'animate.css'
 import 'v-calendar/dist/style.css'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
@@ -23,11 +23,11 @@ if (mode === 'dev') {
    axios.defaults.baseURL = ''
 }
 
-store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
-   const app = createApp(App)
-   app.use(router)
-   app.use(store)
-   app.use(SetupCalendar, {})
-   app.use(VueSweetalert2)
-   app.mount('#app')
-})
+// store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
+const app = createApp(App)
+app.use(router)
+app.use(store)
+app.use(SetupCalendar, {})
+app.use(VueSweetalert2)
+app.mount('#app')
+// })

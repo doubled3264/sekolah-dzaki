@@ -1,9 +1,4 @@
-<script setup>
-import CustomSwitch from '../../components/CustomSwitch.vue'
-</script>
+<script setup></script>
 <template>
-   <div>
-      <CustomSwitch :item="['tunai', 'transfer']" />
-      <CustomSwitch :item="['cicilan']" />
-   </div>
+   <div>aku lah</div>
 </template>
