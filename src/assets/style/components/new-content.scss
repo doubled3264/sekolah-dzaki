@@ -1,5 +1,15 @@
 .content {
    @apply w-full pr-3 py-3;
+   &__head {
+      @apply flex justify-between;
+   }
+   &__nav {
+      .profile__photo {
+         @apply p-1;
+         @apply border-2 border-gray-500;
+         @apply rounded-full overflow-hidden;
+      }
+   }
    &__inner {
       @apply w-full h-full p-4;
       @apply rounded-2xl;
@@ -65,7 +75,7 @@
    }
 
    &__body {
-      @apply mt-5;
+      @apply mt-16;
    }
 }
 
@@ -78,7 +88,7 @@
          }
       }
       &__body {
-         @apply mt-3;
+         @apply mt-12;
       }
    }
 }

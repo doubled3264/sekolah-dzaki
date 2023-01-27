@@ -1,4 +1,5 @@
 import { truncate } from 'lodash'
+import admin from './table/admin'
 
 export default {
    namespaced: true,
@@ -285,6 +286,7 @@ export default {
             },
          ],
       },
+      admin,
    },
    getters: {
       getColumn: (state) => (tableName) => {

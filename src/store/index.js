@@ -5,6 +5,7 @@ import sidebar from './module/sidebar'
 import windowProp from './module/window'
 import vueTable from './module/vue-table'
 
+import admin from './module/admin'
 import article from './module/article'
 import banner from './module/banner'
 
@@ -22,6 +23,7 @@ export const store = createStore({
       sidebar,
       windowProp,
       vueTable,
+      admin,
       article,
       banner,
       calonSiswa,

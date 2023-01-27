@@ -14,24 +14,24 @@ const routes = [
             path: '',
             name: 'article list',
             component: ArticleList,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+            props: { parentItem: 'artikel' },
          },
          {
             path: 'tambah-data',
             component: ArticleAdd,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+            props: { parentItem: 'artikel' },
          },
          {
             path: ':id',
             name: 'article detail',
             component: ArticleDetail,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+            props: { parentItem: 'artikel' },
          },
          {
             path: 'edit/:id',
             name: 'article change',
             component: ArticleEdit,
-            props: { parentItem: 'artikel', childItem: 'daftar artikel' },
+            props: { parentItem: 'artikel' },
          },
       ],
    },
@@ -39,9 +39,9 @@ const routes = [
 
 export default routes.map((route) => {
    return {
-     ...route,
-     meta: { public: false, role: ['super', 'admin', 'content writer'] },
-     children: route.children.map((childrens) => {
+      ...route,
+      meta: { public: false, role: ['super', 'admin', 'content writer'] },
+      children: route.children.map((childrens) => {
          return {
             ...childrens,
             meta: { public: false, role: ['super', 'admin', 'content writer'] },

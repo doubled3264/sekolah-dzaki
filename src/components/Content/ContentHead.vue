@@ -1,9 +1,9 @@
 <script setup>
-import { computed } from 'vue'
-import { last } from 'lodash'
-import { arrowRight } from '../../utils/svg-vars'
+import { useRouter } from 'vue-router'
+import { arrowRight, user } from '../../utils/svg-vars'
 import CustomIcon from '../CustomIcon.vue'
 
+const router = useRouter()
 const props = defineProps({
   items: {
     type: Array,
@@ -15,14 +15,11 @@ const props = defineProps({
     ],
   },
 })
-/**
- * get last item for title
- * @returns {String} last item for title
- */
-const getTitle = computed(() => {
-  const lastItem = last(props.items)
-  return lastItem.title
-})
+
+function logoutAction() {
+  localStorage.removeItem('token')
+  router.push({ path: '/login' })
+}
 </script>
 <template>
   <div class="content__head">
@@ -33,6 +30,10 @@ const getTitle = computed(() => {
         <CustomIcon v-if="item.path != ''" :svg-icon="arrowRight" width="10" />
       </li>
     </ul>
-    <div class="content__title"></div>
+    <div class="content__nav">
+      <div class="profile__photo cursor-pointer" @click="logoutAction">
+        <CustomIcon :svg-icon="user" />
+      </div>
+    </div>
   </div>
 </template>
