@@ -230,6 +230,7 @@ function removeText(textIndex) {
 function pushEditedText(textValue, textIndex) {
   article.value.item[textIndex].content = textValue
   toggleModal('textEditor')
+  textEditorPurpose.value = null
 }
 
 /**
