@@ -1,6 +1,8 @@
-import BaseLogin from '@pages/Login/BaseLogin.vue'
-import BaseRegister from '@pages/Register/BaseRegister.vue'
-import Page404 from '@pages/Page404.vue'
+import { lazyLoad } from '../../utils/object-helper'
+// function lazyLoad(view) {
+//    return () => import(`/src/pages/${view}.vue`)
+// }
+
 const routes = [
    {
       path: '/',
@@ -9,17 +11,17 @@ const routes = [
    {
       path: '/login',
       name: 'login',
-      component: BaseLogin,
+      component: lazyLoad('Login/BaseLogin'),
    },
    {
       path: '/register/:invitationCode',
       name: 'register',
-      component: BaseRegister,
+      component: lazyLoad('Register/BaseRegister'),
    },
    {
       path: '/not-found',
       name: 'NotFound',
-      component: Page404,
+      component: lazyLoad('Page404'),
    },
 ]
 

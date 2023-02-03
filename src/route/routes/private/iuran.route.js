@@ -1,36 +1,32 @@
-import BaseIuran from '@pages/Iuran/BaseIuran.vue'
-import IuranList from '@pages/Iuran/IuranList.vue'
-import IuranAdd from '@pages/Iuran/IuranAdd.vue'
-import IuranInfo from '@pages/Iuran/IuranInfo.vue'
-import IuranDiscount from '@pages/Iuran/IuranDiscount.vue'
+import { lazyLoad } from '../../../utils/object-helper'
 
 const routes = [
    {
       path: '/iuran',
       name: 'iuran',
-      component: BaseIuran,
+      component: lazyLoad('Iuran/BaseIuran'),
       children: [
          {
             path: '',
             name: 'daftar iuran',
-            component: IuranList,
+            component: lazyLoad('Iuran/IuranList'),
             props: { parentItem: 'iuran', childItem: 'daftar iuran' },
          },
          {
             path: ':id',
             name: 'info iuran',
-            component: IuranInfo,
+            component: lazyLoad('Iuran/IuranInfo'),
             props: { parentItem: 'iuran', childItem: 'daftar iuran' },
          },
          {
             path: 'potongan-biaya',
             name: 'potongan biaya',
-            component: IuranDiscount,
+            component: lazyLoad('Iuran/IuranDiscount'),
             props: { parentItem: 'iuran', childItem: 'daftar potongan' },
          },
          {
             path: 'tambah-data',
-            component: IuranAdd,
+            component: lazyLoad('/Iuran/IuranAdd'),
             props: { parentItem: 'iuran', childItem: 'daftar iuran' },
          },
       ],

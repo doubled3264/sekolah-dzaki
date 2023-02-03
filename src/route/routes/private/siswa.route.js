@@ -1,24 +1,20 @@
-import BaseSiswa from '@pages/Siswa/BaseSiswa.vue'
-import BaseCalonSiswa from '@pages/Siswa/CalonSiswa/BaseCalonSiswa.vue'
-import CalonSiswaList from '@pages/Siswa/CalonSiswa/CalonSiswaList.vue'
-import BiodataCalonSiswa from '@pages/Siswa/CalonSiswa/Biodata.vue'
-import CalonSiswaEdit from '@pages/Siswa/CalonSiswa/CalonSiswaEdit.vue'
+import { lazyLoad } from '../../../utils/object-helper'
 
 const routes = [
    {
       path: '/siswa',
       name: 'siswa',
-      component: BaseSiswa,
+      component: lazyLoad('Siswa/BaseSiswa'),
       children: [
          {
             path: 'calon-siswa',
             name: 'calon siswa',
-            component: BaseCalonSiswa,
+            component: lazyLoad('Siswa/CalonSiswa/BaseCalonSiswa'),
             children: [
                {
                   path: '',
                   name: 'daftar calon siswa',
-                  component: CalonSiswaList,
+                  component: lazyLoad('Siswa/CalonSiswa/CalonSiswaList'),
                   props: {
                      parentItem: 'siswa',
                      childItem: 'daftar calon siswa',
@@ -27,7 +23,7 @@ const routes = [
                {
                   path: 'biodata/:id',
                   name: 'biodata calon siswa',
-                  component: BiodataCalonSiswa,
+                  component: lazyLoad('Siswa/CalonSiswa/Biodata'),
                   props: {
                      parentItem: 'siswa',
                      childItem: 'daftar calon siswa',
@@ -36,7 +32,7 @@ const routes = [
                {
                   path: 'edit/:id',
                   name: 'edit calon siswa',
-                  component: CalonSiswaEdit,
+                  component: lazyLoad('Siswa/CalonSiswa/CalonSiswaEdit'),
                   props: {
                      parentItem: 'siswa',
                      childItem: 'daftar calon siswa',

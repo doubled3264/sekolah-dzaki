@@ -1,17 +1,16 @@
-import BaseBanner from '@pages/Banner/BaseBanner.vue'
-import BannerAllPlacement from '@pages/Banner/BannerAllPlacement.vue'
+import { lazyLoad } from '../../../utils/object-helper'
 
 const routes = [
-{
+   {
       path: '/banner',
       name: 'banner',
-      component: BaseBanner,
+      component: lazyLoad('Banner/BaseBanner'),
       meta: { requiresAuth: true, role: ['super', 'admin', 'content writer'] },
       children: [
          {
             path: 'yayasan',
             name: 'yayasan banner',
-            component: BannerAllPlacement,
+            component: lazyLoad('Banner/BannerAllPlacement'),
             meta: {
                requiresAuth: true,
                role: ['super', 'admin', 'content writer'],
@@ -29,7 +28,7 @@ const routes = [
          {
             path: 'sd',
             name: 'sd banner',
-            component: BannerAllPlacement,
+            component: lazyLoad('Banner/BannerAllPlacement'),
             meta: {
                requiresAuth: true,
                role: ['super', 'admin', 'content writer'],
@@ -47,7 +46,7 @@ const routes = [
          {
             path: 'smp',
             name: 'smp banner',
-            component: BannerAllPlacement,
+            component: lazyLoad('Banner/BannerAllPlacement'),
             meta: {
                requiresAuth: true,
                role: ['super', 'admin', 'content writer'],
@@ -63,14 +62,14 @@ const routes = [
             },
          },
       ],
-   }
+   },
 ]
 
 export default routes.map((route) => {
    return {
-     ...route,
-     meta: { public: false, role: ['super', 'admin', 'content writer'] },
-     children: route.children.map((childrens) => {
+      ...route,
+      meta: { public: false, role: ['super', 'admin', 'content writer'] },
+      children: route.children.map((childrens) => {
          return {
             ...childrens,
             meta: { public: false, role: ['super', 'admin', 'content writer'] },

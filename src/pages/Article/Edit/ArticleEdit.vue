@@ -24,6 +24,7 @@ import { swalDialog } from '../../../utils/sweetalert-object'
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const APIURL = import.meta.env.VITE_APIURL
 /** @type {Object} parent & child sidebar item value for active state  */
 const props = defineProps({
   parentItem: String,
@@ -134,7 +135,7 @@ async function fetchArticle() {
   articleInfo.value.title = article.value.title
   articleInfo.value.category = article.value.category
   articleInfo.value.placement = article.value.placement
-  articleInfo.value.thumbnailImage.preview = `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
+  articleInfo.value.thumbnailImage.preview = `${APIURL}/files/article/${article.value.id}/${article.value.thumbnail}`
   articleInfo.value.thumbnailImage.isEdited = false
 
   forEach(article.value.ArticleDetails, (item, index) => {
@@ -237,7 +238,7 @@ function addNewImage() {
 
 function editImageItem(imageIndex) {
   imageToEdit.value.raw = ''
-  imageToEdit.value.preview = `http://localhost:3000/files/article/${article.value.id}/${article.value.ArticleDetails[imageIndex].content}`
+  imageToEdit.value.preview = `${APIURL}/files/article/${article.value.id}/${article.value.ArticleDetails[imageIndex].content}`
   imageToEdit.value.caption = article.value.ArticleDetails[imageIndex].caption
   imageToEdit.value.index = imageIndex
   imageEditorPurpose.value = 'edit without raw'

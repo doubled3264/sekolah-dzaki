@@ -1,36 +1,32 @@
-import BaseArticle from '@pages/Article/BaseArticle.vue'
-import ArticleList from '@pages/Article/ArticleList.vue'
-import ArticleAdd from '@pages/Article/Add/ArticleAdd.vue'
-import ArticleDetail from '@pages/Article/ArticleDetail.vue'
-import ArticleEdit from '@pages/Article/Edit/ArticleEdit.vue'
+import { lazyLoad } from '../../../utils/object-helper'
 
 const routes = [
    {
       path: '/artikel',
       name: 'article',
-      component: BaseArticle,
+      component: lazyLoad('Article/BaseArticle'),
       children: [
          {
             path: '',
             name: 'article list',
-            component: ArticleList,
+            component: lazyLoad('Article/ArticleList'),
             props: { parentItem: 'artikel' },
          },
          {
             path: 'tambah-data',
-            component: ArticleAdd,
+            component: lazyLoad('Article/Add/ArticleAdd'),
             props: { parentItem: 'artikel' },
          },
          {
             path: ':id',
             name: 'article detail',
-            component: ArticleDetail,
+            component: lazyLoad('Article/ArticleDetail'),
             props: { parentItem: 'artikel' },
          },
          {
             path: 'edit/:id',
             name: 'article change',
-            component: ArticleEdit,
+            component: lazyLoad('Article/Edit/ArticleEdit'),
             props: { parentItem: 'artikel' },
          },
       ],

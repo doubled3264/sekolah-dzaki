@@ -13,21 +13,14 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import 'vue-multiselect/dist/vue-multiselect.css'
 import './assets/style/index.scss'
 
-//axios
-const mode = 'dev'
-if (mode === 'dev') {
-   axios.defaults.baseURL = 'http://localhost:3000/'
-   axios.defaults.headers.post['Content-Type'] =
-      'application/x-www-form-urlencoded'
-} else if (mode === 'prod') {
-   axios.defaults.baseURL = ''
-}
+axios.defaults.baseURL = import.meta.env.VITE_APIURL
+axios.defaults.headers.post['Content-Type'] =
+   'application/x-www-form-urlencoded'
+console.log(import.meta.env.VITE_CHECKMODE)
 
-// store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
 const app = createApp(App)
 app.use(router)
 app.use(store)
 app.use(SetupCalendar, {})
 app.use(VueSweetalert2)
 app.mount('#app')
-// })

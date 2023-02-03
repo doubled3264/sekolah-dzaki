@@ -9,8 +9,6 @@ export default defineConfig({
    resolve: {
       alias: {
          'tailwind.config.cjs': path.resolve(__dirname, 'tailwind.config.cjs'),
-         // 'components/': path.resolve(__dirname, 'src/components/'),
-         // 'utils/': path.resolve(__dirname, 'src/utils/'),
          '@pages': path.resolve(__dirname, './src/pages'),
          '@components': path.resolve(__dirname, './src/components'),
          '@store': path.resolve(__dirname, './src/store'),

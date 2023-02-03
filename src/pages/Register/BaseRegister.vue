@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { omit } from '../../utils/objet-helper'
+import { omit } from '../../utils/object-helper'
 import { swalDialog } from '../../utils/sweetalert-object'
 import { registerSchema } from '../../utils/validation/register.schema'
 import Swal from 'sweetalert2'
@@ -13,11 +13,11 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const admin = ref({
-   email: 'gubrak.sukur9@gmail.components',
-   password: '123123',
-   confirmPassword: '123123',
-   nama: 'dede agus',
-   no_telepon: '085697301226',
+   email: '',
+   password: '',
+   confirmPassword: '',
+   nama: '',
+   no_telepon: '',
 })
 
 const errorState = ref({

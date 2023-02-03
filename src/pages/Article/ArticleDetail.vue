@@ -17,6 +17,7 @@ import { swalDialog } from '../../utils/sweetalert-object'
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const APIURL = import.meta.env.VITE_APIURL
 /** @type {Object} parent & child sidebar item value for active state  */
 const props = defineProps({
    parentItem: String,
@@ -78,14 +79,14 @@ const getArticleDate = computed(() => {
 
 const getThumbnail = computed(() => {
    if (article.value.id) {
-      return `http://localhost:3000/files/article/${article.value.id}/${article.value.thumbnail}`
+      return `${APIURL}/files/article/${article.value.id}/${article.value.thumbnail}`
    } else {
       return ''
    }
 })
 const getContentImage = computed(() => {
    return (value) => {
-      return `http://localhost:3000/files/article/${article.value.id}/${value}`
+      return `${APIURL}/files/article/${article.value.id}/${value}`
    }
 })
 

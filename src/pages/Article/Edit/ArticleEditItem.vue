@@ -29,10 +29,11 @@ defineEmits([
    'reorderingImage',
    'toggleShowOptions',
 ])
+const APIURL = import.meta.env.VITE_APIURL
 const availHeight = ref(0)
 const getThumbnailImage = computed(() => {
    if (props.article) {
-      return `http://localhost:3000/files/article/${props.article.id}/${props.article.thumbnail}`
+      return `${APIURL}/files/article/${props.article.id}/${props.article.thumbnail}`
    }
 })
 
@@ -87,7 +88,7 @@ onMounted(() => {
                <div class="image-content__wrapper">
                   <img
                      crossorigin="anonymous"
-                     :src="`http://localhost:3000/files/article/${article.id}/${item.content}`"
+                     :src="`${APIURL}/files/article/${article.id}/${item.content}`"
                      alt=""
                   />
                </div>

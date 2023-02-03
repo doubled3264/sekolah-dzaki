@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { forEach } from 'lodash'
-import { pick } from '../../utils/objet-helper'
+import { pick } from '../../utils/object-helper'
 import {
    arrowSolidDown,
    arrowSolidUp,
