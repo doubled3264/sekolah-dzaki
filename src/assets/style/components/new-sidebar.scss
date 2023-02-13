@@ -3,7 +3,7 @@
 
    &__logo {
       img {
-         @apply w-36 mx-auto py-3;
+         @apply w-24 mx-auto py-3;
       }
    }
 
@@ -72,7 +72,7 @@
       }
       &--active {
          @apply rounded-lg bg-verdigris;
-       }
+      }
    }
 }
 

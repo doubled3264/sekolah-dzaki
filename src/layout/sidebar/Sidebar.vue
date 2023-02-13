@@ -14,30 +14,35 @@ const sidebarItems = ref({})
 /*    return store.getters['sidebar/getItem'] */
 /* }) */
 onMounted(async () => {
-  setUser()
-  sidebarItems.value = await store.getters['sidebar/getItem']
+   setUser()
+   sidebarItems.value = await store.getters['sidebar/getItem']
 })
 
 watch(route, () => {
-  setUser()
+   setUser()
 })
 store.subscribe((mutation) => {
-  if (mutation.type == 'sidebar/setActiveChild') {
-    sidebarItems.value = store.getters['sidebar/getItem']
-  }
+   if (mutation.type == 'sidebar/setActiveChild') {
+      sidebarItems.value = store.getters['sidebar/getItem']
+   }
 })
 function setUser() {
-  user.value = store.getters['auth/user']
+   user.value = store.getters['auth/user']
 }
 </script>
 <template>
-  <div class="sidebar">
-    <div class="sidebar__logo">
-      <img :src="alIrsyadLogo" alt="logo yayasan alirsyad" />
-    </div>
-    <h3>menu</h3>
-    <ul class="sidebar__list">
-      <SidebarItem v-for="(item, index) in sidebarItems" :key="index + 1" :item="item" :user="user" />
-    </ul>
-  </div>
+   <div class="sidebar">
+      <div class="sidebar__logo">
+         <img :src="alIrsyadLogo" alt="logo yayasan alirsyad" />
+      </div>
+      <h3>menu</h3>
+      <ul class="sidebar__list">
+         <SidebarItem
+            v-for="(item, index) in sidebarItems"
+            :key="index + 1"
+            :item="item"
+            :user="user"
+         />
+      </ul>
+   </div>
 </template>

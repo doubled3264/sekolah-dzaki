@@ -1,5 +1,5 @@
 export const lazyLoad = (view) => {
-   return () => import(`/src/pages/${view}.vue`)
+   return () => import(/* @vite-ignore */ `/src/pages/${view}.vue`)
 }
 /**
  * pick value from object
