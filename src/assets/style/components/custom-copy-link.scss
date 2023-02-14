@@ -1,0 +1,29 @@
+.custom-copy-link {
+   @apply mb-4;
+   label {
+      @apply text-sm font-medium capitalize text-gray-500;
+   }
+
+   .link-item {
+      @apply flex items-center;
+      @apply mt-2 px-2 py-2;
+      @apply border border-gray-300 rounded-lg;
+      @apply text-gray-400;
+
+      p {
+         @apply flex-1;
+         @apply px-2;
+      }
+
+      .copy-icon {
+         @apply py-1.5 px-2;
+         @apply rounded bg-blue-500;
+         @apply text-white;
+         @apply cursor-pointer;
+
+         &--active {
+            @apply bg-green-500;
+         }
+      }
+   }
+}

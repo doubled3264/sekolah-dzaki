@@ -24,6 +24,7 @@
 @import './components/custom-info.scss';
 @import './components/custom-image-input.scss';
 @import './components/custom-image-picker.scss';
+@import './components/custom-copy-link.scss';
 @import './components/new-content.scss';
 @import './components/new-sidebar.scss';
 
@@ -32,7 +33,8 @@
 // pages
 @import './pages/register.scss';
 @import './pages/login.scss';
-@import './pages/article.scss';
+@import './pages/admin/admin-list.scss';
+// @import './pages/article.scss';
 @import './pages/article/article-list.scss';
 @import './pages/article/article-add.scss';
 @import './pages/article/article-detail.scss';

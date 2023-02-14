@@ -32,6 +32,7 @@ const contentHeadItem = [
 const spinnerState = ref(false)
 const cardMenu = ref(false)
 onMounted(() => {
+  document.title = "Daftar Artikel"
    spinnerState.value = true
    store.commit('sidebar/setAllToNormal')
    store.commit('sidebar/setActiveParent', props.parentItem)

@@ -1,0 +1,17 @@
+.admin-list {
+   &__wrapper {
+      .card__nav {
+         @apply relative;
+         @apply pb-2 pl-5;
+         @apply cursor-pointer;
+      }
+   }
+   &__registration {
+      &.card {
+         @apply w-6/12 mx-auto mt-10;
+         .card__body {
+            @apply mt-8;
+         }
+      }
+   }
+}

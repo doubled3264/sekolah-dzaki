@@ -41,14 +41,6 @@ onMounted(async () => {
   }
 })
 
-/* function setIconPosition() { */
-/*   const componentStyle = window.getComputedStyle(inputElement.value) */
-/*   positionPasswordIcon.value.bottom = */
-/*     componentStyle.getPropertyValue('padding-bottom') */
-/* positionPasswordIcon.value.right = */
-/*   componentStyle.getPropertyValue('padding-right') */
-/* } */
-
 function toggleShowPassword() {
   showPassword.value = !showPassword.value
   if (showPassword.value) {
