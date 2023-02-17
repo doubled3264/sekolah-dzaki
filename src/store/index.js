@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 
 import auth from './module/auth'
+import invitation from './module/invitation'
 import sidebar from './module/sidebar'
 import windowProp from './module/window'
 import vueTable from './module/vue-table'
@@ -20,6 +21,7 @@ import transaksi from './module/transaksi'
 export const store = createStore({
    modules: {
       auth,
+      invitation,
       sidebar,
       windowProp,
       vueTable,

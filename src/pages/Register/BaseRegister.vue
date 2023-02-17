@@ -51,7 +51,7 @@ onMounted(() => {
 
 async function invitationCheck() {
    await store
-      .dispatch('auth/invitationCheck', {
+      .dispatch('invitation/invitationCheck', {
          invitationCode: route.params.invitationCode,
       })
       .then((response) => {
