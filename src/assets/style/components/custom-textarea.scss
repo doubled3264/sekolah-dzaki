@@ -58,6 +58,10 @@
          textarea {
             @apply border-red-500;
 
+            &::placeholder {
+               @apply text-sm;
+            }
+
             &:focus {
                @apply ring-1 ring-red-500;
             }

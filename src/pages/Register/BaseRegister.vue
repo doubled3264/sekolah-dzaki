@@ -12,6 +12,7 @@ import CustomButton from '../../components/CustomButton.vue'
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const isInvited = ref(false)
 const admin = ref({
    email: '',
    password: '',
@@ -61,7 +62,9 @@ async function invitationCheck() {
                   'Silahkan hubungi admin terlebih dahulu untuk melakukan pendataran.'
                )
             )
-         }
+         } else {
+             isInvited.value = true
+           }
       })
       .catch(() => {
          Swal.fire(
@@ -127,7 +130,7 @@ async function processData() {
 </script>
 <template>
    <div class="register__wrapper">
-      <div class="card">
+      <div v-show="isInvited" class="card">
          <div class="card__head">
             <div class="card__title">
                <h3>pendaftaran admin</h3>

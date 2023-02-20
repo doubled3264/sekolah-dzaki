@@ -6,7 +6,8 @@
       }
       .first-section {
          @apply flex gap-8;
-         @apply w-10/12 mx-auto;
+         // @apply w-10/12 mx-auto;
+         @apply mx-auto;
          h3 {
             @apply mb-2;
             @apply text-sm font-medium capitalize text-gray-500;
